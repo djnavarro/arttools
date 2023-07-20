@@ -8,6 +8,21 @@ This is a personal package used to help with my generative art workflows.
 
 ## Structure of an art repository
 
+Core insight: there are *four* distinct products:
+
+1. The source code (and other inputs) for the generative art system
+2. The raw output created by the generative art system
+3. The processed/curated images and accompanying manifest file
+4. The gallery page on the generative art site displaying the images
+
+Each of these has a different home!
+
+1. Source code lives on GitHub, one repo per system
+2. Raw output is ephemeral: it exists only locally
+3. Processed images live as a "folder" in the public GCS Bucket
+4. Gallery page is in the art site repo and hotlinks to images
+
+
 ### Repository name
 
 - Every system should have a "system id" string `sys_id` 
@@ -69,6 +84,10 @@ This is a personal package used to help with my generative art workflows.
 - `build_previews.R`: generates smaller-resolution preview images
 - `build_manifest.R`: writes the manifest.csv file to the gallery folder
 
+To do:
+ 
+- There should be a `Makefile` that handles the build step, and *only* the build step. It's there to manage the `series-subdivision` (or whatever) folder, *after* we've done the manual curation step and chosen which image files should be published
+
 ### The manifest file
 
 A csv file containing the following fields:
@@ -81,9 +100,30 @@ A csv file containing the following fields:
 - `format`: the file extension (e.g., `"png"`)
 - `date`: the publication date in YYYY-MM-DD format (e.g. `"2023-06-02"`)
 
-### Publishing process
+To do:
 
-- To publish the gallery folder, copy it to the `djnavarro-art` bucket on google cloud storage using the `series-upload.sh` script. For instance:
+- Manifests should also have a `manifest_version` field so that if I later change the manifest format the reader can work out how to handle the manifest by inspecting that field
+
+### System name changes
+
+It's grossly typical that we choose a new name at the end of the process. Solution to this is to make it "superficial only". That is:
+
+- Don't rename source files
+- Don't rename the system ids etc within source files
+- Don't rename the output file
+
+But we:
+
+- Do rename the repository on github (e.g., from `series-rectangles` to `series-subdivision`)
+- Do rename the gallery folder (again, e.g., from `series-rectangles` to `series-subdivision`)
+- Use the new name in the `_gallery.csv` file
+
+It's not ideal, but it minimises mess, and ultimately ensures that the thing that gets published uses the correct name on the art website and on github. It also has the nice property of preserving redirects on github.
+
+### Publishing images to cloud storage
+
+- Optional, but desirable: move (or copy) the gallery folder to the `~/Bucket/djnavarro-art` folder. Gallery folders properly belong to the object store rather than the git repo, so we might as well have that reflected locally!
+- To publish a gallery folder, copy it to the `djnavarro-art` bucket on google cloud storage using the `series-upload.sh` script. For instance:
 
   ```
   ./series-upload.sh series-subdivision
@@ -96,5 +136,9 @@ A csv file containing the following fields:
   FOLDER=$1;
   gcloud storage cp $FOLDER gs://djnavarro-art --recursive --project generative-art-389407
   ```
+
+### Updating the website
+
+
 
 
