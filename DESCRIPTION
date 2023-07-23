@@ -11,3 +11,9 @@ Encoding: UTF-8
 LazyData: true
 URL: https://github.com/djnavarro/arttools
 BugReports: https://github.com/djnavarro/arttools/issues
+Imports: 
+    curl,
+    fs,
+    readr,
+    rlang,
+    tibble
