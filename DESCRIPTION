@@ -12,8 +12,10 @@ LazyData: true
 URL: https://github.com/djnavarro/arttools
 BugReports: https://github.com/djnavarro/arttools/issues
 Imports: 
+    cli,
     curl,
     fs,
+    magick,
     readr,
     rlang,
     tibble
