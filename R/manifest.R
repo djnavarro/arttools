@@ -2,11 +2,14 @@
 #' Write a manifest file
 #'
 #' @param series Path to the series directory
+#' @param origin Location in which to find the series
 #' @param date Publication date for the series
 #'
 #' @return A tibble
 #' @export
-create_manifest <- function(series, date = Sys.Date()) {
+manifest_create <- function(series,
+                            origin = bucket_local_path(),
+                            date = Sys.Date()) {
 
   series_name <- fs::path_split(series)[[1]]
   series_name <- series_name[length(series_name)]
