@@ -36,5 +36,11 @@ repo_local_path <- function(path = NULL) {
   fs::path_expand(base)
 }
 
+is_url <- function(path) {
+  grepl("^http", path)
+}
 
-
+agnostic_path <- function(...) {
+  if (is_url(..1)) return(paste(..., sep = "/"))
+  fs::path(...)
+}
