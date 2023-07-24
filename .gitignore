@@ -2,3 +2,5 @@
 .Rhistory
 .RData
 .Ruserdata
+arttools.Rcheck
+arttools_*.tar.gz
