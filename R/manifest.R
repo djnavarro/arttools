@@ -6,11 +6,7 @@ create_manifest <- function(series_dir, date = Sys.Date()) {
   manifest <- tibble::tibble()
   manifest$series_name <- series_name
   manifest$series_date <- date
-  manifest$path <- list.files(
-    series_dir,
-    recursive = TRUE,
-    pattern = "jpg$|png$"
-  )
+  manifest$path <- fs::dir_ls(series_dir, recurse = TRUE, regexp = "jpg$|png$")
   manifest$folder = fs::path_dir(manifest$path)
   manifest$file_name = fs::path_file(manifest$path)
   manifest$format = fs::path_ext(manifest$path)
