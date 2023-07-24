@@ -3,13 +3,15 @@
 #'
 #' @param series Path to the series directory
 #' @param origin Location in which to find the series
+#' @param destination Location into which the manifest is written
 #' @param date Publication date for the series
 #'
 #' @return A tibble
 #' @export
-manifest_create <- function(series,
-                            origin = bucket_local_path(),
-                            date = Sys.Date()) {
+manifest_write <- function(series,
+                           origin = bucket_local_path(),
+                           destination = bucket_local_path(),
+                           date = Sys.Date()) {
 
   series_name <- fs::path_split(series)[[1]]
   series_name <- series_name[length(series_name)]
@@ -52,6 +54,5 @@ manifest_create <- function(series,
   )
   ord <- order(manifest$system_version, manifest$image_id)
   manifest <- manifest[ord, ]
-  #readr::write_csv(manifest, fs::path(dir, "manifest.csv"))
-  manifest
+  readr::write_csv(manifest, fs::path(destination, "manifest.csv"))
 }
