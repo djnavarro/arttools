@@ -1,11 +1,11 @@
 Package: arttools
 Type: Package
-Title: Tools For Generative Art
+Title: Tools For Generative Art Workflows
 Version: 0.0.0.9000
 Authors@R: 
     person("Danielle", "Navarro", , "djnavarro@protonmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-7648-6578"))
-Description: A personal-use package to with generative art workflows
+Description: A personal-use package for managing generative art workflows.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
