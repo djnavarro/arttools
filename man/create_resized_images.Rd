@@ -6,22 +6,25 @@
 \usage{
 create_resized_images(
   series,
-  input_folder,
-  output_folder,
+  images_from,
+  images_to,
   pixels_wide,
-  pixels_high = pixels_wide
+  pixels_high = pixels_wide,
+  origin = bucket_local_path()
 )
 }
 \arguments{
-\item{series}{Path to the series directory}
+\item{series}{Name of the series}
 
-\item{input_folder}{Folder within the series containing original images}
+\item{images_from}{Folder within the series containing original images}
 
-\item{output_folder}{Folder within the series to contain resized images}
+\item{images_to}{Folder within the series to contain resized images}
 
 \item{pixels_wide}{Width of output images in pixels}
 
 \item{pixels_high}{Height of output images in pixels description}
+
+\item{origin}{Location in which to find the series}
 }
 \value{
 Invisibly returns NULL. This may change

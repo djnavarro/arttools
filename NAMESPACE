@@ -2,9 +2,9 @@
 
 export(bucket_local_path)
 export(bucket_remote_path)
-export(create_manifest)
 export(create_resized_images)
-export(read_manifest)
+export(manifest_create)
+export(manifest_read)
 export(repo_local_path)
 export(repo_remote_path)
 export(series_download)

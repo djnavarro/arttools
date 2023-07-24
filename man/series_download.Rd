@@ -4,16 +4,18 @@
 \alias{series_download}
 \title{Download an art series}
 \usage{
-series_download(series, dest_dir, base_url = NULL, keep_manifest = TRUE)
+series_download(
+  series,
+  destination = bucket_local_path(),
+  origin = bucket_remote_path()
+)
 }
 \arguments{
 \item{series}{Name of the series}
 
-\item{dest_dir}{Local folder into which the series folder is downloaded}
+\item{destination}{Local folder into which the series folder is downloaded}
 
-\item{base_url}{URL for the bucket containing all art series}
-
-\item{keep_manifest}{Should the manifest file be downloaded? (default=TRUE)}
+\item{origin}{Location in which to find the series}
 }
 \value{
 Tibble containing the download status data
