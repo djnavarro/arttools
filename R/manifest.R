@@ -1,3 +1,11 @@
+
+#' Write a manifest file
+#'
+#' @param series_dir Path to the series directory
+#' @param date Publication date for the series
+#'
+#' @return A tibble
+#' @export
 create_manifest <- function(series_dir, date = Sys.Date()) {
 
   series_name <- fs::path_split(series_dir)[[1]]
