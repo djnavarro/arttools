@@ -17,3 +17,4 @@ Imports:
     readr,
     rlang,
     tibble
+RoxygenNote: 7.2.3
