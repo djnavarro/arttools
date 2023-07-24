@@ -20,18 +20,3 @@ series_download <- function(
     destfiles = fs::path(destination, series, file_paths)
   )
 }
-
-#' Read the series manifest
-#'
-#' @param series Name of the series
-#' @param origin Location in which to find the series
-#'
-#' @return Tibble containing the manifest data
-#' @export
-manifest_read <- function(series, origin = bucket_remote_path()) {
-  readr::read_csv(
-    paste(origin, series, "manifest.csv", sep = "/"),
-    show_col_types = FALSE
-  )
-}
-

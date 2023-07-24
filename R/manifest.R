@@ -1,23 +1,53 @@
 
-#' Write a manifest file
+#' Read a series manifest file
+#'
+#' @param series Name of the series
+#' @param origin Location in which to find the series
+#' @param file File name for the manifest
+#'
+#' @return Tibble containing the manifest data
+#' @export
+manifest_read <- function(series,
+                          origin = bucket_remote_path(),
+                          file = "manifest.csv") {
+  path <- agnostic_path(origin, series, file)
+  readr::read_csv(path, show_col_types = FALSE)
+}
+
+#' Write a series manifest file
 #'
 #' @param series Path to the series directory
+#' @param date Publication date for the series
 #' @param origin Location in which to find the series
 #' @param destination Location into which the manifest is written
-#' @param date Publication date for the series
+#' @param file File name for the manifest
 #'
 #' @return A tibble
 #' @export
 manifest_write <- function(series,
+                           date = Sys.Date(),
                            origin = bucket_local_path(),
                            destination = bucket_local_path(),
-                           date = Sys.Date()) {
+                           file = "manifest.csv") {
 
-  series_name <- fs::path_split(series)[[1]]
-  series_name <- series_name[length(series_name)]
+  if (is_url(origin)) {
+    abort("cannot construct manifest from remotes")
+  }
+  if (is_url(destination)) {
+    abort("cannot write manifest to remotes")
+  }
+
+  series_name <- series
   series_date <- date
 
-  path <- fs::dir_ls(series, recurse = TRUE, regexp = "jpg$|png$")
+  path <- fs::dir_ls(
+    fs::path(origin, series),
+    recurse = TRUE,
+    regexp = "jpg$|png$"
+  )
+  path <- gsub(fs::path(origin, series), "", path)
+  path <- gsub("^/", "", path)
+
   folder = fs::path_dir(path)
   file_name = fs::path_file(path)
   file_format = fs::path_ext(path)
@@ -54,5 +84,6 @@ manifest_write <- function(series,
   )
   ord <- order(manifest$system_version, manifest$image_id)
   manifest <- manifest[ord, ]
-  readr::write_csv(manifest, fs::path(destination, "manifest.csv"))
+
+  readr::write_csv(manifest, fs::path(destination, series, file))
 }
