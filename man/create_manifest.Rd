@@ -4,10 +4,10 @@
 \alias{create_manifest}
 \title{Write a manifest file}
 \usage{
-create_manifest(series_dir, date = Sys.Date())
+create_manifest(series, date = Sys.Date())
 }
 \arguments{
-\item{series_dir}{Path to the series directory}
+\item{series}{Path to the series directory}
 
 \item{date}{Publication date for the series}
 }
