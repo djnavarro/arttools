@@ -3,14 +3,17 @@ create_manifest <- function(series_dir, date = Sys.Date()) {
   series_name <- fs::path_split(series_dir)[[1]]
   series_name <- series_name[length(series_name)]
 
-  manifest <- tibble::tibble(
-    series_name = series_name,
-    series_date = {{date}},
-    path = list.files({{series_dir}}, recursive = TRUE, pattern = "jpg$|png$"),
-    folder = fs::path_dir(path),
-    file_name = fs::path_file(path),
-    format = fs::path_ext(path)
+  manifest <- tibble::tibble()
+  manifest$series_name <- series_name
+  manifest$series_date <- date
+  manifest$path <- list.files(
+    series_dir,
+    recursive = TRUE,
+    pattern = "jpg$|png$"
   )
+  manifest$folder = fs::path_dir(manifest$path)
+  manifest$file_name = fs::path_file(manifest$path)
+  manifest$format = fs::path_ext(manifest$path)
 
   name_parts <- strsplit(manifest$file_name, "_")
   num_name_parts <- vapply(name_parts, length, 1L)
