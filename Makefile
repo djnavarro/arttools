@@ -1,12 +1,8 @@
-# h/t to @jimhester and @yihui for this parse block:
-# https://github.com/yihui/knitr/blob/dc5ead7bcfc0ebd2789fe99c527c7d91afb3de4a/Makefile#L1-L4
-# Note the portability change as suggested in the manual:
-# https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Writing-portable-packages
-PKGNAME = `sed -n "s/Package: *\([^ ]*\)/\1/p" DESCRIPTION`
-PKGVERS = `sed -n "s/Version: *\([^ ]*\)/\1/p" DESCRIPTION`
 
+PKGNAME = arttools
+PKGVERS = 0.0.0.9000
 
-all: check
+all: document build check install clean
 
 document:
 	Rscript -e 'roxygen2::roxygenise()'
