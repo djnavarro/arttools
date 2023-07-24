@@ -52,7 +52,7 @@ manifest_write <- function(series,
   file_name = fs::path_file(path)
   file_format = fs::path_ext(path)
 
-  name_parts <- strsplit(file_name, "_")
+  name_parts <- strsplit(gsub("\\.[^.]*$", "", file_name), "_")
   num_name_parts <- vapply(name_parts, length, 1L)
   if (any(num_name_parts < 3L | num_name_parts > 4L)) {
     rlang::abort("image file names must have 3 or 4 parts")
@@ -68,6 +68,7 @@ manifest_write <- function(series,
     function(x) x[4],
     ""
   )
+  image_long_title <- gsub("-", " ", image_short_title)
 
   manifest <- tibble::tibble(
     series_name = series_name,
@@ -80,6 +81,7 @@ manifest_write <- function(series,
     system_version = system_version,
     image_id = image_id,
     image_short_title = image_short_title,
+    image_long_title = image_long_title,
     manifest_version = 1L
   )
   ord <- order(manifest$system_version, manifest$image_id)
