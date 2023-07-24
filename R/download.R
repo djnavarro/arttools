@@ -14,8 +14,8 @@ series_download <- function(
     keep_manifest = TRUE
 ) {
   base_url <- get_base_url(base_url)
-  manifest <- series_manifest(series, base_url)
-  dirs <- unique(dirname(x$path))
+  manifest <- read_manifest(series, base_url)
+  dirs <- unique(dirname(manifest$path))
   fs::dir_create(fs::path(dest_dir, series, dirs))
   file_paths <- manifest$path
   if (keep_manifest) file_paths <- c("manifest.csv", file_paths)
@@ -32,7 +32,7 @@ series_download <- function(
 #'
 #' @return Tibble containing the manifest data
 #' @export
-series_manifest <- function(series, base_url = NULL) {
+read_manifest <- function(series, base_url = NULL) {
   base_url <- get_base_url(base_url)
   readr::read_csv(
     paste(base_url, series, "manifest.csv", sep = "/"),
