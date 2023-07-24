@@ -8,6 +8,9 @@ PKGVERS = `sed -n "s/Version: *\([^ ]*\)/\1/p" DESCRIPTION`
 
 all: check
 
+document:
+	Rscript -e 'roxygen2::roxygenise()'
+
 build: install_deps
 	R CMD build .
 
