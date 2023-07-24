@@ -7,16 +7,16 @@
 \alias{repo_local_path}
 \title{Paths to object buckets and repositories}
 \usage{
-bucket_remote_path(path = NULL)
+bucket_remote_path(...)
 
-bucket_local_path(path = NULL)
+bucket_local_path(...)
 
-repo_remote_path(path = NULL)
+repo_remote_path(...)
 
-repo_local_path(path = NULL)
+repo_local_path(...)
 }
 \arguments{
-\item{path}{Name of the series or a path to a subfolder within it}
+\item{...}{Names of subfolders}
 }
 \value{
 Fully qualified path or url

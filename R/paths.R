@@ -1,39 +1,35 @@
 
 #' Paths to object buckets and repositories
 #'
-#' @param path Name of the series or a path to a subfolder within it
+#' @param ... Names of subfolders
 #'
 #' @return Fully qualified path or url
 #' @rdname paths
 #' @export
-bucket_remote_path <- function(path = NULL) {
+bucket_remote_path <- function(...) {
   base <- getOption("arttools.bucket.remote")
-  if (!is.null(path)) base <- paste(base, path, sep = "/")
-  base
+  paste(base, ..., sep = "/")
 }
 
 #' @rdname paths
 #' @export
-bucket_local_path <- function(path = NULL) {
+bucket_local_path <- function(...) {
   base <- getOption("arttools.bucket.local")
-  if (!is.null(path)) base <- fs::path(base, path)
-  fs::path_expand(base)
+  fs::path_expand(fs::path(base, ...))
 }
 
 #' @rdname paths
 #' @export
-repo_remote_path <- function(path = NULL) {
+repo_remote_path <- function(...) {
   base <- getOption("arttools.repos.remote")
-  if (!is.null(path)) base <- paste(base, path, sep = "/")
-  base
+  paste(base, ..., sep = "/")
 }
 
 #' @rdname paths
 #' @export
-repo_local_path <- function(path = NULL) {
+repo_local_path <- function(...) {
   base <- getOption("arttools.repos.local")
-  if (!is.null(path)) base <- fs::path(base, path)
-  fs::path_expand(base)
+  fs::path_expand(fs::path(base, ...))
 }
 
 is_url <- function(path) {
