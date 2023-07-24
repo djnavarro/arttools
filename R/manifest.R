@@ -31,10 +31,10 @@ manifest_write <- function(series,
                            file = "manifest.csv") {
 
   if (is_url(origin)) {
-    abort("cannot construct manifest from remotes")
+    rlang::abort("cannot construct manifest from remotes")
   }
   if (is_url(destination)) {
-    abort("cannot write manifest to remotes")
+    rlang::abort("cannot write manifest to remotes")
   }
 
   series_name <- series
