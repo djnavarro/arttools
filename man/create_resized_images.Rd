@@ -13,7 +13,7 @@ create_resized_images(
 )
 }
 \arguments{
-\item{series}{Path to the series directory description}
+\item{series}{Path to the series directory}
 
 \item{input_folder}{Folder within the series containing original images}
 

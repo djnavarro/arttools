@@ -1,7 +1,7 @@
 
 #' Create resized copies of all images in a directory
 #'
-#' @param series Path to the series directory description
+#' @param series Path to the series directory
 #' @param input_folder Folder within the series containing original images
 #' @param output_folder Folder within the series to contain resized images
 #' @param pixels_wide Width of output images in pixels
