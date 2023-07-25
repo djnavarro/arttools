@@ -3,6 +3,7 @@
 \name{manifest_read}
 \alias{manifest_read}
 \alias{manifest_write}
+\alias{manifest_build}
 \title{Read and write manifest files}
 \usage{
 manifest_read(series, origin = bucket_remote_path())
@@ -13,6 +14,8 @@ manifest_write(
   origin = bucket_local_path(),
   destination = bucket_local_path()
 )
+
+manifest_build(series, date, origin = bucket_local_path())
 }
 \arguments{
 \item{series}{Name of the series (e.g., "series-rosemary")}
@@ -25,8 +28,9 @@ manifest_write(
 }
 \value{
 Tibble containing the manifest data, returned visibly to the user by
-  \code{manifest_read()} and invisibly by \code{manifest_write()}. The tibble
-  contains one row per image file in the series, and the following columns:
+  \code{manifest_read()} and \code{manifest_build()}, and invisibly by
+  \code{manifest_write()}. The tibble contains one row per image file in the
+  series, and the following columns:
 
 \itemize{
   \item \code{series_name} is a string with the series name (e.g., "series-rosemary")
@@ -43,9 +47,10 @@ Tibble containing the manifest data, returned visibly to the user by
   \item \code{manifest_version} specifies the version of the manifest format used (currently always 1)
 }
 
-  For \code{manifest_read()} returning this tibble is the only thing it does.
-  For \code{manifest_write()} the tibble is written to a csv file whose
-  location is specified using the \code{destination} argument.
+  For \code{manifest_read()} and \code{manifest_build()} returning this
+  tibble is the only thing it does. For \code{manifest_write()} the tibble is
+  written to a csv file whose location is specified using the
+  \code{destination} argument.
 }
 \description{
 The manifest for a series is a plain text file that lists the files contained
@@ -53,22 +58,26 @@ within the series.
 }
 \details{
 The manifest file is used to document the content of a published art
-series, and \code{manifest_*()} functions provide tools to work with
-manifests with a minimum of pain. The typical workflow is expected to be as
-follows. Once an art series has been finalised and all images have been
-written into the "local bucket folder", use \code{manifest_write()} to create
-a manifest file within the local series folder. Once that is done, you can
-upload the completed series to the "remote bucket folder".
+  series, and \code{manifest_*()} functions provide tools to work with
+  manifests with a minimum of pain. The typical workflow is expected to be as
+  follows. Once an art series has been finalised and all images have been
+  written into the "local bucket folder", use \code{manifest_write()} to
+  create a manifest file within the local series folder. Once that is done,
+  you can upload the completed series to the "remote bucket folder".
 
-Whenever you need to inspect the contents of the now-online series, read the
-manifest file from the remote bucket using \code{manifest_read()}. As an
-example, you can use this to programmatically construct an HTML document that
-displays all images in a series, by calling \code{manifest_read()} within a
-code chunk in a quarto or R markdown document.
+  Whenever you need to inspect the contents of the now-online series, read
+  the manifest file from the remote bucket using \code{manifest_read()}. As
+  an example, you can use this to programmatically construct an HTML document
+  that displays all images in a series, by calling \code{manifest_read()}
+  within a code chunk in a quarto or R markdown document.
 
-This workflow is one in which manifests are constructed locally, published to
-a remote, and then read from the remote location. For that reason, the
-default behaviour is that \code{manifest_read()} sets the \code{origin} to
-\code{bucket_remote_path()}, whereas \code{manifest_write()} sets the
-\code{origin} and \code{destination} to \code{bucket_local_path()}.
+  This workflow is one in which manifests are constructed locally, published
+  to a remote, and then read from the remote location. For that reason, the
+  default behaviour is that \code{manifest_read()} sets the \code{origin} to
+  \code{bucket_remote_path()}, whereas \code{manifest_write()} sets the
+  \code{origin} and \code{destination} to \code{bucket_local_path()}.
+
+  In some cases it may be convenient to construct the manifest tibble from
+  the series image files without writing it to a csv file. To that end there
+  is also a \code{manifest_build()} function that does this.
 }

@@ -10,8 +10,9 @@
 #' @param date Publication date for the series (defaults to current date)
 #'
 #' @return Tibble containing the manifest data, returned visibly to the user by
-#'   \code{manifest_read()} and invisibly by \code{manifest_write()}. The tibble
-#'   contains one row per image file in the series, and the following columns:
+#'   \code{manifest_read()} and \code{manifest_build()}, and invisibly by
+#'   \code{manifest_write()}. The tibble contains one row per image file in the
+#'   series, and the following columns:
 #'
 #' \itemize{
 #'   \item \code{series_name} is a string with the series name (e.g., "series-rosemary")
@@ -28,35 +29,54 @@
 #'   \item \code{manifest_version} specifies the version of the manifest format used (currently always 1)
 #' }
 #'
-#'   For \code{manifest_read()} returning this tibble is the only thing it does.
-#'   For \code{manifest_write()} the tibble is written to a csv file whose
-#'   location is specified using the \code{destination} argument.
+#'   For \code{manifest_read()} and \code{manifest_build()} returning this
+#'   tibble is the only thing it does. For \code{manifest_write()} the tibble is
+#'   written to a csv file whose location is specified using the
+#'   \code{destination} argument.
 #'
 #' @details The manifest file is used to document the content of a published art
-#' series, and \code{manifest_*()} functions provide tools to work with
-#' manifests with a minimum of pain. The typical workflow is expected to be as
-#' follows. Once an art series has been finalised and all images have been
-#' written into the "local bucket folder", use \code{manifest_write()} to create
-#' a manifest file within the local series folder. Once that is done, you can
-#' upload the completed series to the "remote bucket folder".
+#'   series, and \code{manifest_*()} functions provide tools to work with
+#'   manifests with a minimum of pain. The typical workflow is expected to be as
+#'   follows. Once an art series has been finalised and all images have been
+#'   written into the "local bucket folder", use \code{manifest_write()} to
+#'   create a manifest file within the local series folder. Once that is done,
+#'   you can upload the completed series to the "remote bucket folder".
 #'
-#' Whenever you need to inspect the contents of the now-online series, read the
-#' manifest file from the remote bucket using \code{manifest_read()}. As an
-#' example, you can use this to programmatically construct an HTML document that
-#' displays all images in a series, by calling \code{manifest_read()} within a
-#' code chunk in a quarto or R markdown document.
+#'   Whenever you need to inspect the contents of the now-online series, read
+#'   the manifest file from the remote bucket using \code{manifest_read()}. As
+#'   an example, you can use this to programmatically construct an HTML document
+#'   that displays all images in a series, by calling \code{manifest_read()}
+#'   within a code chunk in a quarto or R markdown document.
 #'
-#' This workflow is one in which manifests are constructed locally, published to
-#' a remote, and then read from the remote location. For that reason, the
-#' default behaviour is that \code{manifest_read()} sets the \code{origin} to
-#' \code{bucket_remote_path()}, whereas \code{manifest_write()} sets the
-#' \code{origin} and \code{destination} to \code{bucket_local_path()}.
+#'   This workflow is one in which manifests are constructed locally, published
+#'   to a remote, and then read from the remote location. For that reason, the
+#'   default behaviour is that \code{manifest_read()} sets the \code{origin} to
+#'   \code{bucket_remote_path()}, whereas \code{manifest_write()} sets the
+#'   \code{origin} and \code{destination} to \code{bucket_local_path()}.
+#'
+#'   In some cases it may be convenient to construct the manifest tibble from
+#'   the series image files without writing it to a csv file. To that end there
+#'   is also a \code{manifest_build()} function that does this.
 #'
 #' @rdname manifest
 #' @export
 manifest_read <- function(series, origin = bucket_remote_path()) {
   readr::read_csv(
     agnostic_path(origin, series, "manifest.csv"),
+    col_types = readr::cols(
+      series_name = readr::col_character(),
+      series_date = readr::col_date(),
+      path = readr::col_character(),
+      folder = readr::col_character(),
+      file_name = readr::col_character(),
+      file_format = readr::col_character(),
+      system_name = readr::col_character(),
+      system_version = readr::col_character(),
+      image_id = readr::col_character(),
+      image_short_title = readr::col_character(),
+      image_long_title = readr::col_character(),
+      manifest_version = readr::col_integer()
+    ),
     show_col_types = FALSE
   )
 }
@@ -73,8 +93,9 @@ manifest_write <- function(series,
   readr::write_csv(manifest, fs::path(destination, series, "manifest.csv"))
 }
 
-# constructs the csv for manifest_write
-manifest_build <- function(series, date, origin) {
+#' @rdname manifest
+#' @export
+manifest_build <- function(series, date, origin = bucket_local_path()) {
 
   if (is_url(origin)) rlang::abort("cannot build manifest from remotes")
   series_name <- series
@@ -87,6 +108,7 @@ manifest_build <- function(series, date, origin) {
   )
   path <- gsub(fs::path(origin, series), "", path)
   path <- gsub("^/", "", path)
+  path <- unname(unclass(path))
 
   folder = fs::path_dir(path)
   file_name = fs::path_file(path)
@@ -128,3 +150,4 @@ manifest_build <- function(series, date, origin) {
   manifest <- manifest[ord, ]
   manifest
 }
+
