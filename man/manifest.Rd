@@ -48,7 +48,7 @@ Tibble containing the manifest data, returned visibly to the user by
 
   For \code{manifest_read()} returning this tibble is the only thing it does.
   For \code{manifest_write()} the tibble is written to a csv file whose
-  location is specified using the `destination` argument.
+  location is specified using the \code{destination} argument.
 }
 \description{
 The manifest for a series is a plain text file that lists the files contained

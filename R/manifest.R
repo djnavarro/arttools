@@ -31,7 +31,7 @@
 #'
 #'   For \code{manifest_read()} returning this tibble is the only thing it does.
 #'   For \code{manifest_write()} the tibble is written to a csv file whose
-#'   location is specified using the `destination` argument.
+#'   location is specified using the \code{destination} argument.
 #'
 #' @details The manifest file is used to document the content of a published art
 #' series, and \code{manifest_*()} functions provide tools to work with
