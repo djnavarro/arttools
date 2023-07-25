@@ -70,13 +70,15 @@ manifest_write <- function(series,
                            destination = bucket_local_path(),
                            file = "manifest.csv") {
 
-  if (is_url(origin)) {
-    rlang::abort("cannot construct manifest from remotes")
-  }
-  if (is_url(destination)) {
-    rlang::abort("cannot write manifest to remotes")
-  }
+  if (is_url(destination)) rlang::abort("cannot write manifest to remotes")
+  manifest <- manifest_build(series, date, origin)
+  readr::write_csv(manifest, fs::path(destination, series, file))
+}
 
+# constructs the csv for manifest_write
+manifest_build <- function(series, date, origin) {
+
+  if (is_url(origin)) rlang::abort("cannot build manifest from remotes")
   series_name <- series
   series_date <- date
 
@@ -126,6 +128,5 @@ manifest_write <- function(series,
   )
   ord <- order(manifest$system_version, manifest$image_id)
   manifest <- manifest[ord, ]
-
-  readr::write_csv(manifest, fs::path(destination, series, file))
+  manifest
 }
