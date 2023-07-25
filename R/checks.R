@@ -1,16 +1,35 @@
 
-#' Check the structure of an art repository
+#' Check the structure of a repository or series
 #'
 #' @param series Name of the series
-#' @param origin Location in which to find the series
+#' @param origin Location in which to find the series or repository
 #'
 #' @return Invisibly returns TRUE if all checks pass, FALSE if at least one
 #' check fails
+#' @name check
+NULL
+
+#' @rdname check
+#' @export
+series_check <- function(series, origin = bucket_local_path()) {
+  if (is_url(origin)) rlang::abort("cannot check a remote series")
+  cli::cli_alert_info(paste("Checking series:", agnostic_path(origin, series)))
+  existence_ok <- series_check_exists(series, origin)
+  if (!existence_ok) return(invisible(FALSE))
+  files_extensions_ok <- series_check_file_extensions(series, origin)
+  files_names_ok <- series_check_file_names(series, origin)
+  manifest_ok <- series_check_manifest(series, origin)
+  all_ok <- existence_ok & manifest_ok & files_extensions_ok & files_names_ok
+  invisible(all_ok)
+}
+
+#' @rdname check
 #' @export
 repo_check <- function(series, origin = repo_local_path()) {
   if (is_url(origin)) rlang::abort("cannot check a remote repository")
-  cli::cli_alert_info(paste("Checking repository:", agnostic_path(origin, series)))
-
+  cli::cli_alert_info(
+    paste("Checking repository:", agnostic_path(origin, series))
+  )
   existence_ok <- repo_check_exists(series, origin)
   if (!existence_ok) return(invisible(FALSE))
 
@@ -24,6 +43,9 @@ repo_check <- function(series, origin = repo_local_path()) {
     folders_ok
   invisible(all_ok)
 }
+
+
+# repo checks -------------------------------------------------------------
 
 repo_check_exists <- function(series, origin) {
   existence_ok <- fs::dir_exists(agnostic_path(origin, series))
@@ -131,3 +153,75 @@ repo_check_folders <- function(series, origin) {
 }
 
 
+# series checks -----------------------------------------------------------
+
+series_check_exists <- function(series, origin) {
+  existence_ok <- fs::dir_exists(agnostic_path(origin, series))
+  if (!existence_ok) {
+    cli::cli_alert_warning("Series folder not detected")
+  } else {
+    cli::cli_alert_success("Series folder detected")
+  }
+  existence_ok
+}
+
+series_check_manifest <- function(series, origin) {
+  manifest_path <- agnostic_path(origin, series, "manifest.csv")
+  manifest_exists <- fs::file_exists(manifest_path)
+  if (!manifest_exists) {
+    cli::cli_alert_warning("Manifest file not detected")
+    return(FALSE)
+  }
+  cli::cli_alert_success("Manifest file detected")
+  manifest_from_file <- manifest_read(series, origin)
+  date <- manifest_from_file$series_date[1]
+  manifest_from_series <- manifest_build(series, date, origin)
+  comparison <- waldo::compare(manifest_from_file, manifest_from_series)
+  if (length(comparison) > 0) {
+    cli::cli_alert_warning(
+      "Manifest file does not match images in series folder"
+    )
+    return(FALSE)
+  }
+  cli::cli_alert_success("Manifest file matches images in series folder")
+  TRUE
+}
+
+list_images <- function(series, origin) {
+  files <- fs::dir_ls(
+    path = agnostic_path(origin, series),
+    recurse = TRUE,
+    type = "file"
+  )
+  files <- grep(
+    pattern = "manifest.csv",
+    x = files,
+    fixed = TRUE,
+    value = TRUE,
+    invert = TRUE
+  )
+  files
+}
+
+series_check_file_extensions <- function(series, origin) {
+  files <- list_images(series, origin)
+  files_ok <- all(is_image(files))
+  if (!files_ok) {
+    cli::cli_alert_warning("Series folder may contain non-image files")
+  } else {
+    cli::cli_alert_success("Series folder contains only image files")
+  }
+  files_ok
+}
+
+series_check_file_names <- function(series, origin) {
+  files <- list_images(series, origin)
+  name_parts <- strsplit(gsub("\\.[^.]*$", "", files), "_")
+  num_name_parts <- vapply(name_parts, length, 1L)
+  if (any(num_name_parts < 3L | num_name_parts > 4L)) {
+    cli::cli_alert_warning("Image file names may have incorrect number of parts")
+    return(FALSE)
+  }
+  cli::cli_alert_success("Image file names have correct number of parts")
+  return(TRUE)
+}
