@@ -12,6 +12,7 @@ LazyData: true
 URL: https://github.com/djnavarro/arttools, http://djnavarro.net/arttools/
 BugReports: https://github.com/djnavarro/arttools/issues
 Imports: 
+    brio,
     cli,
     curl,
     fs,
