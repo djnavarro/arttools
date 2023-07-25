@@ -31,7 +31,7 @@ series_download <- function(
 #' @export
 series_check <- function(series, origin = bucket_local_path()) {
   if (is_url(origin)) rlang::abort("cannot check a remote series")
-  cli::cli_alert_info(paste("Checking", agnostic_path(origin, series)))
+  cli::cli_alert_info(paste("Checking series:", agnostic_path(origin, series)))
   existence_ok <- series_check_exists(series, origin)
   if (!existence_ok) return(invisible(FALSE))
   files_extensions_ok <- series_check_file_extensions(series, origin)
