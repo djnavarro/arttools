@@ -20,3 +20,4 @@ Imports:
     rlang,
     tibble
 RoxygenNote: 7.2.3
+Config/Needs/website: rmarkdown
