@@ -31,12 +31,3 @@ repo_local_path <- function(...) {
   base <- getOption("arttools.repos.local")
   fs::path_expand(fs::path(base, ...))
 }
-
-is_url <- function(path) {
-  grepl("^http", path)
-}
-
-agnostic_path <- function(...) {
-  if (is_url(..1)) return(paste(..., sep = "/"))
-  fs::path(...)
-}
