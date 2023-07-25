@@ -22,6 +22,9 @@
     <loc>https://arttools.djnavarro.net/index.html</loc>
   </url>
   <url>
+    <loc>https://arttools.djnavarro.net/reference/check.html</loc>
+  </url>
+  <url>
     <loc>https://arttools.djnavarro.net/reference/create_resized_images.html</loc>
   </url>
   <url>
@@ -32,12 +35,6 @@
   </url>
   <url>
     <loc>https://arttools.djnavarro.net/reference/paths.html</loc>
-  </url>
-  <url>
-    <loc>https://arttools.djnavarro.net/reference/repo_check.html</loc>
-  </url>
-  <url>
-    <loc>https://arttools.djnavarro.net/reference/series_check.html</loc>
   </url>
   <url>
     <loc>https://arttools.djnavarro.net/reference/series_download.html</loc>
