@@ -44,7 +44,7 @@ series_check <- function(series, origin = bucket_local_path()) {
 series_check_exists <- function(series, origin) {
   existence_ok <- fs::dir_exists(agnostic_path(origin, series))
   if (!existence_ok) {
-    cli::cli_alert_warning("No series folder detected")
+    cli::cli_alert_warning("Series folder not detected")
   } else {
     cli::cli_alert_success("Series folder detected")
   }
@@ -55,7 +55,7 @@ series_check_manifest <- function(series, origin) {
   manifest_path <- agnostic_path(origin, series, "manifest.csv")
   manifest_exists <- fs::file_exists(manifest_path)
   if (!manifest_exists) {
-    cli::cli_alert_warning("No manifest file detected")
+    cli::cli_alert_warning("Manifest file not detected")
     return(FALSE)
   }
   cli::cli_alert_success("Manifest file detected")
@@ -105,7 +105,7 @@ series_check_file_names <- function(series, origin) {
   name_parts <- strsplit(gsub("\\.[^.]*$", "", files), "_")
   num_name_parts <- vapply(name_parts, length, 1L)
   if (any(num_name_parts < 3L | num_name_parts > 4L)) {
-    cli::cli_alert_warning("Some image file names have incorrect number of parts")
+    cli::cli_alert_warning("Image file names may have incorrect number of parts")
     return(FALSE)
   }
   cli::cli_alert_success("Image file names have correct number of parts")
