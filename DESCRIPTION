@@ -9,7 +9,7 @@ Description: A personal-use package for managing generative art workflows.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-URL: https://github.com/djnavarro/arttools
+URL: https://github.com/djnavarro/arttools, http://djnavarro.net/arttools/
 BugReports: https://github.com/djnavarro/arttools/issues
 Imports: 
     cli,
