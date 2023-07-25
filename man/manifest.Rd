@@ -5,22 +5,19 @@
 \alias{manifest_write}
 \title{Read and write manifest files}
 \usage{
-manifest_read(series, origin = bucket_remote_path(), file = "manifest.csv")
+manifest_read(series, origin = bucket_remote_path())
 
 manifest_write(
   series,
   date = Sys.Date(),
   origin = bucket_local_path(),
-  destination = bucket_local_path(),
-  file = "manifest.csv"
+  destination = bucket_local_path()
 )
 }
 \arguments{
 \item{series}{Name of the series (e.g., "series-rosemary")}
 
 \item{origin}{Location in which to find the series}
-
-\item{file}{File name for the manifest (default is "manifest.csv")}
 
 \item{date}{Publication date for the series (defaults to current date)}
 

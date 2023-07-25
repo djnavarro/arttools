@@ -7,7 +7,6 @@
 #' @param series Name of the series (e.g., "series-rosemary")
 #' @param origin Location in which to find the series
 #' @param destination Location into which a manifest is written
-#' @param file File name for the manifest (default is "manifest.csv")
 #' @param date Publication date for the series (defaults to current date)
 #'
 #' @return Tibble containing the manifest data, returned visibly to the user by
@@ -55,11 +54,11 @@
 #'
 #' @rdname manifest
 #' @export
-manifest_read <- function(series,
-                          origin = bucket_remote_path(),
-                          file = "manifest.csv") {
-  path <- agnostic_path(origin, series, file)
-  readr::read_csv(path, show_col_types = FALSE)
+manifest_read <- function(series, origin = bucket_remote_path()) {
+  readr::read_csv(
+    agnostic_path(origin, series, "manifest.csv"),
+    show_col_types = FALSE
+  )
 }
 
 #' @rdname manifest
@@ -67,12 +66,11 @@ manifest_read <- function(series,
 manifest_write <- function(series,
                            date = Sys.Date(),
                            origin = bucket_local_path(),
-                           destination = bucket_local_path(),
-                           file = "manifest.csv") {
+                           destination = bucket_local_path()) {
 
   if (is_url(destination)) rlang::abort("cannot write manifest to remotes")
   manifest <- manifest_build(series, date, origin)
-  readr::write_csv(manifest, fs::path(destination, series, file))
+  readr::write_csv(manifest, fs::path(destination, series, "manifest.csv"))
 }
 
 # constructs the csv for manifest_write
