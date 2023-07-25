@@ -18,6 +18,7 @@ Imports:
     magick,
     readr,
     rlang,
-    tibble
+    tibble,
+    waldo
 RoxygenNote: 7.2.3
 Config/Needs/website: rmarkdown
