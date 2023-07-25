@@ -2,7 +2,7 @@
 PKGNAME = arttools
 PKGVERS = 0.0.0.9000
 
-all: document build check install clean
+all: document build check install site clean
 
 document:
 	Rscript -e 'roxygen2::roxygenise()'
@@ -20,6 +20,9 @@ install_deps:
 
 install: build
 	R CMD INSTALL $(PKGNAME)_$(PKGVERS).tar.gz
+
+site:
+	Rscript -e 'pkgdown::build_site()'
 
 clean:
 	@rm -rf $(PKGNAME)_$(PKGVERS).tar.gz $(PKGNAME).Rcheck
