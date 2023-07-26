@@ -154,12 +154,14 @@ In practice I find that I don't always need the `input` and `build` folders and 
 Finally, notice that within the source folder there are three other files:
 
 - `source/common.R`
-- `source/my-art-system_001.R`
-- `source/my-art-system_002.R`
+- `source/art-system_01.R`
+- `source/art-system_02.R`
 
 These files define a simple generative art system that I'll use to discuss other aspects of generative art workflow.
 
 ### Creating the art system
+
+BLAH BLAH NOTHING IS ACCURATE FROM HERE ON BLAH
 
 - From the beginning, assume that you'll iteratively modify the system. So, in addition to having a "system identifier" that provides a name for the system, there should be a "system version" string `sys_ver`. Use left-padded zeros, and number sequentially: `"001"`, `"002"`, etc. (I use three-digit strings here: I've never gone above 80 versions of a single system, so a three-digit code should be safe)
 - Keep separate source files for each new version of the system, incrementing the version number every time you experiment with something new:

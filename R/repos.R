@@ -68,7 +68,7 @@ repo_create <- function(series,
   }
 
   # example files
-  example_files <- c("common.R", "my-art-system_001.R", "my-art-system_002.R")
+  example_files <- c("common.R", "art-system_01.R", "art-system_02.R")
   for (example in example_files) {
     fs::file_copy(
       path = fs::path_package("arttools", "templates", example),

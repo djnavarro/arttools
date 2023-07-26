@@ -1,10 +1,15 @@
 
-name <- "my-art-system" # only change this for an entirely new system
-version <- "001"        # change to "002" for "my-art-system_002.R", etc
-format <- "png"         # png is usually a good choice!
+name <- "art-system" # only change this for an entirely new system
+version <- 1         # increment to 2 for "my-art-system_02.R", etc
+format <- "png"      # png is usually a good choice!
 
 # define common helper functions
 source(here::here("source", "common.R"), echo = FALSE)
+
+# make sure I didn't forget to keep the file name and the version
+# number consistent with each other, and with other versions of
+# the generative art system!
+check_versions(name)
 
 # define a generative art system using base R only
 art_generator <- function(seed) {
@@ -42,6 +47,6 @@ art_generator <- function(seed) {
   par(op)
 }
 
-# uncomment this line to run the system five times
-# for(seed in 101:105) art_generator(seed)
+# uncomment to run the generative art system for five different RNG seeds
+# for(seed in 1:5) art_generator(seed)
 

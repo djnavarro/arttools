@@ -1,7 +1,7 @@
 
-name <- "my-art-system" # only change this for an entirely new system
-version <- "002"        # change to "003" for "my-art-system_003.R", etc
-format <- "png"         # png is usually a good choice!
+name <- "art-system" # only change this for an entirely new system
+version <- 2         # increment to 3 for "my-art-system_03.R", etc
+format <- "png"      # png is usually a good choice!
 
 # define common helper functions
 source(here::here("source", "common.R"), echo = FALSE)
