@@ -88,24 +88,63 @@ bucket_remote_path("series-boxes")
 ```
 
 
-
 ### Repository name
 
-- Every system should have a "system id" string `sys_id` 
-- The repository name should always be `series-[system identifier]`
-- Example, if the system name is "subdivision" then the repo is:
+One of the first choices you have to make when setting up a new system is to choose a name for the repository. The arttools package doesn't enforce any naming system, but from my personal experience I've learned that it's useful to adopt a consistent `[prefix]-[system name]` format. All my art repositories use "series" as a prefix, which makes it a lot easier for me to find them on GitHub later! For example, if my generative art system is called "cards", the repository name would be "series-cards". Any time a function in the arttools package takes a `series` argument, I'd write `series = "series-cards"` or something along those lines.
 
-  ```
-  series-subdivision
-  ```
+There's nothing special about using "series" as the prefix though. I chose that solely because of how I think about generative art systems: to me they're tools for creating an "art series", so that seems to make sense to me.
 
-### Folder structure
+### Repository folder structure
 
-- Source code belongs to the `source` folder
-- Output files belong to the `output` folder
-- The `output` folder should have one sub-folder per system version 
-- Build files belong to the `build` folder
-- There should be a `LICENSE` file (probably CC-BY-4.0)
+You can use `repo_create()` to create the skeleton for a local series repository. If my generative art system is called "fake", my series name will be `"series-fake"`. I might use a command like this to create a skeleton:
+
+```{r}
+repo_create(
+  series = "series-fake",
+  license = "ccby",
+  destination = tempdir()
+)
+```
+
+Note that the `destination = tempdir()` part is purely for the sake of this article. By default, the `repo_create()` function assumes you want to create the skeleton in the same local folder that you have all your other art repositories, and as such the default value of `destination = repo_local_path()` is probably what you actually want. This is the file tree it creates:
+
+```{r}
+#| echo: false
+series_path <- fs::path(tempdir(), "series-fake")
+fs::dir_tree(
+  series_path, 
+  all = TRUE, 
+  recurse = TRUE
+)
+```
+
+```{r}
+#| echo: false
+#| results: hide
+fs::dir_delete(series_path)
+```
+
+Note that although it does write a `.gitignore` file, it doesn't initialise the git repository, either locally or on github. For that, you can call `usethis::use_git()` and `usethis::use_github()`.
+
+The structure of this skeleton is as follows (and documented in the `README.md`) file. There are three folders that will be tracked by git:
+
+- `source` should contain source code for the generative art system
+- `input` should contain other input files used by the system (optional)
+- `build` should contain ancillary scripts that are not part of the art system (optional)
+
+In practice I find that I don't always need the `input` and `build` folders and often delete them. The other two folders are used to store image files. These are:
+
+- `output` is intended for raw output files generated directly by the system
+- `series-fake` id intended for the manually curated versions of the output files, and is the folder that you'd later move into cloud storage once you're done with the system 
+
+Both of these are listed in the `.gitignore` file to prevent you from accidentally placing image files under version control. 
+
+The top-level files are:
+
+- `.gitignore` is always created
+- `README.md` is always created
+- `LICENSE.md` is created only if the `license` argument is specified
+
 
 ### Source versioning 
 
