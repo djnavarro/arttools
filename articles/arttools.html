@@ -180,29 +180,101 @@ helper functions to manage paths:</p>
 <div class="section level3">
 <h3 id="repository-name">Repository name<a class="anchor" aria-label="anchor" href="#repository-name"></a>
 </h3>
-<ul>
-<li><p>Every system should have a “system id” string
-<code>sys_id</code></p></li>
-<li><p>The repository name should always be
-<code>series-[system identifier]</code></p></li>
-<li>
-<p>Example, if the system name is “subdivision” then the repo
-is:</p>
-<pre><code><span><span class="va">series</span><span class="op">-</span><span class="va">subdivision</span></span></code></pre>
-</li>
-</ul>
+<p>One of the first choices you have to make when setting up a new
+system is to choose a name for the repository. The arttools package
+doesn’t enforce any naming system, but from my personal experience I’ve
+learned that it’s useful to adopt a consistent
+<code>[prefix]-[system name]</code> format. All my art repositories use
+“series” as a prefix, which makes it a lot easier for me to find them on
+GitHub later! For example, if my generative art system is called
+“cards”, the repository name would be “series-cards”. Any time a
+function in the arttools package takes a <code>series</code> argument,
+I’d write <code>series = "series-cards"</code> or something along those
+lines.</p>
+<p>There’s nothing special about using “series” as the prefix though. I
+chose that solely because of how I think about generative art systems:
+to me they’re tools for creating an “art series”, so that seems to make
+sense to me.</p>
 </div>
 <div class="section level3">
-<h3 id="folder-structure">Folder structure<a class="anchor" aria-label="anchor" href="#folder-structure"></a>
+<h3 id="repository-folder-structure">Repository folder structure<a class="anchor" aria-label="anchor" href="#repository-folder-structure"></a>
 </h3>
+<p>You can use <code><a href="../reference/repo_create.html">repo_create()</a></code> to create the skeleton for a
+local series repository. If my generative art system is called “fake”,
+my series name will be <code>"series-fake"</code>. I might use a command
+like this to create a skeleton:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/repo_create.html">repo_create</a></span><span class="op">(</span></span>
+<span>  series <span class="op">=</span> <span class="st">"series-fake"</span>,</span>
+<span>  license <span class="op">=</span> <span class="st">"ccby"</span>,</span>
+<span>  destination <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> repository folder created at /tmp/RtmpFrwcVf/series-fake</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> writing README.md</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> writing LICENSE.md</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> writing .gitignore</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> creating empty folder 'source'</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> creating empty folder 'input'</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> creating empty folder 'output'</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> creating empty folder 'build'</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> creating empty folder 'series-fake'</span></span></code></pre></div>
+<p>Note that the <code>destination = tempdir()</code> part is purely for
+the sake of this article. By default, the <code><a href="../reference/repo_create.html">repo_create()</a></code>
+function assumes you want to create the skeleton in the same local
+folder that you have all your other art repositories, and as such the
+default value of <code>destination = repo_local_path()</code> is
+probably what you actually want. This is the file tree it creates:</p>
+<pre><code><span><span class="co">#&gt; <span style="color: #0000BB; font-weight: bold;">/tmp/RtmpFrwcVf/series-fake</span></span></span>
+<span><span class="co">#&gt; ├── .gitignore</span></span>
+<span><span class="co">#&gt; ├── LICENSE.md</span></span>
+<span><span class="co">#&gt; ├── README.md</span></span>
+<span><span class="co">#&gt; ├── <span style="color: #0000BB; font-weight: bold;">build</span></span></span>
+<span><span class="co">#&gt; ├── <span style="color: #0000BB; font-weight: bold;">input</span></span></span>
+<span><span class="co">#&gt; ├── <span style="color: #0000BB; font-weight: bold;">output</span></span></span>
+<span><span class="co">#&gt; ├── <span style="color: #0000BB; font-weight: bold;">series-fake</span></span></span>
+<span><span class="co">#&gt; └── <span style="color: #0000BB; font-weight: bold;">source</span></span></span></code></pre>
+<p>Note that although it does write a <code>.gitignore</code> file, it
+doesn’t initialise the git repository, either locally or on github. For
+that, you can call <code>usethis::use_git()</code> and
+<code>usethis::use_github()</code>.</p>
+<p>The structure of this skeleton is as follows (and documented in the
+<code>README.md</code>) file. There are three folders that will be
+tracked by git:</p>
 <ul>
-<li>Source code belongs to the <code>source</code> folder</li>
-<li>Output files belong to the <code>output</code> folder</li>
-<li>The <code>output</code> folder should have one sub-folder per system
-version</li>
-<li>Build files belong to the <code>build</code> folder</li>
-<li>There should be a <code>LICENSE</code> file (probably
-CC-BY-4.0)</li>
+<li>
+<code>source</code> should contain source code for the generative
+art system</li>
+<li>
+<code>input</code> should contain other input files used by the
+system (optional)</li>
+<li>
+<code>build</code> should contain ancillary scripts that are not
+part of the art system (optional)</li>
+</ul>
+<p>In practice I find that I don’t always need the <code>input</code>
+and <code>build</code> folders and often delete them. The other two
+folders are used to store image files. These are:</p>
+<ul>
+<li>
+<code>output</code> is intended for raw output files generated
+directly by the system</li>
+<li>
+<code>series-fake</code> id intended for the manually curated
+versions of the output files, and is the folder that you’d later move
+into cloud storage once you’re done with the system</li>
+</ul>
+<p>Both of these are listed in the <code>.gitignore</code> file to
+prevent you from accidentally placing image files under version
+control.</p>
+<p>The top-level files are:</p>
+<ul>
+<li>
+<code>.gitignore</code> is always created</li>
+<li>
+<code>README.md</code> is always created</li>
+<li>
+<code>LICENSE.md</code> is created only if the <code>license</code>
+argument is specified</li>
 </ul>
 </div>
 <div class="section level3">
