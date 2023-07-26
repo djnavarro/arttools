@@ -6,19 +6,19 @@
 \usage{
 repo_create(
   series,
+  license = NULL,
   destination = repo_local_path(),
-  remote = repo_remote_path(),
-  license = NULL
+  remote = repo_remote_path()
 )
 }
 \arguments{
 \item{series}{Name of the series (e.g., "series-rosemary")}
 
+\item{license}{License type for the series ("ccby", "cc0", or "mit")}
+
 \item{destination}{Location in which the repository folder is created}
 
 \item{remote}{Location to check for a pre-existing remote repository}
-
-\item{license}{License type for the series ("ccby", "cc0", or "mit")}
 }
 \value{
 Invisibly returns TRUE on success, FALSE on failure (this may change)

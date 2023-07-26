@@ -2,16 +2,16 @@
 #' Create new art repository
 #'
 #' @param series Name of the series (e.g., "series-rosemary")
+#' @param license License type for the series ("ccby", "cc0", or "mit")
 #' @param destination Location in which the repository folder is created
 #' @param remote Location to check for a pre-existing remote repository
-#' @param license License type for the series ("ccby", "cc0", or "mit")
 #'
 #' @return Invisibly returns TRUE on success, FALSE on failure (this may change)
 #' @export
 repo_create <- function(series,
+                        license = NULL,
                         destination = repo_local_path(),
-                        remote = repo_remote_path(),
-                        license = NULL) {
+                        remote = repo_remote_path()) {
 
   series_path <- agnostic_path(destination, series)
 
@@ -60,7 +60,7 @@ repo_create <- function(series,
   series_dirs <- c("source", "input", "output", "build", series)
   for (dir in series_dirs) {
     fs::dir_create(fs::path(series_path, dir))
-    cli::cli_alert_success(paste("creating empty folder", dir))
+    cli::cli_alert_success(paste0("creating empty folder '", dir, "'"))
   }
 
   invisible(TRUE)
