@@ -16,16 +16,15 @@ art_generator <- function(seed) {
   message("generating art at ", output)
 
   # generate high-level parameters for this piece
-  n <- sample(50:150, size = 1)
+  n <- sample(50:100, size = 1)
   palette <- sample(colours(distinct = TRUE), 10)
-  background <- sample(colours(), 1)
 
   # generate low-level details for this piece
   x_coord <- sample(1:10, size = n, replace = TRUE)
   y_coord <- sample(1:10, size = n, replace = TRUE)
   size <- sample(2 * (1:5), size = n, replace = TRUE)
   color <- sample(palette, size = n, replace = TRUE)
-  thickness <- sample(1:3, size = n, replace = TRUE, prob = c(.8, .1, .1))
+  thickness <- sample(2 * (3:6), size = n, replace = TRUE)
 
   # write the image
   op <- par(mar = c(0, 0, 0, 0))
@@ -33,7 +32,8 @@ art_generator <- function(seed) {
     filename = output,
     width = 1000,
     height = 1000,
-    units = "px"
+    units = "px",
+    bg = "black"
   )
   plot.new()
   plot.window(xlim = c(0, 11), ylim = c(0, 11))
