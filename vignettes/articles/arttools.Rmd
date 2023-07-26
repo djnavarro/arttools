@@ -124,7 +124,16 @@ fs::dir_tree(
 fs::dir_delete(series_path)
 ```
 
-Note that although it does write a `.gitignore` file, it doesn't initialise the git repository, either locally or on github. For that, you can call `usethis::use_git()` and `usethis::use_github()`.
+Note that:
+
+- It writes a `.gitignore` file to ensure git won't commit output files
+- It writes a `.here` file to ensure `here::here()` will always work
+
+But also note that:
+
+- It doesn't create an RStudio project: use `usethis::create_project()` for that
+- It doesn't initialise a git repository: use `usethis::use_git()` for that
+- It doesn't create a remote on GitHub: use `usethis::use_github()` for that
 
 The structure of this skeleton is as follows (and documented in the `README.md`) file. There are three folders that will be tracked by git:
 
@@ -142,9 +151,17 @@ Both of these are listed in the `.gitignore` file to prevent you from accidental
 The top-level files are:
 
 - `.gitignore` is always created
+- `.here` is always created
 - `README.md` is always created
 - `LICENSE.md` is created only if the `license` argument is specified
 
+Finally, notice that within the source folder there are three other files:
+
+- `source/common.R`
+- `source/my-art-system_001.R`
+- `source/my-art-system_002.R`
+
+These files define a simple generative art system that I'll use to discuss other aspects of generative art workflow.
 
 ### Source versioning 
 

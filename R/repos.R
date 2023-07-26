@@ -56,11 +56,27 @@ repo_create <- function(series,
   brio::write_lines(gitignore, fs::path(series_path, ".gitignore"))
   cli::cli_alert_success("writing .gitignore")
 
+  # sentinel file
+  brio::write_file("", fs::path(series_path, ".here"))
+  cli::cli_alert_success("writing .here")
+
   # empty folders
   series_dirs <- c("source", "input", "output", "build", series)
   for (dir in series_dirs) {
     fs::dir_create(fs::path(series_path, dir))
     cli::cli_alert_success(paste0("creating empty folder '", dir, "'"))
+  }
+
+  # example files
+  example_files <- c("common.R", "my-art-system_001.R", "my-art-system_002.R")
+  for (example in example_files) {
+    fs::file_copy(
+      path = fs::path_package("arttools", "templates", example),
+      new_path = fs::path(series_path, "source", example)
+    )
+    cli::cli_alert_success(
+      paste0("writing example file '", fs::path("source", example), "'")
+    )
   }
 
   invisible(TRUE)
