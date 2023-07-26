@@ -209,7 +209,7 @@ like this to create a skeleton:</p>
 <span>  license <span class="op">=</span> <span class="st">"ccby"</span>,</span>
 <span>  destination <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> repository folder created at /tmp/RtmpQ3gdCs/series-fake</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> repository folder created at /tmp/Rtmpjv2LHI/series-fake</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> writing README.md</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> writing LICENSE.md</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> writing .gitignore</span></span>
@@ -220,15 +220,15 @@ like this to create a skeleton:</p>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> creating empty folder 'build'</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> creating empty folder 'series-fake'</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> writing example file 'source/common.R'</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> writing example file 'source/my-art-system_001.R'</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> writing example file 'source/my-art-system_002.R'</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> writing example file 'source/art-system_01.R'</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> writing example file 'source/art-system_02.R'</span></span></code></pre></div>
 <p>Note that the <code>destination = tempdir()</code> part is purely for
 the sake of this article. By default, the <code><a href="../reference/repo_create.html">repo_create()</a></code>
 function assumes you want to create the skeleton in the same local
 folder that you have all your other art repositories, and as such the
 default value of <code>destination = repo_local_path()</code> is
 probably what you actually want. This is the file tree it creates:</p>
-<pre><code><span><span class="co">#&gt; <span style="color: #0000BB; font-weight: bold;">/tmp/RtmpQ3gdCs/series-fake</span></span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #0000BB; font-weight: bold;">/tmp/Rtmpjv2LHI/series-fake</span></span></span>
 <span><span class="co">#&gt; ├── .gitignore</span></span>
 <span><span class="co">#&gt; ├── .here</span></span>
 <span><span class="co">#&gt; ├── LICENSE.md</span></span>
@@ -238,9 +238,9 @@ probably what you actually want. This is the file tree it creates:</p>
 <span><span class="co">#&gt; ├── <span style="color: #0000BB; font-weight: bold;">output</span></span></span>
 <span><span class="co">#&gt; ├── <span style="color: #0000BB; font-weight: bold;">series-fake</span></span></span>
 <span><span class="co">#&gt; └── <span style="color: #0000BB; font-weight: bold;">source</span></span></span>
-<span><span class="co">#&gt;     ├── <span style="color: #00BB00;">common.R</span></span></span>
-<span><span class="co">#&gt;     ├── <span style="color: #00BB00;">my-art-system_001.R</span></span></span>
-<span><span class="co">#&gt;     └── <span style="color: #00BB00;">my-art-system_002.R</span></span></span></code></pre>
+<span><span class="co">#&gt;     ├── <span style="color: #00BB00;">art-system_01.R</span></span></span>
+<span><span class="co">#&gt;     ├── <span style="color: #00BB00;">art-system_02.R</span></span></span>
+<span><span class="co">#&gt;     └── <span style="color: #00BB00;">common.R</span></span></span></code></pre>
 <p>Note that:</p>
 <ul>
 <li>It writes a <code>.gitignore</code> file to ensure git won’t commit
@@ -293,8 +293,8 @@ once you’re done with the system</li>
 files:</p>
 <ul>
 <li><code>source/common.R</code></li>
-<li><code>source/my-art-system_001.R</code></li>
-<li><code>source/my-art-system_002.R</code></li>
+<li><code>source/art-system_01.R</code></li>
+<li><code>source/art-system_02.R</code></li>
 </ul>
 <p>These files define a simple generative art system that I’ll use to
 discuss other aspects of generative art workflow.</p>
@@ -302,6 +302,7 @@ discuss other aspects of generative art workflow.</p>
 <div class="section level3">
 <h3 id="creating-the-art-system">Creating the art system<a class="anchor" aria-label="anchor" href="#creating-the-art-system"></a>
 </h3>
+<p>BLAH BLAH NOTHING IS ACCURATE FROM HERE ON BLAH</p>
 <ul>
 <li><p>From the beginning, assume that you’ll iteratively modify the
 system. So, in addition to having a “system identifier” that provides a
