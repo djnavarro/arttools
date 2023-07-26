@@ -209,7 +209,7 @@ like this to create a skeleton:</p>
 <span>  license <span class="op">=</span> <span class="st">"ccby"</span>,</span>
 <span>  destination <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> repository folder created at /tmp/RtmpOGpJcU/series-fake</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> repository folder created at /tmp/RtmpQ3gdCs/series-fake</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> writing README.md</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> writing LICENSE.md</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> writing .gitignore</span></span>
@@ -228,7 +228,7 @@ function assumes you want to create the skeleton in the same local
 folder that you have all your other art repositories, and as such the
 default value of <code>destination = repo_local_path()</code> is
 probably what you actually want. This is the file tree it creates:</p>
-<pre><code><span><span class="co">#&gt; <span style="color: #0000BB; font-weight: bold;">/tmp/RtmpOGpJcU/series-fake</span></span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #0000BB; font-weight: bold;">/tmp/RtmpQ3gdCs/series-fake</span></span></span>
 <span><span class="co">#&gt; ├── .gitignore</span></span>
 <span><span class="co">#&gt; ├── .here</span></span>
 <span><span class="co">#&gt; ├── LICENSE.md</span></span>
@@ -257,9 +257,15 @@ output files</li>
 <li>It doesn’t create a remote on GitHub: use
 <code>usethis::use_github()</code> for that</li>
 </ul>
-<p>The structure of this skeleton is as follows (and documented in the
-<code>README.md</code>) file. There are three folders that will be
-tracked by git:</p>
+<p>The other two top-level files it writes are:</p>
+<ul>
+<li>
+<code>README.md</code> is always created</li>
+<li>
+<code>LICENSE.md</code> is created only if <code>license</code> is
+specified</li>
+</ul>
+<p>There are three folders that will be tracked by git:</p>
 <ul>
 <li>
 <code>source</code> should contain source code for the generative
@@ -276,27 +282,12 @@ and <code>build</code> folders and often delete them. The other two
 folders are used to store image files. These are:</p>
 <ul>
 <li>
-<code>output</code> is intended for raw output files generated
-directly by the system</li>
+<code>output</code> is for raw output files generated directly by
+the system</li>
 <li>
-<code>series-fake</code> id intended for the manually curated
-versions of the output files, and is the folder that you’d later move
-into cloud storage once you’re done with the system</li>
-</ul>
-<p>Both of these are listed in the <code>.gitignore</code> file to
-prevent you from accidentally placing image files under version
-control.</p>
-<p>The top-level files are:</p>
-<ul>
-<li>
-<code>.gitignore</code> is always created</li>
-<li>
-<code>.here</code> is always created</li>
-<li>
-<code>README.md</code> is always created</li>
-<li>
-<code>LICENSE.md</code> is created only if the <code>license</code>
-argument is specified</li>
+<code>series-fake</code> is for the manually curated versions of the
+output files, and is the folder that you’d later move into cloud storage
+once you’re done with the system</li>
 </ul>
 <p>Finally, notice that within the source folder there are three other
 files:</p>
@@ -309,7 +300,7 @@ files:</p>
 discuss other aspects of generative art workflow.</p>
 </div>
 <div class="section level3">
-<h3 id="source-versioning">Source versioning<a class="anchor" aria-label="anchor" href="#source-versioning"></a>
+<h3 id="creating-the-art-system">Creating the art system<a class="anchor" aria-label="anchor" href="#creating-the-art-system"></a>
 </h3>
 <ul>
 <li><p>From the beginning, assume that you’ll iteratively modify the
@@ -328,21 +319,12 @@ new:</p>
 <span><span class="va">subdivision_003.R</span></span>
 <span><span class="va">etc.</span></span></code></pre>
 </li>
+<li><p>Use five-digit numbers for the seeds. That should ensure that
+even in the most extravagant situation where we generate large numbers
+of output files, we can ensure that output files always sort in
+numerical seed order and have the same length.</p></li>
 </ul>
-</div>
-<div class="section level3">
-<h3 id="seed-choice">Seed choice<a class="anchor" aria-label="anchor" href="#seed-choice"></a>
-</h3>
-<ul>
-<li>Use five-digit numbers for the seeds. That should ensure that even
-in the most extravagant situation where we generate large numbers of
-output files, we can ensure that output files always sort in numerical
-seed order and have the same length.</li>
-</ul>
-</div>
-<div class="section level3">
-<h3 id="output-file-names">Output file names<a class="anchor" aria-label="anchor" href="#output-file-names"></a>
-</h3>
+<p>When writing output files:</p>
 <ul>
 <li><p>Source files should write image files to the <code>output</code>
 directory</p></li>
@@ -350,80 +332,20 @@ directory</p></li>
 produce it</p></li>
 <li>
 <p>Output files should follow this naming convention:</p>
-<pre><code>[system]_[version]_[seed].[file extension]</code></pre>
+<pre><code>[name]_[version]_[seed].[format]</code></pre>
 <p>As an example:</p>
 <pre><code><span><span class="va">subdivision_012_22490.png</span></span></code></pre>
 </li>
 </ul>
 </div>
 <div class="section level3">
-<h3 id="ignored-files">Ignored files<a class="anchor" aria-label="anchor" href="#ignored-files"></a>
+<h3 id="creating-the-curated-version">Creating the curated version<a class="anchor" aria-label="anchor" href="#creating-the-curated-version"></a>
 </h3>
-<ul>
-<li>The <code>output</code> folder should be listed in
-<code>.gitignore</code> and not committed</li>
-<li>A separate “gallery” folder, also called
-<code>series-[system identifier]</code> should be used to prepare the
-files that should be published. This will be a manual curation process,
-copying a subset of generated images from the <code>output</code> folder
-to the gallery folder.</li>
-<li>The gallery folder should also be listed in
-<code>.gitignore</code>.</li>
-</ul>
 </div>
 <div class="section level3">
-<h3 id="build-files">Build files<a class="anchor" aria-label="anchor" href="#build-files"></a>
+<h3 id="creating-manifest-files">Creating manifest files<a class="anchor" aria-label="anchor" href="#creating-manifest-files"></a>
 </h3>
-<ul>
-<li>
-<code>build_previews.R</code>: generates smaller-resolution preview
-images</li>
-<li>
-<code>build_manifest.R</code>: writes the manifest.csv file to the
-gallery folder</li>
-</ul>
-<p>To do:</p>
-<ul>
-<li>There should be a <code>Makefile</code> that handles the build step,
-and <em>only</em> the build step. It’s there to manage the
-<code>series-subdivision</code> (or whatever) folder, <em>after</em>
-we’ve done the manual curation step and chosen which image files should
-be published</li>
-</ul>
-</div>
-<div class="section level3">
-<h3 id="the-manifest-file">The manifest file<a class="anchor" aria-label="anchor" href="#the-manifest-file"></a>
-</h3>
-<p>A csv file containing the following fields:</p>
-<ul>
-<li>
-<code>path</code>: path to the image file (e.g.,
-<code>"800/subdivision_012_22490.png"</code>)</li>
-<li>
-<code>resolution</code>: the image resolution in pixels (if not
-square, use the largest dimension)</li>
-<li>
-<code>series</code>: the system name (e.g.,
-<code>"subdivision"</code>)</li>
-<li>
-<code>sys_id</code>: the system version string (e.g,
-<code>"012"</code>)</li>
-<li>
-<code>img_id</code>: the image identifier, usually just the seed
-(e.g. <code>"22490"</code>)</li>
-<li>
-<code>format</code>: the file extension (e.g.,
-<code>"png"</code>)</li>
-<li>
-<code>date</code>: the publication date in YYYY-MM-DD format
-(e.g. <code>"2023-06-02"</code>)</li>
-</ul>
-<p>To do:</p>
-<ul>
-<li>Manifests should also have a <code>manifest_version</code> field so
-that if I later change the manifest format the reader can work out how
-to handle the manifest by inspecting that field</li>
-</ul>
+<p>A csv file listing all files in the to-be-published folder</p>
 </div>
 <div class="section level3">
 <h3 id="system-name-changes">System name changes<a class="anchor" aria-label="anchor" href="#system-name-changes"></a>
@@ -449,7 +371,7 @@ and on github. It also has the nice property of preserving redirects on
 github.</p>
 </div>
 <div class="section level3">
-<h3 id="publishing-images-to-cloud-storage">Publishing images to cloud storage<a class="anchor" aria-label="anchor" href="#publishing-images-to-cloud-storage"></a>
+<h3 id="uploading-curated-images">Uploading curated images<a class="anchor" aria-label="anchor" href="#uploading-curated-images"></a>
 </h3>
 <ul>
 <li><p>Optional, but desirable: move (or copy) the gallery folder to the
@@ -458,19 +380,10 @@ belong to the object store rather than the git repo, so we might as well
 have that reflected locally!</p></li>
 <li>
 <p>To publish a gallery folder, copy it to the
-<code>djnavarro-art</code> bucket on google cloud storage using the
-<code>series-upload.sh</code> script. For instance:</p>
-<pre><code>./series-upload.sh series-subdivision</code></pre>
-<p>The actual script:</p>
-<pre><code>#! /bin/bash
-FOLDER=$1;
-gcloud storage cp $FOLDER gs://djnavarro-art --recursive --project generative-art-389407</code></pre>
+<code>djnavarro-art</code> bucket</p>
+<pre><code>gcloud storage cp series-fake gs://djnavarro-art --recursive --project generative-art-389407</code></pre>
 </li>
 </ul>
-</div>
-<div class="section level3">
-<h3 id="updating-the-website">Updating the website<a class="anchor" aria-label="anchor" href="#updating-the-website"></a>
-</h3>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
