@@ -4,7 +4,7 @@
 #' @param series Name of the series (e.g., "series-rosemary")
 #' @param destination Location in which the repository folder is created
 #' @param remote Location to check for a pre-existing remote repository
-#' @param license License type for the series (e.g. "ccby", "cc0")
+#' @param license License type for the series ("ccby", "cc0", or "mit")
 #'
 #' @return Invisibly returns TRUE on success, FALSE on failure (this may change)
 #' @export
