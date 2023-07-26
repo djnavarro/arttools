@@ -135,7 +135,12 @@ But also note that:
 - It doesn't initialise a git repository: use `usethis::use_git()` for that
 - It doesn't create a remote on GitHub: use `usethis::use_github()` for that
 
-The structure of this skeleton is as follows (and documented in the `README.md`) file. There are three folders that will be tracked by git:
+The other two top-level files it writes are:
+
+- `README.md` is always created
+- `LICENSE.md` is created only if `license` is specified
+
+There are three folders that will be tracked by git:
 
 - `source` should contain source code for the generative art system
 - `input` should contain other input files used by the system (optional)
@@ -143,17 +148,8 @@ The structure of this skeleton is as follows (and documented in the `README.md`)
 
 In practice I find that I don't always need the `input` and `build` folders and often delete them. The other two folders are used to store image files. These are:
 
-- `output` is intended for raw output files generated directly by the system
-- `series-fake` id intended for the manually curated versions of the output files, and is the folder that you'd later move into cloud storage once you're done with the system 
-
-Both of these are listed in the `.gitignore` file to prevent you from accidentally placing image files under version control. 
-
-The top-level files are:
-
-- `.gitignore` is always created
-- `.here` is always created
-- `README.md` is always created
-- `LICENSE.md` is created only if the `license` argument is specified
+- `output` is for raw output files generated directly by the system
+- `series-fake` is for the manually curated versions of the output files, and is the folder that you'd later move into cloud storage once you're done with the system
 
 Finally, notice that within the source folder there are three other files:
 
@@ -163,7 +159,7 @@ Finally, notice that within the source folder there are three other files:
 
 These files define a simple generative art system that I'll use to discuss other aspects of generative art workflow.
 
-### Source versioning 
+### Creating the art system
 
 - From the beginning, assume that you'll iteratively modify the system. So, in addition to having a "system identifier" that provides a name for the system, there should be a "system version" string `sys_ver`. Use left-padded zeros, and number sequentially: `"001"`, `"002"`, etc. (I use three-digit strings here: I've never gone above 80 versions of a single system, so a three-digit code should be safe)
 - Keep separate source files for each new version of the system, incrementing the version number every time you experiment with something new:
@@ -174,19 +170,17 @@ These files define a simple generative art system that I'll use to discuss other
   subdivision_003.R
   etc.
   ```
-
-### Seed choice
-
+  
 - Use five-digit numbers for the seeds. That should ensure that even in the most extravagant situation where we generate large numbers of output files, we can ensure that output files always sort in numerical seed order and have the same length. 
 
-### Output file names
+When writing output files:
 
 - Source files should write image files to the `output` directory
 - Every output file should record the RNG `seed` used to produce it
 - Output files should follow this naming convention:
 
   ```
-  [system]_[version]_[seed].[file extension]
+  [name]_[version]_[seed].[format]
   ```
 
   As an example:
@@ -194,37 +188,12 @@ These files define a simple generative art system that I'll use to discuss other
   ```
   subdivision_012_22490.png
   ```
+
+### Creating the curated version  
   
-### Ignored files
+### Creating manifest files
 
-- The `output` folder should be listed in `.gitignore` and not committed
-- A separate "gallery" folder, also called `series-[system identifier]` should be used to prepare the files that should be published. This will be a manual curation process, copying a subset of generated images from the `output` folder to the gallery folder. 
-- The gallery folder should also be listed in `.gitignore`.
-
-### Build files
-
-- `build_previews.R`: generates smaller-resolution preview images
-- `build_manifest.R`: writes the manifest.csv file to the gallery folder
-
-To do:
- 
-- There should be a `Makefile` that handles the build step, and *only* the build step. It's there to manage the `series-subdivision` (or whatever) folder, *after* we've done the manual curation step and chosen which image files should be published
-
-### The manifest file
-
-A csv file containing the following fields:
-
-- `path`: path to the image file (e.g., `"800/subdivision_012_22490.png"`)
-- `resolution`: the image resolution in pixels (if not square, use the largest dimension)
-- `series`: the system name (e.g., `"subdivision"`)
-- `sys_id`: the system version string (e.g, `"012"`)
-- `img_id`: the image identifier, usually just the seed (e.g. `"22490"`)
-- `format`: the file extension (e.g., `"png"`)
-- `date`: the publication date in YYYY-MM-DD format (e.g. `"2023-06-02"`)
-
-To do:
-
-- Manifests should also have a `manifest_version` field so that if I later change the manifest format the reader can work out how to handle the manifest by inspecting that field
+A csv file listing all files in the to-be-published folder
 
 ### System name changes
 
@@ -242,24 +211,13 @@ But we:
 
 It's not ideal, but it minimises mess, and ultimately ensures that the thing that gets published uses the correct name on the art website and on github. It also has the nice property of preserving redirects on github.
 
-### Publishing images to cloud storage
+### Uploading curated images
 
 - Optional, but desirable: move (or copy) the gallery folder to the `~/Bucket/djnavarro-art` folder. Gallery folders properly belong to the object store rather than the git repo, so we might as well have that reflected locally!
-- To publish a gallery folder, copy it to the `djnavarro-art` bucket on google cloud storage using the `series-upload.sh` script. For instance:
+- To publish a gallery folder, copy it to the `djnavarro-art` bucket
 
   ```
-  ./series-upload.sh series-subdivision
+  gcloud storage cp series-fake gs://djnavarro-art --recursive --project generative-art-389407
   ```
   
-  The actual script:
-
-  ```
-  #! /bin/bash
-  FOLDER=$1;
-  gcloud storage cp $FOLDER gs://djnavarro-art --recursive --project generative-art-389407
-  ```
-
-### Updating the website
-
-
 
