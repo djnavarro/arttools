@@ -18,7 +18,7 @@ repo_create(
 
 \item{remote}{Location to check for a pre-existing remote repository}
 
-\item{license}{License type for the series (e.g. "ccby", "cc0")}
+\item{license}{License type for the series ("ccby", "cc0", or "mit")}
 }
 \value{
 Invisibly returns TRUE on success, FALSE on failure (this may change)
