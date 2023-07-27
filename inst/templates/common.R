@@ -101,9 +101,48 @@ output_path <- function(name, version, id, format) {
 # source folder looking for all files that start with a particular system name,
 # compares the version string within the file to the one implicit in the file
 # name to ensure consistency
-check_versions <- function(name) {
+system_versions <- function(name) {
   source_files <- list.files(here::here("source"), pattern = name)
-  #implicit_version
-  #explicit_version
+  source_files
+  filename_version <- vapply(
+    strsplit(source_files, "[_.]"),
+    function(x) gsub("^0+", "", as.character(x[2])),
+    character(1)
+  )
+  source_version <- vapply(
+    source_files,
+    function(x) {
+      src <- readLines(here::here("source", x))
+      ver <- grep("^version", src, value = TRUE)[1]
+      ver <- parse(text = ver) # returns expression object
+      ver <- ver[[1]][[3]] # extract RHS from expression
+      gsub("^0+", "", as.character(ver))
+    },
+    character(1)
+  )
+
+  # note that the versions returned are always character type
+  data.frame(
+    file = source_files,
+    filename_version = filename_version,
+    source_version = source_version,
+    row.names = NULL
+  )
 }
 
+assert_version_consistency <- function(name) {
+  versions <- system_versions(name)
+  if (
+    anyDuplicated(versions$filename_version) ||
+    anyDuplicated(versions$source_version) ||
+    any(versions$filename_version != versions$source_version)
+  ) {
+    msg <- paste0(
+      "versions are inconsistent, call 'system_versions(\"",
+      name,
+      "\")' for details"
+    )
+    stop(msg, call. = FALSE)
+  }
+  invisible(versions)
+}

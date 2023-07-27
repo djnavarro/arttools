@@ -6,6 +6,11 @@ format <- "png"      # png is usually a good choice!
 # define common helper functions
 source(here::here("source", "common.R"), echo = FALSE)
 
+# make sure I didn't forget to keep the file name and the version
+# number consistent with each other, and with other versions of
+# the generative art system! (this only works for R files)
+assert_version_consistency(name)
+
 # define a generative art system using base R only
 art_generator <- function(seed) {
 
@@ -49,6 +54,6 @@ art_generator <- function(seed) {
   par(op)
 }
 
-# uncomment this line to run the system five times
-# for(seed in 201:205) art_generator(seed)
+# run the generative art system for five different RNG seeds
+for(seed in 1:5) art_generator(seed)
 
