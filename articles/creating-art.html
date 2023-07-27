@@ -86,47 +86,334 @@
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/djnavarro/arttools" class="external-link">arttools</a></span><span class="op">)</span></span></code></pre></div>
+<p>When you initialise a new art repository using
+<code><a href="../reference/repo_create.html">repo_create()</a></code>, it builds a skeleton that you can work from
+when you want to get to work on the fun artistic parts. In this article
+I’ll walk you through the process of what that entails in practice. I’ll
+start by creating a “fake” art repository:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/repo_create.html">repo_create</a></span><span class="op">(</span></span>
+<span>  series <span class="op">=</span> <span class="st">"series-fake"</span>,</span>
+<span>  license <span class="op">=</span> <span class="st">"ccby"</span>,</span>
+<span>  destination <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> repository folder created at /tmp/RtmpwJhoiI/series-fake</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> writing README.md</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> writing LICENSE.md</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> writing .gitignore</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> writing .here</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> creating empty folder 'source'</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> creating empty folder 'input'</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> creating empty folder 'output'</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> creating empty folder 'build'</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> creating empty folder 'series-fake'</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> writing example file 'source/common.R'</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> writing example file 'source/art-system_01.R'</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> writing example file 'source/art-system_02.R'</span></span></code></pre></div>
+<p>Normally you wouldn’t need to specify the <code>destination</code>
+argument at all, because the default
+<code>destination = repo_local_path()</code> is usually what you want.
+I’m creating it within the <code><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir()</a></code> folder here purely for
+the purposes of this article.</p>
+<p>When you create the repository, these are the files and folders that
+you start off with:</p>
+<pre><code><span><span class="co">#&gt; <span style="color: #0000BB; font-weight: bold;">/tmp/RtmpwJhoiI/series-fake</span></span></span>
+<span><span class="co">#&gt; ├── .gitignore</span></span>
+<span><span class="co">#&gt; ├── .here</span></span>
+<span><span class="co">#&gt; ├── LICENSE.md</span></span>
+<span><span class="co">#&gt; ├── README.md</span></span>
+<span><span class="co">#&gt; ├── <span style="color: #0000BB; font-weight: bold;">build</span></span></span>
+<span><span class="co">#&gt; ├── <span style="color: #0000BB; font-weight: bold;">input</span></span></span>
+<span><span class="co">#&gt; ├── <span style="color: #0000BB; font-weight: bold;">output</span></span></span>
+<span><span class="co">#&gt; ├── <span style="color: #0000BB; font-weight: bold;">series-fake</span></span></span>
+<span><span class="co">#&gt; └── <span style="color: #0000BB; font-weight: bold;">source</span></span></span>
+<span><span class="co">#&gt;     ├── <span style="color: #00BB00;">art-system_01.R</span></span></span>
+<span><span class="co">#&gt;     ├── <span style="color: #00BB00;">art-system_02.R</span></span></span>
+<span><span class="co">#&gt;     └── <span style="color: #00BB00;">common.R</span></span></span></code></pre>
+<p>Notice that there are three files that are automatically added to the
+<code>source</code> folder. I’ve added them primarily for illustrative
+purposes, and you can delete them if you like, but they’re written
+specifically to highlight key aspects to the generative art workflow,
+and it’s worth taking a look at what each of them does.</p>
 <div class="section level3">
-<h3 id="creating-the-art-system">Creating the art system<a class="anchor" aria-label="anchor" href="#creating-the-art-system"></a>
+<h3 id="assumptions-about-art-workflow">Assumptions about art workflow<a class="anchor" aria-label="anchor" href="#assumptions-about-art-workflow"></a>
 </h3>
-<p>BLAH BLAH NOTHING IS ACCURATE FROM HERE ON BLAH</p>
-<ul>
-<li><p>From the beginning, assume that you’ll iteratively modify the
-system. So, in addition to having a “system identifier” that provides a
-name for the system, there should be a “system version” string
-<code>sys_ver</code>. Use left-padded zeros, and number sequentially:
-<code>"001"</code>, <code>"002"</code>, etc. (I use three-digit strings
-here: I’ve never gone above 80 versions of a single system, so a
-three-digit code should be safe)</p></li>
-<li>
-<p>Keep separate source files for each new version of the system,
-incrementing the version number every time you experiment with something
-new:</p>
-<pre><code><span><span class="va">subdivision_001.R</span></span>
-<span><span class="va">subdivision_002.R</span></span>
-<span><span class="va">subdivision_003.R</span></span>
-<span><span class="va">etc.</span></span></code></pre>
-</li>
-<li><p>Use five-digit numbers for the seeds. That should ensure that
-even in the most extravagant situation where we generate large numbers
-of output files, we can ensure that output files always sort in
-numerical seed order and have the same length.</p></li>
-</ul>
-<p>When writing output files:</p>
-<ul>
-<li><p>Source files should write image files to the <code>output</code>
-directory</p></li>
-<li><p>Every output file should record the RNG <code>seed</code> used to
-produce it</p></li>
-<li>
-<p>Output files should follow this naming convention:</p>
-<pre><code>[name]_[version]_[seed].[format]</code></pre>
-<p>As an example:</p>
-<pre><code><span><span class="va">subdivision_012_22490.png</span></span></code></pre>
-</li>
-</ul>
+<p>One thing I’ve learned from years of creating generative art systems
+is that my “artistic workflow” is subtly different from the “analytic
+workflow” I adopt when analysing a data set, and it’s different from the
+“developer workflow” I adopt when writing packages and other
+software.</p>
+<p>To understand why, it’s helpful to understand the ways in which art,
+analysis, and packages differ in their goals.</p>
+<p>When writing a package, you’re aiming to create <em>one</em> piece of
+software. There will be different versions of the software, of course,
+as you add features, fix bugs, etc, but you don’t expect multiple
+versions of the same package to coexist within the repository at once!
+The history of the development process is only relevant to the extent
+that folks may be working from older versions of the package, or might
+need to install an older version for one reason or another.</p>
+<p>Data analysis is similar to package development, but not quite the
+same. As with package development, you’re still aiming to create
+<em>one</em> analysis (or, very often, a collection of analyses). The
+history is a little more important in this case because you often want
+to trace your path through the so-called “garden of forking paths” to
+make sure you’re not deluding yourself about the validity of your
+analysis. Because of this you might want to keep copies of the interim
+analyses that you conducted – especially when you’re doing exploratory
+analysis – but ultimately the hope is that you’ll end up with a single
+authoritative version of the data analysis.</p>
+<p>Art is… not like that at all. It’s a little bit like exploratory data
+analysis in that it’s an iterative process, but – at least in my own
+experience – your goal is almost never to create one “authoritative”
+version of the art system. It’s often true that later versions of the
+system are the ones that you like best, and the art you want to publish
+at the end are usually outputs from the later versions of the system,
+but the artistic process is pure exploration all the way. You don’t want
+to lose old versions of the system: you might want to use them
+later!</p>
+<p>Because this workflow is grossly typical when creating art, it’s
+actually a <em>good</em> thing to end up with files in your
+<code>source</code> folder that have names like this:</p>
+<pre><code><span><span class="va">art</span><span class="op">-</span><span class="va">system_01.R</span></span>
+<span><span class="va">art</span><span class="op">-</span><span class="va">system_02.R</span></span>
+<span><span class="va">art</span><span class="op">-</span><span class="va">system_03.R</span></span>
+<span><span class="va">etc</span></span></code></pre>
+<p>Each of these defines a subtly different variant of the art system,
+and I’ve found that in practice you want them all to live together
+side-by-side in the <code>source</code> folder.</p>
+<p>The trick, when iteratively creating many versions of the system side
+by side, is to have a few helper functions that will help you maintain
+discipline and ensure that the different versions don’t interfere with
+each other and you can always figure out which version of the system
+generated any specific image!</p>
+<p>That’s where the <code>common.R</code> file comes in handy: the
+purpose of having a <code>common.R</code> file in the
+<code>source</code> folder is make it easy to maintain discipline
+without interrupting you in the middle of the fun artistic parts.</p>
 </div>
-  </main>
+<div class="section level3">
+<h3 id="the-common-functions">The common functions<a class="anchor" aria-label="anchor" href="#the-common-functions"></a>
+</h3>
+<p>There are six functions defined in the <code>common.R</code> file.
+Two of them are used to make sure that different versions of the art
+system don’t introduce inconsistencies:</p>
+<ul>
+<li>
+<code>assert_version_consistency()</code> is a function designed to
+help you avoid mistakes when creating a new version of the art
+system</li>
+<li>
+<code>system_versions()</code> is a function you can call if you
+<em>do</em> make a mistake when creating a new version and need to
+figure out where the version inconsistency happened</li>
+</ul>
+<p>There are also two functions that are helpful to make sure images are
+written to the correct location, and with the correct file name:</p>
+<ul>
+<li>
+<code>output_file()</code> constructs the file name</li>
+<li>
+<code>output_path()</code> constructs the file path</li>
+</ul>
+<p>Finally there are two functions – <code>tidy_int_string()</code> and
+<code>tidy_name_string()</code> – that you don’t actually need to call
+within your art code, but are used internally by other
+<code>common.R</code> functions. To get a sense of how I use the
+<code>common.R</code> functions within a system it’s helpful to walk
+through the code of the example system.</p>
+</div>
+<div class="section level3">
+<h3 id="versioning-an-art-system">Versioning an art system<a class="anchor" aria-label="anchor" href="#versioning-an-art-system"></a>
+</h3>
+<p>The structure of almost every art system I’ve written – at least when
+I’ve done it in a sensible way – is pretty much the same every time:</p>
+<ol style="list-style-type: decimal">
+<li>At the top of the file there’s a few lines of code that take care of
+“administrative” tasks.</li>
+<li>The bulk of the file is devoted to the fun stuff: writing functions
+that create generative art when called.</li>
+<li>(Optionally) At the bottom of the file there’s some code that
+actually calls the generative art functions and creates the art.</li>
+</ol>
+<p>Let’s have a look at the code that forms the “administrative” section
+of the <code>art-system_01.R</code> script. It begins with these three
+lines:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">name</span> <span class="op">&lt;-</span> <span class="st">"art-system"</span></span>
+<span><span class="va">version</span> <span class="op">&lt;-</span> <span class="fl">1</span></span>
+<span><span class="va">format</span> <span class="op">&lt;-</span> <span class="st">"png"</span></span></code></pre></div>
+<p>Here I’ve defined the <code>name</code> of the generative art system,
+the <code>version</code> of the system, and the image
+<code>format</code> used when writing image files. Notice that the
+<code>name</code> and <code>version</code> defined in the code are both
+consistent with the filename of the script: it’s called
+<code>art-system_01.R</code>, and indeed the <code>name</code> of the
+system is defined to be <code>"art-system"</code> and the
+<code>version</code> number is set to 1.</p>
+<p>Whenever I want to create a new version of the system, I copy
+<code>art-system_01.R</code> to <code>art-system_02.R</code> – almost
+always by using the “save as” menu option in RStudio or whatever IDE I’m
+using, because this is not the kind of thing worth doing at the terminal
+– and then update the <code>version</code> number within the code. As a
+consequence, the first three lines in <code>art-system_02.R</code> are
+as follows:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">name</span> <span class="op">&lt;-</span> <span class="st">"art-system"</span></span>
+<span><span class="va">version</span> <span class="op">&lt;-</span> <span class="fl">2</span></span>
+<span><span class="va">format</span> <span class="op">&lt;-</span> <span class="st">"png"</span></span></code></pre></div>
+<p>The <code>name</code> and <code>format</code> don’t change, but I’ve
+incremented the <code>version</code> number appropriately.</p>
+<p>Now that I’ve got a new version of the system, I can get to the fun
+part and start tinkering with the generative art code!</p>
+<p>Unfortunately, there’s a trap here. When I’m in the midst of an
+artistic process, I’m almost always thinking about the <em>art</em>, and
+it’s very easy to forget to increment the value of <code>version</code>.
+That’s a problem because (as we’ll see later), the <code>version</code>
+number is important. It is used to make sure that outputs from different
+versions of the same system are given the correct file names. Chaos can
+ensue if the <code>version</code> number is wrong.</p>
+<p>This is where the <code>common.R</code> script comes in handy,
+because it has helper functions that are designed to catch this mistake.
+So the fourth line in every art script imports the functions from
+<code>common.R</code>:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/source.html" class="external-link">source</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu">here</span><span class="op">(</span><span class="st">"source"</span>, <span class="st">"common.R"</span><span class="op">)</span>, echo <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<p>To avoid introducing unwanted dependencies, the functions in
+<code>common.R</code> have been written using base R, almost
+exclusively. It’s completely independent of “arttools”, and the
+<em>only</em> package that is required for the <code>common.R</code>
+functions to work is the “here” package.</p>
+<p>One of the functions supplied by <code>common.R</code> is
+<code>assert_version_consistency()</code>, and what it does is scan the
+file names and source code to make sure that all the version numbers are
+consistent. To put it crudely, this function exists because I
+<em>know</em> that I’m likely to forget to update the
+<code>version</code> number, and it’s really helpful if the art script
+throws an error if I make that mistake. Because of this, the final line
+in the “administrative” section of the code looks like this:</p>
+<pre><code><span><span class="fu">assert_version_consistency</span><span class="op">(</span><span class="va">name</span><span class="op">)</span></span></code></pre>
+<p>If all the version numbers are fine, nothing happens. But if there’s
+a problem, it throws an error.</p>
+<p>To understand what this is doing, you can call the
+<code>system_versions()</code> function – also supplied by
+<code>common.R</code> – to work out what is going on:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">system_versions</span><span class="op">(</span><span class="st">"art-system"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">#&gt;              file filename_version source_version</span></span>
+<span><span class="co">#&gt; 1 art-system_01.R                1              1</span></span>
+<span><span class="co">#&gt; 2 art-system_02.R                2              2</span></span></code></pre>
+<p>The output here is a data frame with three columns. The
+<code>file</code> column specifies the name of the source file, the
+<code>filename_version</code> column contains the version number
+extracted by inspecting the file name, and the
+<code>source_version</code> column contains the version number extracted
+by inspecting the source code. In this case there are no
+inconsistencies, which is why <code>assert_version_consistency()</code>
+doesn’t throw an error. If, on the other hand, the source and file name
+versions don’t match, or if there are duplicate entries, it will
+error.</p>
+<p>It’s a boring thing to do, but in practice I find that it’s extremely
+useful to call <code>assert_version_consistency()</code> at the start of
+every art script, because otherwise I <em>will</em> eventually mess
+something up.</p>
+</div>
+<div class="section level3">
+<h3 id="naming-output-files">Naming output files<a class="anchor" aria-label="anchor" href="#naming-output-files"></a>
+</h3>
+<p>When writing generative art code, most of your time is spent on the
+artistic side. However, at some point in the process the code has to
+write an image file, and – speaking from experience – it’s easy to get
+lazy at this point. Image files with names <code>"image1.png"</code>,
+<code>"image2.png"</code> aren’t very informative, and if you return to
+the system later on you won’t know how to recreate those images. What
+you really want is a consistent system for naming image files in a way
+that allows you to look at the file name and immediately know:</p>
+<ol style="list-style-type: decimal">
+<li>What art system created the image?</li>
+<li>What version of the art system created it?</li>
+<li>What unique information (e.g. RNG seed) was used to create it?</li>
+</ol>
+<p>If that’s the goal, you want to name your files in a way that follows
+a consistent scheme that supplies this information. Here’s the naming
+convention I use:</p>
+<pre><code>[name]_[version]_[id].[format]</code></pre>
+<p>Notice that three of these four parts are already supplied in the
+“administrative header” of our art script: <code>name</code>,
+<code>version</code>, and <code>format</code> are variables that are
+defined at the very beginning of the <code>art-system_01.R</code> and
+<code>art-system_02.R</code> scripts, so when the time comes to create a
+file name for any specific output from the generative art system those
+variables are already available to us!</p>
+<p>What about the <code>id</code> variable? This part is intentionally a
+little vague, because it might very well be different for every system,
+but the intention here is that it should be a unique identifier string
+that tells you what parameters were used to create the image. In most
+generative art systems I create, there’s only one input parameter,
+namely the RNG seed, so the <code>id</code> part of the filename is
+simply an integer value specifying the RNG seed.</p>
+<p>To make life easier, the <code>common.R</code> file supplies the
+<code>output_file()</code> function that you can call within your
+generative art script and create a file name that adheres to these
+rules. Here’s an example:</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">output_file</span><span class="op">(</span></span>
+<span>  name <span class="op">=</span> <span class="st">"art-system"</span>,</span>
+<span>  version <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  id <span class="op">=</span> <span class="fl">109</span>,</span>
+<span>  format <span class="op">=</span> <span class="st">"png"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "art-system_01_0109.png"</span></span></code></pre></div>
+<p>Notice that the numeric parts of the name are all left-padded with
+zeros. By default <code>output_file()</code> will create a two-digit
+version number, on the assumption that you very likely might make more
+than 10 versions of a specific system but aren’t likely to make more
+than 100 versions. Similarly, if the <code>id</code> input is a single
+number (presumably the RNG seed), it’s padded with zeros so that it is
+always a four digit number on the assumption that you’re probably not
+going to create more than 10000 outputs. It’s a little bit of syntactic
+sugar designed to ensure that the file names sort into the correct
+order, which is often helpful later on if you want to create a website
+showcasing your work.</p>
+<p>Along the same lines, it’s worth noting that there are some
+constraints on file names that <code>output_file()</code> attempts to
+enforce:</p>
+<ul>
+<li>It uses <code>_</code> as the separator between the different parts
+of the name</li>
+<li>It uses <code>-</code> as the separator between “words” within any
+specific part</li>
+<li>It allows <code>.</code> to appear only as the separator between the
+file name and the file extension</li>
+<li>It replaces white space with <code>-</code>
+</li>
+</ul>
+<p>In principle this shouldn’t be necessary because “of course” you’re
+going to try to choose names wisely, but in practice I’ve messed this up
+so many times that I’ve found it valuable to write
+<code>output_file()</code> in a way that tries to enforce good names. To
+give a sense of this, here’s what happens if we pass some very bad
+names:</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">output_file</span><span class="op">(</span></span>
+<span>  name <span class="op">=</span> <span class="st">"this... is a _very_ bad name"</span>,</span>
+<span>  version <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  id <span class="op">=</span> <span class="fl">109</span>,</span>
+<span>  format <span class="op">=</span> <span class="st">".png"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "this-is-a-very-bad-name_01_0109.png"</span></span></code></pre></div>
+<p>Obviously, we don’t really want to be providing input like this, but…
+look, this is art. The artistic process almost always involves
+<strong><em>fucking around and finding out</em></strong>, so it’s
+valuable to have something in place to protect us against the worst of
+our own excesses, yes?</p>
+</div>
+<div class="section level3">
+<h3 id="writing-output-files">Writing output files<a class="anchor" aria-label="anchor" href="#writing-output-files"></a>
+</h3>
+<p>blah</p>
+</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
