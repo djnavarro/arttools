@@ -68,7 +68,7 @@ source_modified("art-system_01.R")
 source_modified("art-system_02.R")
 ```
 
-So now we are at the point we've finished making art and we want to wrap it all up, create a nice "curated" version of the output, and prepare it for publication. At this point we might have something that looks like this:
+So now we are at the point where we've finished making art and we want to wrap it all up, create a nice "curated" version of the output, and prepare it for publication. At this point we might have something that looks like this:
 
 ```{r}
 #| echo: false
@@ -79,10 +79,50 @@ fs::dir_tree(
 )
 ```
 
+Obviously, in real life you probably have more versions of the system and more outputs from each system, but this will suffice to illustrate how the process works.
+
+### Regarding curation
+
+Curation is mostly a manual process, and for good reason. Generative art systems don't always create images that I find pleasing, and I see no reason to publish the bad ones. There's an aesthetic I want to preserve whenever I publish a generative art series, and I have no qualms at all about choosing the images that I like (and ignoring the ones I don't) when I do so. At a pretty deep level, I'm not interested in "long form" generative art, where the artist publishes the system and doesn't curate the output. Art is a human process, even generative art, and -- in my opinion -- it becomes very boring when you remove the curatorial aspect. Every time I've tried to design a "long form" system, I've found myself creating boring art. 
+
+I'm going to expand on that point a little, because I suspect it's non-obvious. Long form generative art has a tendency to become boring because it changes your incentive as an artist. When you create a "long form" system, you end up trying to ensure that *every output is pleasing*. A long form system that produces magnificent art 5% of the time but horrible art 95% of the time is unworkable. As a consequence, the long form generative artist is incentivised to modify the system in a way that "raises the floor". Long form generative art is fundamentally about creating systems where "the worst output is sort of pretty and doesn't suck". When you make this your goal, you get conservative. You don't want your systems to try out crazy things, because -- let's be honest -- most crazy things are batshit insane and hideous. And so, to ensure that the worse-case art isn't awful, you end up restricting your systems so that they have very little range. 
+
+The outputs become... consistently pleasant, but never ***amazing***. 
+
+That's fine if that's your thing, but I prefer to design systems that produce magnificent pieces occasionally, even if that means that the systems produce a lot of utter garbage as well.
+
+Given that ethos, arttools assumes that you're going to choose a small subset of the images in the `output` folder and move them into the `series-fake` folder (or whatever it actually is for your system). The **only** images that you will want to publish later on are the curated images in `series-fake`. 
 
 ### Creating the curated version
 
+Okay, let's set the polemics aside and assume you've made some choices about which images you want to publish. In practice, what that means is that chosen some images that you like and you've copied them to the `series-fake` folder (or whatever it happens to be called). So now you have something like this:
+
+```{r}
+#| echo: false
+target_dir <- fs::path(series_path, "series-fake", "image")
+fs::dir_create(target_dir)
+keep1 <- c("art-system_01_0002.png", "art-system_01_0003.png")
+fs::file_copy(
+  fs::path(series_path, "output", "01", keep1),
+  fs::path(series_path, "series-fake", "image", keep1)
+)
+keep1 <- c("art-system_02_0003.png", "art-system_02_0005.png")
+fs::file_copy(
+  fs::path(series_path, "output", "02", keep1),
+  fs::path(series_path, "series-fake", "image", keep1)
+)
+fs::dir_tree(
+  series_path, 
+  all = TRUE, 
+  recurse = TRUE
+)
+```
+
+Notice that the "curated" version in `series-fake` places the images in an `image` folder. The reason for that is that -- usually -- the images you create with your generative art system are high resolution, so you're going to want to have low-res versions of the same images that you can use as "thumbnail" previews on your generative art website. 
+
 ### Creating thumbnail images
+
+The arttools package supplies a convenience function to create all your thumbnails for you, boringly entitled `create_resized_images()`
 
 ### Creating manifest files
 
