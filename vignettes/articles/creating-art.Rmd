@@ -216,8 +216,21 @@ Obviously, we don't really want to be providing input like this, but... look, th
 
 ### Writing output files 
 
-blah
-  
+While the `output_file()` function is a handy thing to have available to you, in practice you're more likely to call `output_path()`, which goes a little further and creates the complete path to the output file:
+
+```{r}
+output_path("art-system", 1, 109, "png")
+```
+
+
+### Putting it together
+
+Here's the entire source code for `art-system_01.R`:
+
+```{r}
+#| file: !expr 'fs::path_package("arttools", "templates", "art-system_01.R")'
+#| eval: false
+```
   
 ```{r}
 #| echo: false
