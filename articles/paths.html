@@ -86,6 +86,28 @@
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/djnavarro/arttools" class="external-link">arttools</a></span><span class="op">)</span></span></code></pre></div>
+<p>The arttools package supplies four helper functions that are useful
+for specifying paths to the various different files you’ll need to work
+with:</p>
+<ul>
+<li>
+<code><a href="../reference/paths.html">repo_local_path()</a></code> finds files within a local copy of an
+art repository</li>
+<li>
+<code><a href="../reference/paths.html">repo_local_path()</a></code> finds files within the remote copy of
+an art repository</li>
+<li>
+<code><a href="../reference/paths.html">bucket_local_path()</a></code> finds files within a local copy of
+an art object bucket</li>
+<li>
+<code><a href="../reference/paths.html">bucket_local_path()</a></code> finds files within the remote copy
+of an art object bucket</li>
+</ul>
+<p>I’ll describe each of these in a moment, but it helps if we start by
+explaining <em>why</em> these helper functions exist.</p>
+<div class="section level3">
+<h3 id="why-have-path-helper-functions">Why have path helper functions?<a class="anchor" aria-label="anchor" href="#why-have-path-helper-functions"></a>
+</h3>
 <p>The assumption underpinning the package is that your generative art
 workflow is something along these lines. First you write some code
 defining the generative art system, and second (or more likely,
@@ -121,13 +143,20 @@ designed for my personal workflow! So where do they live?</p>
 <strong>bucket</strong>
 </li>
 </ol>
-<p>I’ll talk about the portfolio website later, but the assumption here
-is that this site exists merely to hotlink to the curated images stored
-in the bucket: it doesn’t store copies of the images itself. As such the
-expectation is that this lives whereever you would normally store a
-website. In my case, that means that the art website lives in a git
-repository and is published using GitHub Pages, Netlify, or something
-like that.</p>
+<p>I’ll talk about the portfolio website in a later article, but the
+assumption here is that this site exists merely to hotlink to the
+curated images stored in the bucket: it doesn’t store copies of the
+images itself. As such the expectation is that this lives anywhere you
+would normally store a website. In my case, that means that the art
+website lives in a git repository and is published using GitHub Pages,
+Netlify, or something like that. The key point is that the website is a
+completely separate thing from the art repositories and the storage
+bucket.</p>
+<p>In any case, the thing you want to take away from all this is that
+it’s very helpful to enforce some structure on <em>where things
+live</em>. The purpose of these helper functions is to make it easy to
+be disciplined about where you keep everything.</p>
+</div>
 <div class="section level3">
 <h3 id="repository-paths">Repository paths<a class="anchor" aria-label="anchor" href="#repository-paths"></a>
 </h3>
