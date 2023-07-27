@@ -1,0 +1,90 @@
+---
+title: "Repository and bucket paths"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(arttools)
+```
+
+
+The assumption underpinning the package is that your generative art workflow is something along these lines. First you write some code defining the generative art system, and second (or more likely, concurrently) you generate many image files using this system. Next, you want to take some subset of those images and host them online somewhere, so that you can then create an art portfolio website that displays those images. Over time, you're probably going to end up writing lots of generative art systems so you will end up needing to repeat this cycle many time.
+
+If that's the workflow you have in mind, it's helpful to see that for every generative art system you create there are four distinct "components" that come out of it:
+
+1. Source code, and other inputs that define the system
+2. Raw output images created by the system
+3. Curated images that you want to share 
+4. Webpage that displays the curated images
+
+These components can (and generally do) live in different locations, and can have both local copies and remote copies. Once you have many art systems it's really easy to end up with a mess of inconsistent decisions about where things live, which eventually makes your life harder. It helps to take a systematic approach.
+
+The arttools package is very opinionated about how components should be structured. That's not surprising -- it's opinionated because it's designed for my personal workflow! So where do they live?
+
+1. Source code and other inputs live in git **repositories**
+2. Raw output images are ephemeral: they exist only as local files
+3. Curated images that you want to keep/share live in a cloud storage **bucket**
+
+I'll talk about the portfolio website later, but the assumption here is that this site exists merely to hotlink to the curated images stored in the bucket: it doesn't store copies of the images itself. As such the expectation is that this lives whereever you would normally store a website. In my case, that means that the art website lives in a git repository and is published using GitHub Pages, Netlify, or something like that.
+
+### Repository paths
+
+The first assumption is that generative art code for a system is placed under version control, and it lives in a git repository (e.g., on GitHub). These git repositories have *remote* paths (where are they on GitHub) and *local* paths (where are they on this machine). To help manage these locations arttools has convenience functions `repo_remote_path()` and `repo_local_path()`. To use these, we'd have something like this in the .Rprofile file:
+
+```{r}
+options(
+  arttools.repos.remote = "https://github.com/djnavarro",
+  arttools.repos.local = "/home/danielle/GitHub"
+)
+```
+
+Supposing I have generative art systems in a repositories called "series-cards" and "series-boxes", I can build paths to the local copies like this:
+
+```{r}
+#| results: hold
+repo_local_path("series-cards")
+repo_local_path("series-boxes")
+```
+
+Along the same lines, I can get their remote locations:
+
+```{r}
+#| results: hold
+repo_remote_path("series-cards")
+repo_remote_path("series-boxes")
+```
+
+### Bucket paths
+
+The second assumption is that image files created by the generative art system *don't* belong in a git repository. It's grossly typical to create an extremely large number of images and some of those image files can be rather large. Usually we try to avoid placing output files and binary files under version control! Instead we'll use a cloud storage bucket (in my case, on Google Cloud Storage), and again we have helper functions to manage paths:
+
+
+```{r}
+options(
+  arttools.bucket.remote = "https://storage.googleapis.com/djnavarro-art",
+  arttools.bucket.local = "/home/danielle/Buckets/djnavarro-art"
+)
+```
+
+Local paths look like this:
+
+```{r}
+#| results: hold
+bucket_local_path("series-cards")
+bucket_local_path("series-boxes")
+```
+
+Remote paths look like this:
+
+```{r}
+#| results: hold
+bucket_remote_path("series-cards")
+bucket_remote_path("series-boxes")
+```
+

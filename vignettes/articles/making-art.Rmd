@@ -1,0 +1,47 @@
+---
+title: "making-art"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(arttools)
+```
+
+
+### Creating the art system
+
+BLAH BLAH NOTHING IS ACCURATE FROM HERE ON BLAH
+
+- From the beginning, assume that you'll iteratively modify the system. So, in addition to having a "system identifier" that provides a name for the system, there should be a "system version" string `sys_ver`. Use left-padded zeros, and number sequentially: `"001"`, `"002"`, etc. (I use three-digit strings here: I've never gone above 80 versions of a single system, so a three-digit code should be safe)
+- Keep separate source files for each new version of the system, incrementing the version number every time you experiment with something new:
+
+  ```
+  subdivision_001.R
+  subdivision_002.R
+  subdivision_003.R
+  etc.
+  ```
+  
+- Use five-digit numbers for the seeds. That should ensure that even in the most extravagant situation where we generate large numbers of output files, we can ensure that output files always sort in numerical seed order and have the same length. 
+
+When writing output files:
+
+- Source files should write image files to the `output` directory
+- Every output file should record the RNG `seed` used to produce it
+- Output files should follow this naming convention:
+
+  ```
+  [name]_[version]_[seed].[format]
+  ```
+
+  As an example:
+  
+  ```
+  subdivision_012_22490.png
+  ```

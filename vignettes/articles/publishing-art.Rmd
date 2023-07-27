@@ -1,0 +1,26 @@
+---
+title: "publishing-art"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(arttools)
+```
+
+
+### Uploading curated images
+
+- Optional, but desirable: move (or copy) the gallery folder to the `~/Bucket/djnavarro-art` folder. Gallery folders properly belong to the object store rather than the git repo, so we might as well have that reflected locally!
+- To publish a gallery folder, copy it to the `djnavarro-art` bucket
+
+  ```
+  gcloud storage cp series-fake gs://djnavarro-art --recursive --project generative-art-389407
+  ```
+  
+### Creating a webpage

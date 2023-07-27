@@ -1,0 +1,92 @@
+---
+title: "Setting up the repository"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+options(
+  arttools.bucket.remote = "https://storage.googleapis.com/djnavarro-art",
+  arttools.bucket.local = "~/Buckets/djnavarro-art",
+  arttools.repos.remote = "https://github.com/djnavarro",
+  arttools.repos.local = "~/GitHub"
+)
+```
+
+```{r setup}
+library(arttools)
+```
+
+
+### Repository name
+
+One of the first choices you have to make when setting up a new system is to choose a name for the repository. The arttools package doesn't enforce any naming system, but from my personal experience I've learned that it's useful to adopt a consistent `[prefix]-[system name]` format. All my art repositories use "series" as a prefix, which makes it a lot easier for me to find them on GitHub later! For example, if my generative art system is called "cards", the repository name would be "series-cards". Any time a function in the arttools package takes a `series` argument, I'd write `series = "series-cards"` or something along those lines.
+
+There's nothing special about using "series" as the prefix though. I chose that solely because of how I think about generative art systems: to me they're tools for creating an "art series", so that seems to make sense to me.
+
+### Repository folder structure
+
+You can use `repo_create()` to create the skeleton for a local series repository. If my generative art system is called "fake", my series name will be `"series-fake"`. I might use a command like this to create a skeleton:
+
+```{r}
+repo_create(
+  series = "series-fake",
+  license = "ccby",
+  destination = tempdir()
+)
+```
+
+Note that the `destination = tempdir()` part is purely for the sake of this article. By default, the `repo_create()` function assumes you want to create the skeleton in the same local folder that you have all your other art repositories, and as such the default value of `destination = repo_local_path()` is probably what you actually want. This is the file tree it creates:
+
+```{r}
+#| echo: false
+series_path <- fs::path(tempdir(), "series-fake")
+fs::dir_tree(
+  series_path, 
+  all = TRUE, 
+  recurse = TRUE
+)
+```
+
+```{r}
+#| echo: false
+#| results: hide
+fs::dir_delete(series_path)
+```
+
+Note that:
+
+- It writes a `.gitignore` file to ensure git won't commit output files
+- It writes a `.here` file to ensure `here::here()` will always work
+
+But also note that:
+
+- It doesn't create an RStudio project: use `usethis::create_project()` for that
+- It doesn't initialise a git repository: use `usethis::use_git()` for that
+- It doesn't create a remote on GitHub: use `usethis::use_github()` for that
+
+The other two top-level files it writes are:
+
+- `README.md` is always created
+- `LICENSE.md` is created only if `license` is specified
+
+There are three folders that will be tracked by git:
+
+- `source` should contain source code for the generative art system
+- `input` should contain other input files used by the system (optional)
+- `build` should contain ancillary scripts that are not part of the art system (optional)
+
+In practice I find that I don't always need the `input` and `build` folders and often delete them. The other two folders are used to store image files. These are:
+
+- `output` is for raw output files generated directly by the system
+- `series-fake` is for the manually curated versions of the output files, and is the folder that you'd later move into cloud storage once you're done with the system
+
+Finally, notice that within the source folder there are three other files:
+
+- `source/common.R`
+- `source/art-system_01.R`
+- `source/art-system_02.R`
+
+These files define a simple generative art system that I'll use to discuss other aspects of generative art workflow.

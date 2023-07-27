@@ -1,0 +1,37 @@
+---
+title: "curating-art"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(arttools)
+```
+
+
+### Creating the curated version  
+  
+### Creating manifest files
+
+A csv file listing all files in the to-be-published folder
+
+### System name changes
+
+It's grossly typical that we choose a new name at the end of the process. Solution to this is to make it "superficial only". That is:
+
+- Don't rename source files
+- Don't rename the system ids etc within source files
+- Don't rename the output file
+
+But we:
+
+- Do rename the repository on github (e.g., from `series-rectangles` to `series-subdivision`)
+- Do rename the gallery folder (again, e.g., from `series-rectangles` to `series-subdivision`)
+- Use the new name in the `_gallery.csv` file
+
+It's not ideal, but it minimises mess, and ultimately ensures that the thing that gets published uses the correct name on the art website and on github. It also has the nice property of preserving redirects on github.
