@@ -86,27 +86,34 @@
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/djnavarro/arttools" class="external-link">arttools</a></span><span class="op">)</span></span></code></pre></div>
-<div class="section level3">
-<h3 id="uploading-curated-images">Uploading curated images<a class="anchor" aria-label="anchor" href="#uploading-curated-images"></a>
-</h3>
-<ul>
-<li><p>Optional, but desirable: move (or copy) the gallery folder to the
-<code>~/Bucket/djnavarro-art</code> folder. Gallery folders properly
-belong to the object store rather than the git repo, so we might as well
-have that reflected locally!</p></li>
-<li>
-<p>To publish a gallery folder, copy it to the
-<code>djnavarro-art</code> bucket</p>
-<pre><code>gcloud storage cp series-fake gs://djnavarro-art --recursive --project generative-art-389407</code></pre>
+<p>This article still needs to be written. For what it’s worth, the
+process is essentially this:</p>
+<ol style="list-style-type: decimal">
+<li>Move the to-be-published folder from <code><a href="../reference/paths.html">repo_local_path()</a></code>
+into <code><a href="../reference/paths.html">bucket_local_path()</a></code>
 </li>
-</ul>
-</div>
-<div class="section level3">
-<h3 id="creating-a-webpage">Creating a webpage<a class="anchor" aria-label="anchor" href="#creating-a-webpage"></a>
-</h3>
-</div>
-  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
-    </nav></aside>
+<li>Upload the folder from the local bucket to the remote bucket (using
+<code>gcloud</code> CLI for now, because that’s what I use)</li>
+<li>Add the relevant page to your website.</li>
+</ol>
+<p>Yes, I know. This is totally a “draw the rest of the owl” kind of
+thing. But I haven’t gotten to the point where I’ve systematised this
+part of the workflow, and so for the time being this page is basically a
+promissory note!</p>
+<!--
+### Uploading curated images
+
+- Optional, but desirable: move (or copy) the gallery folder to the `~/Bucket/djnavarro-art` folder. Gallery folders properly belong to the object store rather than the git repo, so we might as well have that reflected locally!
+- To publish a gallery folder, copy it to the `djnavarro-art` bucket
+
+  ```
+  gcloud storage cp series-fake gs://djnavarro-art --recursive --project generative-art-389407
+  ```
+  
+### Creating a webpage
+
+-->
+  </main>
 </div>
 
 

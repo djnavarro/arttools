@@ -86,37 +86,272 @@
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/djnavarro/arttools" class="external-link">arttools</a></span><span class="op">)</span></span></code></pre></div>
+<p>So now we are at the point where we’ve finished making art and we
+want to wrap it all up, create a nice “curated” version of the output,
+and prepare it for publication. At this point we might have something
+that looks like this:</p>
+<pre><code><span><span class="co">#&gt; <span style="color: #0000BB; font-weight: bold;">/tmp/Rtmp8RS5w8/series-fake</span></span></span>
+<span><span class="co">#&gt; ├── .gitignore</span></span>
+<span><span class="co">#&gt; ├── .here</span></span>
+<span><span class="co">#&gt; ├── LICENSE.md</span></span>
+<span><span class="co">#&gt; ├── README.md</span></span>
+<span><span class="co">#&gt; ├── <span style="color: #0000BB; font-weight: bold;">build</span></span></span>
+<span><span class="co">#&gt; ├── <span style="color: #0000BB; font-weight: bold;">input</span></span></span>
+<span><span class="co">#&gt; ├── <span style="color: #0000BB; font-weight: bold;">output</span></span></span>
+<span><span class="co">#&gt; │   ├── <span style="color: #0000BB; font-weight: bold;">01</span></span></span>
+<span><span class="co">#&gt; │   │   ├── <span style="color: #BB00BB; font-weight: bold;">art-system_01_0001.png</span></span></span>
+<span><span class="co">#&gt; │   │   ├── <span style="color: #BB00BB; font-weight: bold;">art-system_01_0002.png</span></span></span>
+<span><span class="co">#&gt; │   │   ├── <span style="color: #BB00BB; font-weight: bold;">art-system_01_0003.png</span></span></span>
+<span><span class="co">#&gt; │   │   ├── <span style="color: #BB00BB; font-weight: bold;">art-system_01_0004.png</span></span></span>
+<span><span class="co">#&gt; │   │   └── <span style="color: #BB00BB; font-weight: bold;">art-system_01_0005.png</span></span></span>
+<span><span class="co">#&gt; │   └── <span style="color: #0000BB; font-weight: bold;">02</span></span></span>
+<span><span class="co">#&gt; │       ├── <span style="color: #BB00BB; font-weight: bold;">art-system_02_0001.png</span></span></span>
+<span><span class="co">#&gt; │       ├── <span style="color: #BB00BB; font-weight: bold;">art-system_02_0002.png</span></span></span>
+<span><span class="co">#&gt; │       ├── <span style="color: #BB00BB; font-weight: bold;">art-system_02_0003.png</span></span></span>
+<span><span class="co">#&gt; │       ├── <span style="color: #BB00BB; font-weight: bold;">art-system_02_0004.png</span></span></span>
+<span><span class="co">#&gt; │       └── <span style="color: #BB00BB; font-weight: bold;">art-system_02_0005.png</span></span></span>
+<span><span class="co">#&gt; ├── <span style="color: #0000BB; font-weight: bold;">series-fake</span></span></span>
+<span><span class="co">#&gt; └── <span style="color: #0000BB; font-weight: bold;">source</span></span></span>
+<span><span class="co">#&gt;     ├── <span style="color: #00BB00;">art-system_01.R</span></span></span>
+<span><span class="co">#&gt;     ├── <span style="color: #00BB00;">art-system_02.R</span></span></span>
+<span><span class="co">#&gt;     └── <span style="color: #00BB00;">common.R</span></span></span></code></pre>
+<p>Obviously, in real life you probably have more versions of the system
+and more outputs from each system, but this will suffice to illustrate
+how the process works.</p>
+<div class="section level3">
+<h3 id="regarding-curation">Regarding curation<a class="anchor" aria-label="anchor" href="#regarding-curation"></a>
+</h3>
+<p>Curation is mostly a manual process, and for good reason. Generative
+art systems don’t always create images that I find pleasing, and I see
+no reason to publish the bad ones. There’s an aesthetic I want to
+preserve whenever I publish a generative art series, and I have no
+qualms at all about choosing the images that I like (and ignoring the
+ones I don’t) when I do so. At a pretty deep level, I’m not interested
+in “long form” generative art, where the artist publishes the system and
+doesn’t curate the output. Art is a human process, even generative art,
+and – in my opinion – it becomes very boring when you remove the
+curatorial aspect. Every time I’ve tried to design a “long form” system,
+I’ve found myself creating boring art.</p>
+<p>I’m going to expand on that point a little, because I suspect it’s
+non-obvious. Long form generative art has a tendency to become boring
+because it changes your incentive as an artist. When you create a “long
+form” system, you end up trying to ensure that <em>every output is
+pleasing</em>. A long form system that produces magnificent art 5% of
+the time but horrible art 95% of the time is unworkable. As a
+consequence, the long form generative artist is incentivised to modify
+the system in a way that “raises the floor”. Long form generative art is
+fundamentally about creating systems where “the worst output is sort of
+pretty and doesn’t suck”. When you make this your goal, you get
+conservative. You don’t want your systems to try out crazy things,
+because – let’s be honest – most crazy things are batshit insane and
+hideous. And so, to ensure that the worse-case art isn’t awful, you end
+up restricting your systems so that they have very little range.</p>
+<p>The outputs become… consistently pleasant, but never
+<strong><em>amazing</em></strong>.</p>
+<p>That’s fine if that’s your thing, but I prefer to design systems that
+produce magnificent pieces occasionally, even if that means that the
+systems produce a lot of utter garbage as well.</p>
+<p>Given that ethos, arttools assumes that you’re going to choose a
+small subset of the images in the <code>output</code> folder and move
+them into the <code>series-fake</code> folder (or whatever it actually
+is for your system). The <strong>only</strong> images that you will want
+to publish later on are the curated images in
+<code>series-fake</code>.</p>
+</div>
 <div class="section level3">
 <h3 id="creating-the-curated-version">Creating the curated version<a class="anchor" aria-label="anchor" href="#creating-the-curated-version"></a>
 </h3>
+<p>Okay, let’s set the polemics aside and assume you’ve made some
+choices about which images you want to publish. In practice, what that
+means is that chosen some images that you like and you’ve copied them to
+the <code>series-fake</code> folder (or whatever it happens to be
+called). So now you have something like this:</p>
+<pre><code><span><span class="co">#&gt; <span style="color: #0000BB; font-weight: bold;">/tmp/Rtmp8RS5w8/series-fake</span></span></span>
+<span><span class="co">#&gt; ├── .gitignore</span></span>
+<span><span class="co">#&gt; ├── .here</span></span>
+<span><span class="co">#&gt; ├── LICENSE.md</span></span>
+<span><span class="co">#&gt; ├── README.md</span></span>
+<span><span class="co">#&gt; ├── <span style="color: #0000BB; font-weight: bold;">build</span></span></span>
+<span><span class="co">#&gt; ├── <span style="color: #0000BB; font-weight: bold;">input</span></span></span>
+<span><span class="co">#&gt; ├── <span style="color: #0000BB; font-weight: bold;">output</span></span></span>
+<span><span class="co">#&gt; │   ├── <span style="color: #0000BB; font-weight: bold;">01</span></span></span>
+<span><span class="co">#&gt; │   │   ├── <span style="color: #BB00BB; font-weight: bold;">art-system_01_0001.png</span></span></span>
+<span><span class="co">#&gt; │   │   ├── <span style="color: #BB00BB; font-weight: bold;">art-system_01_0002.png</span></span></span>
+<span><span class="co">#&gt; │   │   ├── <span style="color: #BB00BB; font-weight: bold;">art-system_01_0003.png</span></span></span>
+<span><span class="co">#&gt; │   │   ├── <span style="color: #BB00BB; font-weight: bold;">art-system_01_0004.png</span></span></span>
+<span><span class="co">#&gt; │   │   └── <span style="color: #BB00BB; font-weight: bold;">art-system_01_0005.png</span></span></span>
+<span><span class="co">#&gt; │   └── <span style="color: #0000BB; font-weight: bold;">02</span></span></span>
+<span><span class="co">#&gt; │       ├── <span style="color: #BB00BB; font-weight: bold;">art-system_02_0001.png</span></span></span>
+<span><span class="co">#&gt; │       ├── <span style="color: #BB00BB; font-weight: bold;">art-system_02_0002.png</span></span></span>
+<span><span class="co">#&gt; │       ├── <span style="color: #BB00BB; font-weight: bold;">art-system_02_0003.png</span></span></span>
+<span><span class="co">#&gt; │       ├── <span style="color: #BB00BB; font-weight: bold;">art-system_02_0004.png</span></span></span>
+<span><span class="co">#&gt; │       └── <span style="color: #BB00BB; font-weight: bold;">art-system_02_0005.png</span></span></span>
+<span><span class="co">#&gt; ├── <span style="color: #0000BB; font-weight: bold;">series-fake</span></span></span>
+<span><span class="co">#&gt; │   └── <span style="color: #0000BB; font-weight: bold;">image</span></span></span>
+<span><span class="co">#&gt; │       ├── <span style="color: #BB00BB; font-weight: bold;">art-system_01_0002.png</span></span></span>
+<span><span class="co">#&gt; │       ├── <span style="color: #BB00BB; font-weight: bold;">art-system_01_0003.png</span></span></span>
+<span><span class="co">#&gt; │       ├── <span style="color: #BB00BB; font-weight: bold;">art-system_02_0003.png</span></span></span>
+<span><span class="co">#&gt; │       └── <span style="color: #BB00BB; font-weight: bold;">art-system_02_0005.png</span></span></span>
+<span><span class="co">#&gt; └── <span style="color: #0000BB; font-weight: bold;">source</span></span></span>
+<span><span class="co">#&gt;     ├── <span style="color: #00BB00;">art-system_01.R</span></span></span>
+<span><span class="co">#&gt;     ├── <span style="color: #00BB00;">art-system_02.R</span></span></span>
+<span><span class="co">#&gt;     └── <span style="color: #00BB00;">common.R</span></span></span></code></pre>
+<p>Notice that the “curated” version in <code>series-fake</code> places
+the images in an <code>image</code> folder. The reason for that is that
+– usually – the images you create with your generative art system are
+high resolution, so you’re going to want to have low-res versions of the
+same images that you can use as “thumbnail” previews on your generative
+art website.</p>
+</div>
+<div class="section level3">
+<h3 id="creating-thumbnail-images">Creating thumbnail images<a class="anchor" aria-label="anchor" href="#creating-thumbnail-images"></a>
+</h3>
+<p>The arttools package supplies a function to create all your
+thumbnails for you, boringly entitled
+<code><a href="../reference/create_resized_images.html">create_resized_images()</a></code>.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/create_resized_images.html">create_resized_images</a></span><span class="op">(</span></span>
+<span>  series <span class="op">=</span> <span class="st">"series-fake"</span>,</span>
+<span>  images_from <span class="op">=</span> <span class="st">"series-fake/image"</span>,</span>
+<span>  images_to <span class="op">=</span> <span class="st">"series-fake/preview"</span>,</span>
+<span>  pixels_wide <span class="op">=</span> <span class="fl">500</span>,</span>
+<span>  pixels_high <span class="op">=</span> <span class="fl">500</span>,</span>
+<span>  origin <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> /tmp/Rtmp8RS5w8/series-fake/series-fake/preview/art-system_01_0002.png created</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> /tmp/Rtmp8RS5w8/series-fake/series-fake/preview/art-system_01_0003.png created</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> /tmp/Rtmp8RS5w8/series-fake/series-fake/preview/art-system_02_0003.png created</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> /tmp/Rtmp8RS5w8/series-fake/series-fake/preview/art-system_02_0005.png created</span></span></code></pre></div>
+<p>So now we have:</p>
+<pre><code><span><span class="co">#&gt; <span style="color: #0000BB; font-weight: bold;">/tmp/Rtmp8RS5w8/series-fake</span></span></span>
+<span><span class="co">#&gt; ├── .gitignore</span></span>
+<span><span class="co">#&gt; ├── .here</span></span>
+<span><span class="co">#&gt; ├── LICENSE.md</span></span>
+<span><span class="co">#&gt; ├── README.md</span></span>
+<span><span class="co">#&gt; ├── <span style="color: #0000BB; font-weight: bold;">build</span></span></span>
+<span><span class="co">#&gt; ├── <span style="color: #0000BB; font-weight: bold;">input</span></span></span>
+<span><span class="co">#&gt; ├── <span style="color: #0000BB; font-weight: bold;">output</span></span></span>
+<span><span class="co">#&gt; │   ├── <span style="color: #0000BB; font-weight: bold;">01</span></span></span>
+<span><span class="co">#&gt; │   │   ├── <span style="color: #BB00BB; font-weight: bold;">art-system_01_0001.png</span></span></span>
+<span><span class="co">#&gt; │   │   ├── <span style="color: #BB00BB; font-weight: bold;">art-system_01_0002.png</span></span></span>
+<span><span class="co">#&gt; │   │   ├── <span style="color: #BB00BB; font-weight: bold;">art-system_01_0003.png</span></span></span>
+<span><span class="co">#&gt; │   │   ├── <span style="color: #BB00BB; font-weight: bold;">art-system_01_0004.png</span></span></span>
+<span><span class="co">#&gt; │   │   └── <span style="color: #BB00BB; font-weight: bold;">art-system_01_0005.png</span></span></span>
+<span><span class="co">#&gt; │   └── <span style="color: #0000BB; font-weight: bold;">02</span></span></span>
+<span><span class="co">#&gt; │       ├── <span style="color: #BB00BB; font-weight: bold;">art-system_02_0001.png</span></span></span>
+<span><span class="co">#&gt; │       ├── <span style="color: #BB00BB; font-weight: bold;">art-system_02_0002.png</span></span></span>
+<span><span class="co">#&gt; │       ├── <span style="color: #BB00BB; font-weight: bold;">art-system_02_0003.png</span></span></span>
+<span><span class="co">#&gt; │       ├── <span style="color: #BB00BB; font-weight: bold;">art-system_02_0004.png</span></span></span>
+<span><span class="co">#&gt; │       └── <span style="color: #BB00BB; font-weight: bold;">art-system_02_0005.png</span></span></span>
+<span><span class="co">#&gt; ├── <span style="color: #0000BB; font-weight: bold;">series-fake</span></span></span>
+<span><span class="co">#&gt; │   ├── <span style="color: #0000BB; font-weight: bold;">image</span></span></span>
+<span><span class="co">#&gt; │   │   ├── <span style="color: #BB00BB; font-weight: bold;">art-system_01_0002.png</span></span></span>
+<span><span class="co">#&gt; │   │   ├── <span style="color: #BB00BB; font-weight: bold;">art-system_01_0003.png</span></span></span>
+<span><span class="co">#&gt; │   │   ├── <span style="color: #BB00BB; font-weight: bold;">art-system_02_0003.png</span></span></span>
+<span><span class="co">#&gt; │   │   └── <span style="color: #BB00BB; font-weight: bold;">art-system_02_0005.png</span></span></span>
+<span><span class="co">#&gt; │   └── <span style="color: #0000BB; font-weight: bold;">preview</span></span></span>
+<span><span class="co">#&gt; │       ├── <span style="color: #BB00BB; font-weight: bold;">art-system_01_0002.png</span></span></span>
+<span><span class="co">#&gt; │       ├── <span style="color: #BB00BB; font-weight: bold;">art-system_01_0003.png</span></span></span>
+<span><span class="co">#&gt; │       ├── <span style="color: #BB00BB; font-weight: bold;">art-system_02_0003.png</span></span></span>
+<span><span class="co">#&gt; │       └── <span style="color: #BB00BB; font-weight: bold;">art-system_02_0005.png</span></span></span>
+<span><span class="co">#&gt; └── <span style="color: #0000BB; font-weight: bold;">source</span></span></span>
+<span><span class="co">#&gt;     ├── <span style="color: #00BB00;">art-system_01.R</span></span></span>
+<span><span class="co">#&gt;     ├── <span style="color: #00BB00;">art-system_02.R</span></span></span>
+<span><span class="co">#&gt;     └── <span style="color: #00BB00;">common.R</span></span></span></code></pre>
+<p>The repository now contains the “full resolution” images in the
+<code>series-fake/image</code> folder, and lower resolution versions of
+the same images in the <code>series-fake/preview</code> folder. Or, to
+narrow things down to the folder that we’re planning to publish, this is
+where we’re at:</p>
+<pre><code><span><span class="co">#&gt; <span style="color: #0000BB; font-weight: bold;">/tmp/Rtmp8RS5w8/series-fake/series-fake</span></span></span>
+<span><span class="co">#&gt; ├── <span style="color: #0000BB; font-weight: bold;">image</span></span></span>
+<span><span class="co">#&gt; │   ├── <span style="color: #BB00BB; font-weight: bold;">art-system_01_0002.png</span></span></span>
+<span><span class="co">#&gt; │   ├── <span style="color: #BB00BB; font-weight: bold;">art-system_01_0003.png</span></span></span>
+<span><span class="co">#&gt; │   ├── <span style="color: #BB00BB; font-weight: bold;">art-system_02_0003.png</span></span></span>
+<span><span class="co">#&gt; │   └── <span style="color: #BB00BB; font-weight: bold;">art-system_02_0005.png</span></span></span>
+<span><span class="co">#&gt; └── <span style="color: #0000BB; font-weight: bold;">preview</span></span></span>
+<span><span class="co">#&gt;     ├── <span style="color: #BB00BB; font-weight: bold;">art-system_01_0002.png</span></span></span>
+<span><span class="co">#&gt;     ├── <span style="color: #BB00BB; font-weight: bold;">art-system_01_0003.png</span></span></span>
+<span><span class="co">#&gt;     ├── <span style="color: #BB00BB; font-weight: bold;">art-system_02_0003.png</span></span></span>
+<span><span class="co">#&gt;     └── <span style="color: #BB00BB; font-weight: bold;">art-system_02_0005.png</span></span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="creating-manifest-files">Creating manifest files<a class="anchor" aria-label="anchor" href="#creating-manifest-files"></a>
 </h3>
-<p>A csv file listing all files in the to-be-published folder</p>
-</div>
-<div class="section level3">
-<h3 id="system-name-changes">System name changes<a class="anchor" aria-label="anchor" href="#system-name-changes"></a>
-</h3>
-<p>It’s grossly typical that we choose a new name at the end of the
-process. Solution to this is to make it “superficial only”. That is:</p>
-<ul>
-<li>Don’t rename source files</li>
-<li>Don’t rename the system ids etc within source files</li>
-<li>Don’t rename the output file</li>
-</ul>
-<p>But we:</p>
-<ul>
-<li>Do rename the repository on github (e.g., from
-<code>series-rectangles</code> to <code>series-subdivision</code>)</li>
-<li>Do rename the gallery folder (again, e.g., from
-<code>series-rectangles</code> to <code>series-subdivision</code>)</li>
-<li>Use the new name in the <code>_gallery.csv</code> file</li>
-</ul>
-<p>It’s not ideal, but it minimises mess, and ultimately ensures that
-the thing that gets published uses the correct name on the art website
-and on github. It also has the nice property of preserving redirects on
-github.</p>
+<p>The <code>series-fake</code> folder (… contained within the
+<code>series-fake</code> repository, which should kinda be a hint that
+it’s going to be moved later!) isn’t really intended to stay in the
+repository forever. Rather, it’s something that we’re going to publish
+to the web eventually. It’s going to live in the cloud storage bucket
+listed in <code><a href="../reference/paths.html">bucket_remote_path()</a></code>. However, when we move it
+online, we’re going to need a manifest file that lists all the files
+contained in the <code>series-fake</code> bucket. We need this so that
+the website that we’re going to build later on will have an easy way to
+discover all the images in our curated set.</p>
+<p>Yes, this is getting exhausting. Fortunately, the arttools package
+has a function called <code><a href="../reference/manifest.html">manifest_write()</a></code> that will create
+exactly the file we need:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># yes, this is something that I will need to tidy later:</span></span>
+<span><span class="co"># I wrote manifest_write() thinking it would be called </span></span>
+<span><span class="co"># with respect to the local bucket path not the local </span></span>
+<span><span class="co"># repo path, and its not robust if you do it the other </span></span>
+<span><span class="co"># way around. So this very ugly note is here to remind</span></span>
+<span><span class="co"># me that this part of the package/workflow needs to be</span></span>
+<span><span class="co"># reconsidered</span></span>
+<span><span class="va">blah</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"series-fake"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/manifest.html">manifest_write</a></span><span class="op">(</span><span class="st">"series-fake"</span>, origin <span class="op">=</span> <span class="va">blah</span>, destination <span class="op">=</span> <span class="va">blah</span><span class="op">)</span></span></code></pre></div>
+<p>And now we have a <code>manifest.csv</code> file:</p>
+<pre><code><span><span class="co">#&gt; <span style="color: #0000BB; font-weight: bold;">/tmp/Rtmp8RS5w8/series-fake/series-fake</span></span></span>
+<span><span class="co">#&gt; ├── <span style="color: #0000BB; font-weight: bold;">image</span></span></span>
+<span><span class="co">#&gt; │   ├── <span style="color: #BB00BB; font-weight: bold;">art-system_01_0002.png</span></span></span>
+<span><span class="co">#&gt; │   ├── <span style="color: #BB00BB; font-weight: bold;">art-system_01_0003.png</span></span></span>
+<span><span class="co">#&gt; │   ├── <span style="color: #BB00BB; font-weight: bold;">art-system_02_0003.png</span></span></span>
+<span><span class="co">#&gt; │   └── <span style="color: #BB00BB; font-weight: bold;">art-system_02_0005.png</span></span></span>
+<span><span class="co">#&gt; ├── manifest.csv</span></span>
+<span><span class="co">#&gt; └── <span style="color: #0000BB; font-weight: bold;">preview</span></span></span>
+<span><span class="co">#&gt;     ├── <span style="color: #BB00BB; font-weight: bold;">art-system_01_0002.png</span></span></span>
+<span><span class="co">#&gt;     ├── <span style="color: #BB00BB; font-weight: bold;">art-system_01_0003.png</span></span></span>
+<span><span class="co">#&gt;     ├── <span style="color: #BB00BB; font-weight: bold;">art-system_02_0003.png</span></span></span>
+<span><span class="co">#&gt;     └── <span style="color: #BB00BB; font-weight: bold;">art-system_02_0005.png</span></span></span></code></pre>
+<p>Here’s what it looks like:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/manifest.html">manifest_read</a></span><span class="op">(</span><span class="st">"series-fake"</span>, origin <span class="op">=</span> <span class="va">blah</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 8 × 12</span></span></span>
+<span><span class="co">#&gt;   series_name series_date path          folder file_name file_format system_name</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> series-fake 2023-07-27  image/art-sy… image  art-syst… png         art-system </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> series-fake 2023-07-27  preview/art-… previ… art-syst… png         art-system </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> series-fake 2023-07-27  image/art-sy… image  art-syst… png         art-system </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> series-fake 2023-07-27  preview/art-… previ… art-syst… png         art-system </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> series-fake 2023-07-27  image/art-sy… image  art-syst… png         art-system </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> series-fake 2023-07-27  preview/art-… previ… art-syst… png         art-system </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> series-fake 2023-07-27  image/art-sy… image  art-syst… png         art-system </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> series-fake 2023-07-27  preview/art-… previ… art-syst… png         art-system </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 5 more variables: system_version &lt;chr&gt;, image_id &lt;chr&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   image_short_title &lt;chr&gt;, image_long_title &lt;chr&gt;, manifest_version &lt;int&gt;</span></span></span></code></pre></div>
+<p>At this point we have a complete folder that we can drop straight
+into the remote bucket and publish.</p>
+<!--
+
+### System name changes
+
+It's grossly typical that we choose a new name at the end of the process. Solution to this is to make it "superficial only". That is:
+
+- Don't rename source files
+- Don't rename the system ids etc within source files
+- Don't rename the output file
+
+But we:
+
+- Do rename the repository on github (e.g., from `series-rectangles` to `series-subdivision`)
+- Do rename the gallery folder (again, e.g., from `series-rectangles` to `series-subdivision`)
+- Use the new name in the `_gallery.csv` file
+
+It's not ideal, but it minimises mess, and ultimately ensures that the thing that gets published uses the correct name on the art website and on github. It also has the nice property of preserving redirects on github.
+
+-->
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>

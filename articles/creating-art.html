@@ -97,7 +97,7 @@ start by creating a “fake” art repository:</p>
 <span>  license <span class="op">=</span> <span class="st">"ccby"</span>,</span>
 <span>  destination <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> repository folder created at /tmp/Rtmp7gRVNH/series-fake</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> repository folder created at /tmp/RtmpQF7lN1/series-fake</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> writing README.md</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> writing LICENSE.md</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> writing .gitignore</span></span>
@@ -117,7 +117,7 @@ I’m creating it within the <code><a href="https://rdrr.io/r/base/tempfile.html
 the purposes of this article.</p>
 <p>When you create the repository, these are the files and folders that
 you start off with:</p>
-<pre><code><span><span class="co">#&gt; <span style="color: #0000BB; font-weight: bold;">/tmp/Rtmp7gRVNH/series-fake</span></span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #0000BB; font-weight: bold;">/tmp/RtmpQF7lN1/series-fake</span></span></span>
 <span><span class="co">#&gt; ├── .gitignore</span></span>
 <span><span class="co">#&gt; ├── .here</span></span>
 <span><span class="co">#&gt; ├── LICENSE.md</span></span>
@@ -277,7 +277,7 @@ because it has helper functions that are designed to catch this mistake.
 So the fourth line in every art script imports the functions from
 <code>common.R</code>:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/source.html" class="external-link">source</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu">here</span><span class="op">(</span><span class="st">"source"</span>, <span class="st">"common.R"</span><span class="op">)</span>, echo <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/source.html" class="external-link">source</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html" class="external-link">here</a></span><span class="op">(</span><span class="st">"source"</span>, <span class="st">"common.R"</span><span class="op">)</span>, echo <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p>To avoid introducing unwanted dependencies, the functions in
 <code>common.R</code> have been written using base R, almost
 exclusively. It’s completely independent of “arttools”, and the
@@ -416,7 +416,7 @@ have available to you, in practice you’re more likely to call
 complete path to the output file:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">output_path</span><span class="op">(</span><span class="st">"art-system"</span>, <span class="fl">1</span>, <span class="fl">109</span>, <span class="st">"png"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; [1] "/tmp/Rtmp7gRVNH/series-fake/output/01/art-system_01_0109.png"</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; [1] "/tmp/RtmpQF7lN1/series-fake/output/01/art-system_01_0109.png"</span></span></code></pre>
 <p>In most cases this is the function you want to call within your
 generative art system, because it provides a complete path to the
 location that the output file should be written. Writing files in this
@@ -441,7 +441,7 @@ discussion – to take a look at the complete source code for
 <span><span class="va">format</span> <span class="op">&lt;-</span> <span class="st">"png"</span>      <span class="co"># png is usually a good choice!</span></span>
 <span></span>
 <span><span class="co"># define common helper functions</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/source.html" class="external-link">source</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu">here</span><span class="op">(</span><span class="st">"source"</span>, <span class="st">"common.R"</span><span class="op">)</span>, echo <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/source.html" class="external-link">source</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html" class="external-link">here</a></span><span class="op">(</span><span class="st">"source"</span>, <span class="st">"common.R"</span><span class="op">)</span>, echo <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># make sure we haven't accidentally messed up the versions</span></span>
 <span><span class="fu">assert_version_consistency</span><span class="op">(</span><span class="va">name</span><span class="op">)</span></span>
