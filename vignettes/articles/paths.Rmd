@@ -1,5 +1,5 @@
 ---
-title: "Repository and bucket paths"
+title: "Managing repository and bucket paths"
 ---
 
 ```{r, include = FALSE}

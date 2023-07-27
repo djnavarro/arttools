@@ -1,5 +1,5 @@
 ---
-title: "Setting up the repository"
+title: "Creating art repositories"
 ---
 
 ```{r, include = FALSE}

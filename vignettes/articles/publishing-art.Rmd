@@ -1,5 +1,5 @@
 ---
-title: "publishing-art"
+title: "Publishing the art"
 ---
 
 ```{r, include = FALSE}

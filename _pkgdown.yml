@@ -1,3 +1,20 @@
 url: https://arttools.djnavarro.net/
+
 template:
   bootstrap: 5
+
+navbar:
+ components:
+   articles:
+    text: Articles
+    menu:
+    - text: "Managing art paths"
+      href: articles/paths.html
+    - text: "Creating art repositories"
+      href: articles/repositories.html
+    - text: "Creating the art"
+      href: articles/creating-art.html
+    - text: "Curating the art"
+      href: articles/curating-art.html
+    - text: "Publishing the art"
+      href: articles/publishing-art.html
