@@ -101,15 +101,15 @@ Okay, let's set the polemics aside and assume you've made some choices about whi
 #| echo: false
 target_dir <- fs::path(series_path, "series-fake", "image")
 fs::dir_create(target_dir)
-keep1 <- c("art-system_01_0002.png", "art-system_01_0003.png")
+keep <- c("art-system_01_0002.png", "art-system_01_0003.png")
 fs::file_copy(
-  fs::path(series_path, "output", "01", keep1),
-  fs::path(series_path, "series-fake", "image", keep1)
+  fs::path(series_path, "output", "01", keep),
+  fs::path(series_path, "series-fake", "image", keep)
 )
-keep1 <- c("art-system_02_0003.png", "art-system_02_0005.png")
+keep <- c("art-system_02_0003.png", "art-system_02_0005.png")
 fs::file_copy(
-  fs::path(series_path, "output", "02", keep1),
-  fs::path(series_path, "series-fake", "image", keep1)
+  fs::path(series_path, "output", "02", keep),
+  fs::path(series_path, "series-fake", "image", keep)
 )
 fs::dir_tree(
   series_path, 
@@ -122,7 +122,36 @@ Notice that the "curated" version in `series-fake` places the images in an `imag
 
 ### Creating thumbnail images
 
-The arttools package supplies a convenience function to create all your thumbnails for you, boringly entitled `create_resized_images()`
+The arttools package supplies a function to create all your thumbnails for you, boringly entitled `create_resized_images()`. 
+
+```{r}
+#| eval: true
+create_resized_images(
+  series = "series-fake",
+  images_from = "series-fake/image",
+  images_to = "series-fake/preview",
+  pixels_wide = 500,
+  pixels_high = 500,
+  origin = tempdir()
+)
+```
+
+So now we have:
+
+```{r}
+#| echo: false
+fs::dir_tree(series_path, all = TRUE, recurse = TRUE)
+```
+
+The repository now contains the "full resolution" images in the `series-fake/image` folder, and lower resolution versions of the same images in the `series-fake/preview` folder. Or, to narrow things down to the folder that we're planning to publish, this is where we're at:
+
+```{r}
+#| echo: false
+publish_dir <- fs::path(series_path, "series-fake")
+fs::dir_tree(publish_dir, all = TRUE, recurse = TRUE)
+```
+
+
 
 ### Creating manifest files
 
