@@ -218,19 +218,30 @@ Obviously, we don't really want to be providing input like this, but... look, th
 
 While the `output_file()` function is a handy thing to have available to you, in practice you're more likely to call `output_path()`, which goes a little further and creates the complete path to the output file:
 
-```{r}
+``` r
 output_path("art-system", 1, 109, "png")
 ```
 
+```{r}
+#| echo: false
+output_path("art-system", 1, 109, "png", output_dir = fs::path(series_path, "output"))
+```
+
+In most cases this is the function you want to call within your generative art system, because it provides a complete path to the location that the output file should be written. 
+Writing files in this fashion ensures that within the `output` folder there will be a separate image folder for every version of the system, and every image within that system will be named in a way that allows you to accurately reconstruct where it came from. 
 
 ### Putting it together
 
-Here's the entire source code for `art-system_01.R`:
+This discussion has felt a little abstract. I've talked entirely about the administrative aspects to the art process, and that's really boring. With that in mind, it might be helpful -- in light of this discussion -- to take a look at the complete source code for `art-system_01.R`:
 
 ```{r}
 #| file: !expr 'fs::path_package("arttools", "templates", "art-system_01.R")'
 #| eval: false
 ```
+  
+As you can see, there are a few places where the "administrative" aspects intrude, but not many. In practice, the functions from `common.R` don't actually show up much in the code. They appear in the administrative header at the top of the script, and in those parts of the code that are devoted to writing the output file. Otherwise, they stay out of your way and let you focus on making art.
+
+Which is of course the point.
   
 ```{r}
 #| echo: false

@@ -74,7 +74,11 @@ output_file <- function(name, version, id, format) {
 #
 #   [repo-folder]/output/[version]/[name]_[version]_[id].[format]
 #
-output_path <- function(name, version, id, format) {
+output_path <- function(name,
+                        version,
+                        id,
+                        format,
+                        output_dir = here::here("output")) {
   # construct the file name
   file_name <- output_file(name, version, id, format)
 
@@ -85,7 +89,7 @@ output_path <- function(name, version, id, format) {
   version <- tolower(version)
 
   # specify the path to the output folder, creating it if necessary
-  output_dir <- here::here("output", version)
+  output_dir <- file.path(output_dir, version)
   if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
 
   # return fully qualified path
