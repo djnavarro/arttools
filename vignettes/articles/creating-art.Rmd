@@ -7,41 +7,221 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+options(
+  arttools.bucket.remote = "https://storage.googleapis.com/djnavarro-art",
+  arttools.bucket.local = "~/Buckets/djnavarro-art",
+  arttools.repos.remote = "https://github.com/djnavarro",
+  arttools.repos.local = "~/GitHub"
+)
 ```
 
 ```{r setup}
 library(arttools)
 ```
 
+When you initialise a new art repository using `repo_create()`, it builds a skeleton that you can work from when you want to get to work on the fun artistic parts. In this article I'll walk you through the process of what that entails in practice. I'll start by creating a "fake" art repository:
 
-### Creating the art system
+```{r}
+repo_create(
+  series = "series-fake",
+  license = "ccby",
+  destination = tempdir()
+)
+```
 
-BLAH BLAH NOTHING IS ACCURATE FROM HERE ON BLAH
+Normally you wouldn't need to specify the `destination` argument at all, because the default `destination = repo_local_path()` is usually what you want. I'm creating it within the `tempdir()` folder here purely for the purposes of this article. 
 
-- From the beginning, assume that you'll iteratively modify the system. So, in addition to having a "system identifier" that provides a name for the system, there should be a "system version" string `sys_ver`. Use left-padded zeros, and number sequentially: `"001"`, `"002"`, etc. (I use three-digit strings here: I've never gone above 80 versions of a single system, so a three-digit code should be safe)
-- Keep separate source files for each new version of the system, incrementing the version number every time you experiment with something new:
+When you create the repository, these are the files and folders that you start off with:
 
-  ```
-  subdivision_001.R
-  subdivision_002.R
-  subdivision_003.R
-  etc.
-  ```
+```{r}
+#| echo: false
+series_path <- fs::path(tempdir(), "series-fake")
+fs::dir_tree(
+  series_path, 
+  all = TRUE, 
+  recurse = TRUE
+)
+```
+
+Notice that there are three files that are automatically added to the `source` folder. I've added them primarily for illustrative purposes, and you can delete them if you like, but they're written specifically to highlight key aspects to the generative art workflow, and it's worth taking a look at what each of them does.
+
+### Assumptions about art workflow
+
+One thing I've learned from years of creating generative art systems is that my "artistic workflow" is subtly different from the "analytic workflow" I adopt when analysing a data set, and it's different from the "developer workflow" I adopt when writing packages and other software. 
+
+To understand why, it's helpful to understand the ways in which art, analysis, and packages differ in their goals. 
+
+When writing a package, you're aiming to create *one* piece of software. There will be different versions of the software, of course, as you add features, fix bugs, etc, but you don't expect multiple versions of the same package to coexist within the repository at once! The history of the development process is only relevant to the extent that folks may be working from older versions of the package, or might need to install an older version for one reason or another.
+
+Data analysis is similar to package development, but not quite the same. As with package development, you're still aiming to create *one* analysis (or, very often, a collection of analyses). The history is a little more important in this case because you often want to trace your path through the so-called "garden of forking paths" to make sure you're not deluding yourself about the validity of your analysis. Because of this you might want to keep copies of the interim analyses that you conducted -- especially when you're doing exploratory analysis -- but ultimately the hope is that you'll end up with a single authoritative version of the data analysis. 
+
+Art is... not like that at all. It's a little bit like exploratory data analysis in that it's an iterative process, but -- at least in my own experience -- your goal is almost never to create one "authoritative" version of the art system. It's often true that later versions of the system are the ones that you like best, and the art you want to publish at the end are usually outputs from the later versions of the system, but the artistic process is pure exploration all the way. You don't want to lose old versions of the system: you might want to use them later!
+
+Because this workflow is grossly typical when creating art, it's actually a *good* thing to end up with files in your `source` folder that have names like this:
+
+```
+art-system_01.R
+art-system_02.R
+art-system_03.R
+etc
+```
+
+Each of these defines a subtly different variant of the art system, and I've found that in practice you want them all to live together side-by-side in the `source` folder. 
+
+The trick, when iteratively creating many versions of the system side by side, is to have a few helper functions that will help you maintain discipline and ensure that the different versions don't interfere with each other and you can always figure out which version of the system generated any specific image!
+
+That's where the `common.R` file comes in handy: the purpose of having a `common.R` file in the `source` folder is make it easy to maintain discipline without interrupting you in the middle of the fun artistic parts.
+
+### The common functions
+
+There are six functions defined in the `common.R` file. Two of them are used to make sure that different versions of the art system don't introduce inconsistencies:
+
+- `assert_version_consistency()` is a function designed to help you avoid mistakes when creating a new version of the art system
+- `system_versions()` is a function you can call if you *do* make a mistake when creating a new version and need to figure out where the version inconsistency happened
+
+There are also two functions that are helpful to make sure images are written to the correct location, and with the correct file name:
+
+- `output_file()` constructs the file name
+- `output_path()` constructs the file path
+
+Finally there are two functions -- `tidy_int_string()` and `tidy_name_string()` -- that you don't actually need to call within your art code, but are used internally by other `common.R` functions. To get a sense of how I use the `common.R` functions within a system it's helpful to walk through the code of the example system. 
+
+### Versioning an art system
+
+The structure of almost every art system I've written -- at least when I've done it in a sensible way -- is pretty much the same every time: 
+
+1. At the top of the file there's a few lines of code that take care of "administrative" tasks. 
+2. The bulk of the file is devoted to the fun stuff: writing functions that create generative art when called.
+3. (Optionally) At the bottom of the file there's some code that actually calls the generative art functions and creates the art.
+
+Let's have a look at the code that forms the "administrative" section of the `art-system_01.R` script. It begins with these three lines:
+
+``` r
+name <- "art-system"
+version <- 1
+format <- "png"
+```
+
+Here I've defined the `name` of the generative art system, the `version` of the system, and the image `format` used when writing image files. Notice that the `name` and `version` defined in the code are both consistent with the filename of the script: it's called `art-system_01.R`, and indeed the `name` of the system is defined to be `"art-system"` and the `version` number is set to 1. 
+
+Whenever I want to create a new version of the system, I copy `art-system_01.R` to `art-system_02.R` -- almost always by using the "save as" menu option in RStudio or whatever IDE I'm using, because this is not the kind of thing worth doing at the terminal -- and then update the `version` number within the code. As a consequence, the first three lines in `art-system_02.R` are as follows:
+
+``` r
+name <- "art-system"
+version <- 2
+format <- "png"
+```
+
+The `name` and `format` don't change, but I've incremented the `version` number appropriately. 
+
+Now that I've got a new version of the system, I can get to the fun part and start tinkering with the generative art code!
+
+Unfortunately, there's a trap here. When I'm in the midst of an artistic process, I'm almost always thinking about the *art*, and it's very easy to forget to increment the value of `version`. That's a problem because (as we'll see later), the `version` number is important. It is used to make sure that outputs from different versions of the same system are given the correct file names. Chaos can ensue if the `version` number is wrong.
+
+This is where the `common.R` script comes in handy, because it has helper functions that are designed to catch this mistake. So the fourth line in every art script imports the functions from `common.R`:
+
+``` r
+source(here::here("source", "common.R"), echo = FALSE)
+```
+
+To avoid introducing unwanted dependencies, the functions in `common.R` have been written using base R, almost exclusively. It's completely independent of "arttools", and the *only* package that is required for the `common.R` functions to work is the "here" package.
+
+One of the functions supplied by `common.R` is `assert_version_consistency()`, and what it does is scan the file names and source code to make sure that all the version numbers are consistent. To put it crudely, this function exists because I *know* that I'm likely to forget to update the `version` number, and it's really helpful if the art script throws an error if I make that mistake. Because of this, the final line in the "administrative" section of the code looks like this:
+
+```
+assert_version_consistency(name)
+```
+
+If all the version numbers are fine, nothing happens. But if there's a problem, it throws an error.
+
+To understand what this is doing, you can call the `system_versions()` function -- also supplied by `common.R` -- to work out what is going on:
+
+``` r
+system_versions("art-system")
+```
+
+```{r}
+#| echo: false
+suppressMessages(
+  source(
+    file = fs::path_package(
+      "arttools", 
+      "templates", 
+      "common.R"
+    ), 
+    echo = FALSE
+  )
+)
+system_versions(
+  name = "art-system",
+  source_dir = fs::path(series_path, "source")
+)
+```
+
+The output here is a data frame with three columns. The `file` column specifies the name of the source file, the `filename_version` column contains the version number extracted by inspecting the file name, and the `source_version` column contains the version number extracted by inspecting the source code. In this case there are no inconsistencies, which is why `assert_version_consistency()` doesn't throw an error. If, on the other hand, the source and file name versions don't match, or if there are duplicate entries, it will error. 
+
+It's a boring thing to do, but in practice I find that it's extremely useful to call `assert_version_consistency()` at the start of every art script, because otherwise I *will* eventually mess something up. 
+
+### Naming output files
+
+When writing generative art code, most of your time is spent on the artistic side. However, at some point in the process the code has to write an image file, and -- speaking from experience -- it's easy to get lazy at this point. Image files with names `"image1.png"`, `"image2.png"` aren't very informative, and if you return to the system later on you won't know how to recreate those images. What you really want is a consistent system for naming image files in a way that allows you to look at the file name and immediately know:
+
+1. What art system created the image?
+2. What version of the art system created it?
+3. What unique information (e.g. RNG seed) was used to create it?
+
+If that's the goal, you want to name your files in a way that follows a consistent scheme that supplies this information. Here's the naming convention I use:
+
+```
+[name]_[version]_[id].[format]
+```
+
+Notice that three of these four parts are already supplied in the "administrative header" of our art script: `name`, `version`, and `format` are variables that are defined at the very beginning of the `art-system_01.R` and `art-system_02.R` scripts, so when the time comes to create a file name for any specific output from the generative art system those variables are already available to us! 
+
+What about the `id` variable? This part is intentionally a little vague, because it might very well be different for every system, but the intention here is that it should be a unique identifier string that tells you what parameters were used to create the image. In most generative art systems I create, there's only one input parameter, namely the RNG seed, so the `id` part of the filename is simply an integer value specifying the RNG seed. 
+
+To make life easier, the `common.R` file supplies the `output_file()` function that you can call within your generative art script and create a file name that adheres to these rules. Here's an example:
+
+```{r}
+output_file(
+  name = "art-system",
+  version = 1,
+  id = 109,
+  format = "png"
+)
+```
   
-- Use five-digit numbers for the seeds. That should ensure that even in the most extravagant situation where we generate large numbers of output files, we can ensure that output files always sort in numerical seed order and have the same length. 
+Notice that the numeric parts of the name are all left-padded with zeros. By default `output_file()` will create a two-digit version number, on the assumption that you very likely might make more than 10 versions of a specific system but aren't likely to make more than 100 versions. Similarly, if the `id` input is a single number (presumably the RNG seed), it's padded with zeros so that it is always a four digit number on the assumption that you're probably not going to create more than 10000 outputs. It's a little bit of syntactic sugar designed to ensure that the file names sort into the correct order, which is often helpful later on if you want to create a website showcasing your work.
 
-When writing output files:
+Along the same lines, it's worth noting that there are some constraints on file names that `output_file()` attempts to enforce:
 
-- Source files should write image files to the `output` directory
-- Every output file should record the RNG `seed` used to produce it
-- Output files should follow this naming convention:
+- It uses `_` as the separator between the different parts of the name
+- It uses `-` as the separator between "words" within any specific part
+- It allows `.` to appear only as the separator between the file name and the file extension
+- It replaces white space with `-`
 
-  ```
-  [name]_[version]_[seed].[format]
-  ```
+In principle this shouldn't be necessary because "of course" you're going to try to choose names wisely, but in practice I've messed this up so many times that I've found it valuable to write `output_file()` in a way that tries to enforce good names. To give a sense of this, here's what happens if we pass some very bad names:
 
-  As an example:
+```{r}
+output_file(
+  name = "this... is a _very_ bad name",
+  version = 1,
+  id = 109,
+  format = ".png"
+)
+```
+
+Obviously, we don't really want to be providing input like this, but... look, this is art. The artistic process almost always involves ***fucking around and finding out***, so it's valuable to have something in place to protect us against the worst of our own excesses, yes?
+
+
+### Writing output files 
+
+blah
   
-  ```
-  subdivision_012_22490.png
-  ```
+  
+```{r}
+#| echo: false
+#| results: hide
+fs::dir_delete(series_path)
+```
+

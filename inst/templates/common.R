@@ -4,8 +4,7 @@
 # here package. By design it does *not* take a dependency on arttools
 
 # Check that the here package exists!
-here_exists <- require("here", quietly = TRUE)
-if (!here_exists) {
+if (!require("here", quietly = TRUE)) {
   message("common.R uses the 'here' package: you may need to install it")
 }
 
@@ -36,9 +35,9 @@ tidy_int_string <- function(x, width) {
 # ideally only be used to begin a file extension), and it also ensures that
 # hyphens separate words within the same part of the file name whereas
 # underscores are used to distinguish the different parts of the file name
-tidy_name_string<- function(x) {
+tidy_name_string<- function(x, replace = "-") {
   pattern <- "[[:space:]._]+" # white space, period, or underscore
-  gsub(pattern, "-", x)
+  gsub(pattern, replace, x)
 }
 
 # Output file name:
@@ -60,7 +59,7 @@ output_file <- function(name, version, id, format) {
   name <- tidy_name_string(name)
   version <- tidy_name_string(version)
   id <- tidy_name_string(id)
-  format <- tidy_name_string(format)
+  format <- tidy_name_string(format, replace = "")
 
   # paste the parts of the name together, separating with underscore
   file_name <- paste(name, version, id, sep = "_")
@@ -101,8 +100,8 @@ output_path <- function(name, version, id, format) {
 # source folder looking for all files that start with a particular system name,
 # compares the version string within the file to the one implicit in the file
 # name to ensure consistency
-system_versions <- function(name) {
-  source_files <- list.files(here::here("source"), pattern = name)
+system_versions <- function(name, source_dir = here::here("source")) {
+  source_files <- list.files(source_dir, pattern = name)
   source_files
   filename_version <- vapply(
     strsplit(source_files, "[_.]"),
@@ -112,7 +111,7 @@ system_versions <- function(name) {
   source_version <- vapply(
     source_files,
     function(x) {
-      src <- readLines(here::here("source", x))
+      src <- readLines(file.path(source_dir, x))
       ver <- grep("^version", src, value = TRUE)[1]
       ver <- parse(text = ver) # returns expression object
       ver <- ver[[1]][[3]] # extract RHS from expression
