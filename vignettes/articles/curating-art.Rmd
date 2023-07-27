@@ -7,18 +7,87 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+options(
+  arttools.bucket.remote = "https://storage.googleapis.com/djnavarro-art",
+  arttools.bucket.local = "~/Buckets/djnavarro-art",
+  arttools.repos.remote = "https://github.com/djnavarro",
+  arttools.repos.local = "~/GitHub"
+)
 ```
 
 ```{r setup}
 library(arttools)
 ```
 
+```{r, include = FALSE}
+repo_create(
+  series = "series-fake",
+  license = "ccby",
+  destination = tempdir()
+)
 
-### Creating the curated version  
+series_path <- fs::path(tempdir(), "series-fake")
+
+suppressMessages(
+  source(
+    file = fs::path_package(
+      "arttools", 
+      "templates", 
+      "common.R"
+    ), 
+    echo = FALSE
+  )
+)
+
+source_modified <- function(file) {
   
+  src_path <- fs::path_package("arttools", "templates", file)
+  src <- brio::read_lines(src_path)
+  src <- gsub(
+    pattern = "output_path(name, version, seed, format)", 
+    replacement = paste0(
+      "output_path(name, version, seed, format, output_dir = '",
+      fs::path(series_path, "output"),
+      "')"
+    ),
+    src,
+    fixed = TRUE
+  )
+  src <- gsub(
+    pattern = 'source(here::here("source", "common.R"), echo = FALSE)', 
+    replacement = "",
+    src,
+    fixed = TRUE
+  )
+  tmp <- tempfile(file)
+  brio::write_lines(src, tmp)
+  source(tmp)
+}
+
+source_modified("art-system_01.R")
+source_modified("art-system_02.R")
+```
+
+So now we are at the point we've finished making art and we want to wrap it all up, create a nice "curated" version of the output, and prepare it for publication. At this point we might have something that looks like this:
+
+```{r}
+#| echo: false
+fs::dir_tree(
+  series_path, 
+  all = TRUE, 
+  recurse = TRUE
+)
+```
+
+
+### Creating the curated version
+
+### Creating thumbnail images
+
 ### Creating manifest files
 
 A csv file listing all files in the to-be-published folder
+<!--
 
 ### System name changes
 
@@ -35,3 +104,12 @@ But we:
 - Use the new name in the `_gallery.csv` file
 
 It's not ideal, but it minimises mess, and ultimately ensures that the thing that gets published uses the correct name on the art website and on github. It also has the nice property of preserving redirects on github.
+
+-->
+
+```{r}
+#| echo: false
+#| results: hide
+fs::dir_delete(series_path)
+```
+
