@@ -13,6 +13,16 @@ knitr::opts_chunk$set(
 library(arttools)
 ```
 
+The arttools package supplies four helper functions that are useful for specifying paths to the various different files you'll need to work with:
+
+- `repo_local_path()` finds files within a local copy of an art repository
+- `repo_local_path()` finds files within the remote copy of an art repository
+- `bucket_local_path()` finds files within a local copy of an art object bucket
+- `bucket_local_path()` finds files within the remote copy of an art object bucket
+
+I'll describe each of these in a moment, but it helps if we start by explaining *why* these helper functions exist. 
+
+### Why have path helper functions?
 
 The assumption underpinning the package is that your generative art workflow is something along these lines. First you write some code defining the generative art system, and second (or more likely, concurrently) you generate many image files using this system. Next, you want to take some subset of those images and host them online somewhere, so that you can then create an art portfolio website that displays those images. Over time, you're probably going to end up writing lots of generative art systems so you will end up needing to repeat this cycle many time.
 
@@ -31,7 +41,9 @@ The arttools package is very opinionated about how components should be structur
 2. Raw output images are ephemeral: they exist only as local files
 3. Curated images that you want to keep/share live in a cloud storage **bucket**
 
-I'll talk about the portfolio website later, but the assumption here is that this site exists merely to hotlink to the curated images stored in the bucket: it doesn't store copies of the images itself. As such the expectation is that this lives whereever you would normally store a website. In my case, that means that the art website lives in a git repository and is published using GitHub Pages, Netlify, or something like that.
+I'll talk about the portfolio website in a later article, but the assumption here is that this site exists merely to hotlink to the curated images stored in the bucket: it doesn't store copies of the images itself. As such the expectation is that this lives anywhere you would normally store a website. In my case, that means that the art website lives in a git repository and is published using GitHub Pages, Netlify, or something like that. The key point is that the website is a completely separate thing from the art repositories and the storage bucket.
+
+In any case, the thing you want to take away from all this is that it's very helpful to enforce some structure on *where things live*. The purpose of these helper functions is to make it easy to be disciplined about where you keep everything.
 
 ### Repository paths
 
