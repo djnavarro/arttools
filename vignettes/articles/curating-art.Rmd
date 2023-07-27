@@ -155,7 +155,39 @@ fs::dir_tree(publish_dir, all = TRUE, recurse = TRUE)
 
 ### Creating manifest files
 
-A csv file listing all files in the to-be-published folder
+The `series-fake` folder (... contained within the `series-fake` repository, which should kinda be a hint that it's going to be moved later!) isn't really intended to stay in the repository forever. Rather, it's something that we're going to publish to the web eventually. It's going to live in the cloud storage bucket listed in `bucket_remote_path()`. 
+However, when we move it online, we're going to need a manifest file that lists all the files contained in the `series-fake` bucket. We need this so that the website that we're going to build later on will have an easy way to discover all the images in our curated set. 
+
+Yes, this is getting exhausting. Fortunately, the arttools package has a function called `manifest_write()` that will create exactly the file we need:
+
+```{r}
+# yes, this is something that I will need to tidy later:
+# I wrote manifest_write() thinking it would be called 
+# with respect to the local bucket path not the local 
+# repo path, and its not robust if you do it the other 
+# way around. So this very ugly note is here to remind
+# me that this part of the package/workflow needs to be
+# reconsidered
+blah <- file.path(tempdir(), "series-fake")
+
+manifest_write("series-fake", origin = blah, destination = blah)
+```
+
+And now we have a `manifest.csv` file:
+
+```{r}
+#| echo: false
+fs::dir_tree(publish_dir, all = TRUE, recurse = TRUE)
+```
+
+Here's what it looks like:
+
+```{r}
+manifest_read("series-fake", origin = blah)
+```
+
+At this point we have a complete folder that we can drop straight into the remote bucket and publish.
+
 <!--
 
 ### System name changes
