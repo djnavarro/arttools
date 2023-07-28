@@ -1,17 +1,16 @@
 
-#' Check the structure of a repository or bucket
+#' Status of a repository or bucket
 #'
 #' @param series Name of the series
 #' @param origin Location in which to find the bucket or repository folder
 #'
-#' @return Invisibly returns TRUE if all checks pass, FALSE if at least one
-#' check fails
+#' @return Invisibly returns TRUE if no problems are detected, FALSE otherwise
 #' @name check
 NULL
 
 #' @rdname check
 #' @export
-bucket_check <- function(series, origin = bucket_local_path()) {
+bucket_status <- function(series, origin = bucket_local_path()) {
   if (is_url(origin)) rlang::abort("cannot check a remote bucket folder")
   cli::cli_alert_info(paste("Checking bucket:", agnostic_path(origin, series)))
   existence_ok <- bucket_check_exists(series, origin)
@@ -25,7 +24,7 @@ bucket_check <- function(series, origin = bucket_local_path()) {
 
 #' @rdname check
 #' @export
-repo_check <- function(series, origin = repo_local_path()) {
+repo_status <- function(series, origin = repo_local_path()) {
   if (is_url(origin)) rlang::abort("cannot check a remote repository")
   cli::cli_alert_info(
     paste("Checking repository:", agnostic_path(origin, series))
