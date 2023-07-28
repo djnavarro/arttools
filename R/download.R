@@ -1,4 +1,4 @@
-#' Download an art series
+#' Download series from remote bucket
 #'
 #' @param series Name of the series
 #' @param destination Local folder into which the series folder is downloaded
@@ -6,7 +6,7 @@
 #'
 #' @return Tibble containing the download status data
 #' @export
-series_download <- function(
+bucket_download <- function(
     series,
     destination = bucket_local_path(),
     origin = bucket_remote_path()
