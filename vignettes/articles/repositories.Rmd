@@ -9,16 +9,17 @@ knitr::opts_chunk$set(
 )
 options(
   arttools.bucket.remote = "https://storage.googleapis.com/djnavarro-art",
-  arttools.bucket.local = "~/Buckets/djnavarro-art",
-  arttools.repos.remote = "https://github.com/djnavarro",
-  arttools.repos.local = "~/GitHub"
+  arttools.repos.remote = "https://github.com/djnavarro"
 )
 ```
 
 ```{r setup}
 library(arttools)
+options(
+  arttools.repos.local = file.path(tempdir(), "temp_repos"),
+  arttools.bucket.local = file.path(tempdir(), "temp_bucket")
+)
 ```
-
 
 ### Repository name
 
@@ -31,29 +32,18 @@ There's nothing special about using "series" as the prefix though. I chose that 
 You can use `repo_create()` to create the skeleton for a local series repository. If my generative art system is called "fake", my series name will be `"series-fake"`. I might use a command like this to create a skeleton:
 
 ```{r}
-repo_create(
-  series = "series-fake",
-  license = "ccby",
-  destination = tempdir()
-)
+repo_create(series = "series-fake", license = "ccby")
 ```
 
-Note that the `destination = tempdir()` part is purely for the sake of this article. By default, the `repo_create()` function assumes you want to create the skeleton in the same local folder that you have all your other art repositories, and as such the default value of `destination = repo_local_path()` is probably what you actually want. This is the file tree it creates:
+This is the file tree it creates:
 
 ```{r}
 #| echo: false
-series_path <- fs::path(tempdir(), "series-fake")
 fs::dir_tree(
-  series_path, 
+  repo_local_path("series-fake"), 
   all = TRUE, 
   recurse = TRUE
 )
-```
-
-```{r}
-#| echo: false
-#| results: hide
-fs::dir_delete(series_path)
 ```
 
 Note that:
@@ -85,4 +75,12 @@ Within the source folder there are three other files:
 - `source/art-system_01.R`
 - `source/art-system_02.R`
 
-These files define a simple generative art system that I'll use to discuss other aspects of generative art workflow.
+These files define a simple generative art system that I'll use to discuss other aspects of generative art workflow in another article.
+
+```{r}
+#| echo: false
+#| results: hide
+fs::dir_delete(repo_local_path("series-fake"))
+```
+
+

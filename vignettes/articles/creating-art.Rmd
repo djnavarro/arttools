@@ -9,38 +9,29 @@ knitr::opts_chunk$set(
 )
 options(
   arttools.bucket.remote = "https://storage.googleapis.com/djnavarro-art",
-  arttools.bucket.local = "~/Buckets/djnavarro-art",
-  arttools.repos.remote = "https://github.com/djnavarro",
-  arttools.repos.local = "~/GitHub"
+  arttools.repos.remote = "https://github.com/djnavarro"
 )
 ```
 
 ```{r setup}
 library(arttools)
+options(
+  arttools.repos.local = file.path(tempdir(), "temp_repos"),
+  arttools.bucket.local = file.path(tempdir(), "temp_bucket")
+)
 ```
 
 When you initialise a new art repository using `repo_create()`, it builds a skeleton that you can work from when you want to get to work on the fun artistic parts. In this article I'll walk you through the process of what that entails in practice. I'll start by creating a "fake" art repository:
 
 ```{r}
-repo_create(
-  series = "series-fake",
-  license = "ccby",
-  destination = tempdir()
-)
+repo_create(series = "series-fake", license = "ccby")
 ```
-
-Normally you wouldn't need to specify the `destination` argument at all, because the default `destination = repo_local_path()` is usually what you want. I'm creating it within the `tempdir()` folder here purely for the purposes of this article. 
 
 When you create the repository, these are the files and folders that you start off with:
 
 ```{r}
 #| echo: false
-series_path <- fs::path(tempdir(), "series-fake")
-fs::dir_tree(
-  series_path, 
-  all = TRUE, 
-  recurse = TRUE
-)
+fs::dir_tree(repo_local_path("series-fake"), all = TRUE, recurse = TRUE)
 ```
 
 Notice that there are three files that are automatically added to the `source` folder. I've added them primarily for illustrative purposes, and you can delete them if you like, but they're written specifically to highlight key aspects to the generative art workflow, and it's worth taking a look at what each of them does.
@@ -154,7 +145,7 @@ suppressMessages(
 )
 system_versions(
   name = "art-system",
-  source_dir = fs::path(series_path, "source")
+  source_dir = repo_local_path("series-fake", "source")
 )
 ```
 
@@ -224,7 +215,7 @@ output_path("art-system", 1, 109, "png")
 
 ```{r}
 #| echo: false
-output_path("art-system", 1, 109, "png", output_dir = fs::path(series_path, "output"))
+output_path("art-system", 1, 109, "png", output_dir = repo_local_path("system-fake", "output"))
 ```
 
 In most cases this is the function you want to call within your generative art system, because it provides a complete path to the location that the output file should be written. 
@@ -246,6 +237,6 @@ Which is of course the point.
 ```{r}
 #| echo: false
 #| results: hide
-fs::dir_delete(series_path)
+fs::dir_delete(repo_local_path("series-fake"))
 ```
 
