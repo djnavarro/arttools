@@ -15,11 +15,10 @@ library(arttools)
 
 This article still needs to be written. For what it's worth, the process is essentially this:
 
-1. Move the to-be-published folder from `repo_local_path()` into `bucket_local_path()`
-2. Upload the folder from the local bucket to the remote bucket (using `gcloud` CLI for now, because that's what I use)
-3. Add the relevant page to your website.
+1. Upload the curated images from the `bucket_local_path()` to `bucket_remote_path()`. I'm using `gcloud` CLI for this
+2. Add the relevant page to your website.
 
-Yes, I know. This is totally a "draw the rest of the owl" kind of thing. But I haven't gotten to the point where I've systematised this part of the workflow, and so for the time being this page is basically a promissory note!
+Obviously this isn't a very informative description. But I haven't gotten to the point where I've systematised this part of the workflow, and so for the time being this page is basically a promissory note!
 
 <!--
 ### Uploading curated images
