@@ -61,7 +61,7 @@ repo_create <- function(series,
   cli::cli_alert_success("writing .here")
 
   # empty folders
-  series_dirs <- c("source", "input", "output", "build", series)
+  series_dirs <- c("source", "input", "output", "build")
   for (dir in series_dirs) {
     fs::dir_create(fs::path(series_path, dir))
     cli::cli_alert_success(paste0("creating folder '", dir, "'"))
