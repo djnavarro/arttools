@@ -52,7 +52,7 @@ repo_create <- function(series,
 
   # gitignore file
   gitignore <- c(".Rproj.user", ".Rhistory", ".Rdata", ".httr-oauth",
-                 ".DS_Store", "output", series)
+                 ".DS_Store", "output")
   brio::write_lines(gitignore, fs::path(series_path, ".gitignore"))
   cli::cli_alert_success("writing .gitignore")
 
