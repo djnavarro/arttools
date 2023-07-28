@@ -85,7 +85,11 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/djnavarro/arttools" class="external-link">arttools</a></span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/djnavarro/arttools" class="external-link">arttools</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span></span>
+<span>  arttools.repos.local <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"temp_repos"</span><span class="op">)</span>,</span>
+<span>  arttools.bucket.local <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"temp_bucket"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="repository-name">Repository name<a class="anchor" aria-label="anchor" href="#repository-name"></a>
 </h3>
@@ -113,12 +117,8 @@ local series repository. If my generative art system is called “fake”,
 my series name will be <code>"series-fake"</code>. I might use a command
 like this to create a skeleton:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/repo_create.html">repo_create</a></span><span class="op">(</span></span>
-<span>  series <span class="op">=</span> <span class="st">"series-fake"</span>,</span>
-<span>  license <span class="op">=</span> <span class="st">"ccby"</span>,</span>
-<span>  destination <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> repository folder created at /tmp/RtmpDWlQA0/series-fake</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/repo_create.html">repo_create</a></span><span class="op">(</span>series <span class="op">=</span> <span class="st">"series-fake"</span>, license <span class="op">=</span> <span class="st">"ccby"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> repository folder created at /tmp/RtmpaHgGA1/temp_repos/series-fake</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> writing README.md</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> writing LICENSE.md</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> writing .gitignore</span></span>
@@ -127,17 +127,11 @@ like this to create a skeleton:</p>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> creating folder 'input'</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> creating folder 'output'</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> creating folder 'build'</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> creating folder 'series-fake'</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> writing example file 'source/common.R'</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> writing example file 'source/art-system_01.R'</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> writing example file 'source/art-system_02.R'</span></span></code></pre></div>
-<p>Note that the <code>destination = tempdir()</code> part is purely for
-the sake of this article. By default, the <code><a href="../reference/repo_create.html">repo_create()</a></code>
-function assumes you want to create the skeleton in the same local
-folder that you have all your other art repositories, and as such the
-default value of <code>destination = repo_local_path()</code> is
-probably what you actually want. This is the file tree it creates:</p>
-<pre><code><span><span class="co">#&gt; <span style="color: #0000BB; font-weight: bold;">/tmp/RtmpDWlQA0/series-fake</span></span></span>
+<p>This is the file tree it creates:</p>
+<pre><code><span><span class="co">#&gt; <span style="color: #0000BB; font-weight: bold;">/tmp/RtmpaHgGA1/temp_repos/series-fake</span></span></span>
 <span><span class="co">#&gt; ├── .gitignore</span></span>
 <span><span class="co">#&gt; ├── .here</span></span>
 <span><span class="co">#&gt; ├── LICENSE.md</span></span>
@@ -145,7 +139,6 @@ probably what you actually want. This is the file tree it creates:</p>
 <span><span class="co">#&gt; ├── <span style="color: #0000BB; font-weight: bold;">build</span></span></span>
 <span><span class="co">#&gt; ├── <span style="color: #0000BB; font-weight: bold;">input</span></span></span>
 <span><span class="co">#&gt; ├── <span style="color: #0000BB; font-weight: bold;">output</span></span></span>
-<span><span class="co">#&gt; ├── <span style="color: #0000BB; font-weight: bold;">series-fake</span></span></span>
 <span><span class="co">#&gt; └── <span style="color: #0000BB; font-weight: bold;">source</span></span></span>
 <span><span class="co">#&gt;     ├── <span style="color: #00BB00;">art-system_01.R</span></span></span>
 <span><span class="co">#&gt;     ├── <span style="color: #00BB00;">art-system_02.R</span></span></span>
@@ -174,39 +167,29 @@ output files</li>
 <code>LICENSE.md</code> is created only if <code>license</code> is
 specified</li>
 </ul>
-<p>There are three folders that will be tracked by git:</p>
+<p>There four folders in the repository:</p>
 <ul>
 <li>
-<code>source</code> should contain source code for the generative
-art system</li>
+<code>source</code> is for source code for the generative art
+system</li>
 <li>
-<code>input</code> should contain other input files used by the
+<code>input</code> is for other input files used by the system
+(optional)</li>
+<li>
+<code>build</code> is for ancillary scripts that are not part of the
 system (optional)</li>
 <li>
-<code>build</code> should contain ancillary scripts that are not
-part of the art system (optional)</li>
+<code>output</code> is for output files generated by the system
+(ignored by git)</li>
 </ul>
-<p>In practice I find that I don’t always need the <code>input</code>
-and <code>build</code> folders and often delete them. The other two
-folders are used to store image files. These are:</p>
-<ul>
-<li>
-<code>output</code> is for raw output files generated directly by
-the system</li>
-<li>
-<code>series-fake</code> is for the manually curated versions of the
-output files, and is the folder that you’d later move into cloud storage
-once you’re done with the system</li>
-</ul>
-<p>Finally, notice that within the source folder there are three other
-files:</p>
+<p>Within the source folder there are three other files:</p>
 <ul>
 <li><code>source/common.R</code></li>
 <li><code>source/art-system_01.R</code></li>
 <li><code>source/art-system_02.R</code></li>
 </ul>
 <p>These files define a simple generative art system that I’ll use to
-discuss other aspects of generative art workflow.</p>
+discuss other aspects of generative art workflow in another article.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
