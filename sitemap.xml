@@ -37,6 +37,9 @@
     <loc>https://arttools.djnavarro.net/index.html</loc>
   </url>
   <url>
+    <loc>https://arttools.djnavarro.net/reference/bucket_download.html</loc>
+  </url>
+  <url>
     <loc>https://arttools.djnavarro.net/reference/check.html</loc>
   </url>
   <url>
@@ -53,8 +56,5 @@
   </url>
   <url>
     <loc>https://arttools.djnavarro.net/reference/repo_create.html</loc>
-  </url>
-  <url>
-    <loc>https://arttools.djnavarro.net/reference/series_download.html</loc>
   </url>
 </urlset>
