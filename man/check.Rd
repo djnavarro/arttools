@@ -2,23 +2,23 @@
 % Please edit documentation in R/checks.R
 \name{check}
 \alias{check}
-\alias{series_check}
+\alias{bucket_check}
 \alias{repo_check}
-\title{Check the structure of a repository or series}
+\title{Check the structure of a repository or bucket}
 \usage{
-series_check(series, origin = bucket_local_path())
+bucket_check(series, origin = bucket_local_path())
 
 repo_check(series, origin = repo_local_path())
 }
 \arguments{
 \item{series}{Name of the series}
 
-\item{origin}{Location in which to find the series or repository}
+\item{origin}{Location in which to find the bucket or repository folder}
 }
 \value{
 Invisibly returns TRUE if all checks pass, FALSE if at least one
 check fails
 }
 \description{
-Check the structure of a repository or series
+Check the structure of a repository or bucket
 }

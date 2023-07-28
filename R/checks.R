@@ -1,8 +1,8 @@
 
-#' Check the structure of a repository or series
+#' Check the structure of a repository or bucket
 #'
 #' @param series Name of the series
-#' @param origin Location in which to find the series or repository
+#' @param origin Location in which to find the bucket or repository folder
 #'
 #' @return Invisibly returns TRUE if all checks pass, FALSE if at least one
 #' check fails
@@ -11,14 +11,14 @@ NULL
 
 #' @rdname check
 #' @export
-series_check <- function(series, origin = bucket_local_path()) {
-  if (is_url(origin)) rlang::abort("cannot check a remote series")
-  cli::cli_alert_info(paste("Checking series:", agnostic_path(origin, series)))
-  existence_ok <- series_check_exists(series, origin)
+bucket_check <- function(series, origin = bucket_local_path()) {
+  if (is_url(origin)) rlang::abort("cannot check a remote bucket folder")
+  cli::cli_alert_info(paste("Checking bucket:", agnostic_path(origin, series)))
+  existence_ok <- bucket_check_exists(series, origin)
   if (!existence_ok) return(invisible(FALSE))
-  files_extensions_ok <- series_check_file_extensions(series, origin)
-  files_names_ok <- series_check_file_names(series, origin)
-  manifest_ok <- series_check_manifest(series, origin)
+  files_extensions_ok <- bucket_check_file_extensions(series, origin)
+  files_names_ok <- bucket_check_file_names(series, origin)
+  manifest_ok <- bucket_check_manifest(series, origin)
   all_ok <- existence_ok & manifest_ok & files_extensions_ok & files_names_ok
   invisible(all_ok)
 }
@@ -153,9 +153,9 @@ repo_check_folders <- function(series, origin) {
 }
 
 
-# series checks -----------------------------------------------------------
+# bucket checks -----------------------------------------------------------
 
-series_check_exists <- function(series, origin) {
+bucket_check_exists <- function(series, origin) {
   existence_ok <- fs::dir_exists(agnostic_path(origin, series))
   if (!existence_ok) {
     cli::cli_alert_warning("Series folder not detected")
@@ -165,7 +165,7 @@ series_check_exists <- function(series, origin) {
   existence_ok
 }
 
-series_check_manifest <- function(series, origin) {
+bucket_check_manifest <- function(series, origin) {
   manifest_path <- agnostic_path(origin, series, "manifest.csv")
   manifest_exists <- fs::file_exists(manifest_path)
   if (!manifest_exists) {
@@ -175,15 +175,15 @@ series_check_manifest <- function(series, origin) {
   cli::cli_alert_success("Manifest file detected")
   manifest_from_file <- manifest_read(series, origin)
   date <- manifest_from_file$series_date[1]
-  manifest_from_series <- manifest_build(series, date, origin)
-  comparison <- waldo::compare(manifest_from_file, manifest_from_series)
+  manifest_from_bucket <- manifest_build(series, date, origin)
+  comparison <- waldo::compare(manifest_from_file, manifest_from_bucket)
   if (length(comparison) > 0) {
     cli::cli_alert_warning(
-      "Manifest file does not match images in series folder"
+      "Manifest file does not match images in bucket folder"
     )
     return(FALSE)
   }
-  cli::cli_alert_success("Manifest file matches images in series folder")
+  cli::cli_alert_success("Manifest file matches images in bucket folder")
   TRUE
 }
 
@@ -203,18 +203,18 @@ list_images <- function(series, origin) {
   files
 }
 
-series_check_file_extensions <- function(series, origin) {
+bucket_check_file_extensions <- function(series, origin) {
   files <- list_images(series, origin)
   files_ok <- all(is_image(files))
   if (!files_ok) {
-    cli::cli_alert_warning("Series folder may contain non-image files")
+    cli::cli_alert_warning("Bucket folder contains non-image files")
   } else {
-    cli::cli_alert_success("Series folder contains only image files")
+    cli::cli_alert_success("Bucket folder contains only image files")
   }
   files_ok
 }
 
-series_check_file_names <- function(series, origin) {
+bucket_check_file_names <- function(series, origin) {
   files <- list_images(series, origin)
   name_parts <- strsplit(gsub("\\.[^.]*$", "", files), "_")
   num_name_parts <- vapply(name_parts, length, 1L)
