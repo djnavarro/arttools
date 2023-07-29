@@ -47,7 +47,7 @@ In any case, the thing you want to take away from all this is that it's very hel
 
 ### Repository paths
 
-The first assumption is that generative art code for a system is placed under version control, and it lives in a git repository (e.g., on GitHub). These git repositories have *remote* paths (where are they on GitHub) and *local* paths (where are they on this machine). To help manage these locations arttools has convenience functions `repo_remote_path()` and `repo_local_path()`. To use these, we'd have something like this in the .Rprofile file:
+The first assumption is that generative art code for a system is placed under version control, and it lives in a git repository (e.g., on GitHub). These git repositories have *remote* paths (where are they on GitHub) and *local* paths (where are they on this machine). To help manage these locations arttools has convenience functions `repo_remote_url()` and `repo_local_path()`. To use these, we'd have something like this in the .Rprofile file:
 
 ```{r}
 options(
@@ -68,8 +68,8 @@ Along the same lines, I can get their remote locations:
 
 ```{r}
 #| results: hold
-repo_remote_path("series-cards")
-repo_remote_path("series-boxes")
+repo_remote_url("series-cards")
+repo_remote_url("series-boxes")
 ```
 
 ### Bucket paths
@@ -96,7 +96,7 @@ Remote paths look like this:
 
 ```{r}
 #| results: hold
-bucket_remote_path("series-cards")
-bucket_remote_path("series-boxes")
+bucket_remote_url("series-cards")
+bucket_remote_url("series-boxes")
 ```
 

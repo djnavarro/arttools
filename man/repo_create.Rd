@@ -7,8 +7,8 @@
 repo_create(
   series,
   license = NULL,
-  local = repo_local_path(),
-  remote = repo_remote_path()
+  local_path = repo_local_path(),
+  remote_url = repo_remote_url()
 )
 }
 \arguments{
@@ -16,9 +16,9 @@ repo_create(
 
 \item{license}{License type for the series ("ccby", "cc0", or "mit")}
 
-\item{local}{Local folder in which to create the repository}
+\item{local_path}{Local folder in which to create the repository}
 
-\item{remote}{Remote URL to check for a pre-existing repository, or NULL to skip check}
+\item{remote_url}{Remote URL to check for a pre-existing repository, or NULL to skip check}
 }
 \value{
 Invisibly returns TRUE on success, FALSE on failure (this may change)

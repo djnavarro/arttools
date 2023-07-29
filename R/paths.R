@@ -6,7 +6,7 @@
 #' @return Fully qualified path or url
 #' @rdname paths
 #' @export
-bucket_remote_path <- function(...) {
+bucket_remote_url <- function(...) {
   base <- getOption("arttools.bucket.remote")
   paste(base, ..., sep = "/")
 }
@@ -20,7 +20,7 @@ bucket_local_path <- function(...) {
 
 #' @rdname paths
 #' @export
-repo_remote_path <- function(...) {
+repo_remote_url <- function(...) {
   base <- getOption("arttools.repos.remote")
   paste(base, ..., sep = "/")
 }

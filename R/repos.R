@@ -3,32 +3,34 @@
 #'
 #' @param series Name of the series (e.g., "series-rosemary")
 #' @param license License type for the series ("ccby", "cc0", or "mit")
-#' @param local Local folder in which to create the repository
-#' @param remote Remote URL to check for a pre-existing repository, or NULL to skip check
+#' @param local_path Local folder in which to create the repository
+#' @param remote_url Remote URL to check for a pre-existing repository, or NULL to skip check
 #'
 #' @return Invisibly returns TRUE on success, FALSE on failure (this may change)
 #' @export
 repo_create <- function(series,
                         license = NULL,
-                        local = repo_local_path(),
-                        remote = repo_remote_path()) {
+                        local_path = repo_local_path(),
+                        remote_url = repo_remote_url()) {
 
-  if (is_url(local)) {
-    cli::cli_alert_danger("local path cannot be a url, aborting")
+  if (is_url(local_path)) {
+    cli::cli_alert_danger("'local_path' cannot be a url, aborting")
     return(invisible(FALSE))
   }
 
-  series_path <- fs::path(local, series)
+  series_path <- fs::path(local_path, series)
 
-  if (repo_exists_local(series, local)) {
+  if (repo_exists_local(series, local_path)) {
     cli::cli_alert_danger(
       paste(series_path, "folder exists and is not empty, aborting")
     )
     return(invisible(FALSE))
   }
 
-  if (!is.null(remote) && repo_exists_remote(series, remote)) {
-    cli::cli_alert_danger(paste(url_path(remote, series), "exists, aborting"))
+  if (!is.null(remote_url) && repo_exists_remote(series, remote_url)) {
+    cli::cli_alert_danger(
+      paste(url_path(remote_url, series), "exists, aborting")
+    )
     return(invisible(FALSE))
   }
 
@@ -90,7 +92,7 @@ repo_exists_local <- function(series, local = repo_local_path()) {
 }
 
 # shallow check for a remote repo
-repo_exists_remote <- function(series, remote = repo_remote_path()) {
+repo_exists_remote <- function(series, remote = repo_remote_url()) {
   url <- agnostic_path(remote, series)
   request <- httr2::request(url)
   request <- httr2::req_timeout(request, seconds = 5)

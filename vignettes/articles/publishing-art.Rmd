@@ -15,7 +15,7 @@ library(arttools)
 
 This article still needs to be written. For what it's worth, the process is essentially this:
 
-1. Upload the curated images from the `bucket_local_path()` to `bucket_remote_path()`. I'm using `gcloud` CLI for this
+1. Upload the curated images from the `bucket_local_path()` to `bucket_remote_url()`. I'm using `gcloud` CLI for this
 2. Add the relevant page to your website.
 
 Obviously this isn't a very informative description. But I haven't gotten to the point where I've systematised this part of the workflow, and so for the time being this page is basically a promissory note!

@@ -2,7 +2,7 @@
 #' Status of a repository or bucket
 #'
 #' @param series Name of the series
-#' @param origin Location in which to find the bucket or repository folder
+#' @param local_path Location in which to find the bucket or repository folder
 #'
 #' @return Invisibly returns TRUE if no problems are detected, FALSE otherwise
 #' @name status
@@ -10,33 +10,33 @@ NULL
 
 #' @rdname status
 #' @export
-bucket_status <- function(series, origin = bucket_local_path()) {
-  if (is_url(origin)) rlang::abort("cannot check a remote bucket folder")
-  cli::cli_alert_info(paste("Checking bucket:", agnostic_path(origin, series)))
-  existence_ok <- bucket_check_exists(series, origin)
+bucket_status <- function(series, local_path = bucket_local_path()) {
+  if (is_url(local_path)) rlang::abort("'local_path' must not be a url")
+  cli::cli_alert_info(paste("Checking bucket:", agnostic_path(local_path, series)))
+  existence_ok <- bucket_check_exists(series, local_path)
   if (!existence_ok) return(invisible(FALSE))
-  files_extensions_ok <- bucket_check_file_extensions(series, origin)
-  files_names_ok <- bucket_check_file_names(series, origin)
-  manifest_ok <- bucket_check_manifest(series, origin)
+  files_extensions_ok <- bucket_check_file_extensions(series, local_path)
+  files_names_ok <- bucket_check_file_names(series, local_path)
+  manifest_ok <- bucket_check_manifest(series, local_path)
   all_ok <- existence_ok & manifest_ok & files_extensions_ok & files_names_ok
   invisible(all_ok)
 }
 
 #' @rdname status
 #' @export
-repo_status <- function(series, origin = repo_local_path()) {
-  if (is_url(origin)) rlang::abort("cannot check a remote repository")
+repo_status <- function(series, local_path = repo_local_path()) {
+  if (is_url(local_path)) rlang::abort("'local_path' must not be a url")
   cli::cli_alert_info(
-    paste("Checking repository:", agnostic_path(origin, series))
+    paste("Checking repository:", agnostic_path(local_path, series))
   )
-  existence_ok <- repo_check_exists(series, origin)
+  existence_ok <- repo_check_exists(series, local_path)
   if (!existence_ok) return(invisible(FALSE))
 
-  git_ok <- repo_check_git(series, origin)
-  gitignore_ok <- repo_check_gitignore(series, origin)
-  license_ok <- repo_check_license(series, origin)
-  readme_ok <- repo_check_readme(series, origin)
-  folders_ok <- repo_check_folders(series, origin)
+  git_ok <- repo_check_git(series, local_path)
+  gitignore_ok <- repo_check_gitignore(series, local_path)
+  license_ok <- repo_check_license(series, local_path)
+  readme_ok <- repo_check_readme(series, local_path)
+  folders_ok <- repo_check_folders(series, local_path)
 
   all_ok <- existence_ok & git_ok & gitignore_ok & license_ok & readme_ok &
     folders_ok
@@ -46,8 +46,8 @@ repo_status <- function(series, origin = repo_local_path()) {
 
 # repo checks -------------------------------------------------------------
 
-repo_check_exists <- function(series, origin) {
-  existence_ok <- fs::dir_exists(agnostic_path(origin, series))
+repo_check_exists <- function(series, local_path) {
+  existence_ok <- fs::dir_exists(agnostic_path(local_path, series))
   if (!existence_ok) {
     cli::cli_alert_warning("Repository folder not detected")
   } else {
@@ -56,8 +56,8 @@ repo_check_exists <- function(series, origin) {
   existence_ok
 }
 
-repo_check_git <- function(series, origin) {
-  git_ok <- fs::dir_exists(agnostic_path(origin, series, ".git"))
+repo_check_git <- function(series, local_path) {
+  git_ok <- fs::dir_exists(agnostic_path(local_path, series, ".git"))
   if (!git_ok) {
     cli::cli_alert_warning(".git folder not detected")
   } else {
@@ -66,8 +66,8 @@ repo_check_git <- function(series, origin) {
   git_ok
 }
 
-repo_check_gitignore <- function(series, origin) {
-  gitignore_path <- agnostic_path(origin, series, ".gitignore")
+repo_check_gitignore <- function(series, local_path) {
+  gitignore_path <- agnostic_path(local_path, series, ".gitignore")
 
   gitignore_exists <- fs::file_exists(gitignore_path)
   if (!gitignore_exists) {
@@ -99,8 +99,8 @@ repo_check_gitignore <- function(series, origin) {
   gitignore_exists & output_ignored & series_ignored
 }
 
-repo_check_license <- function(series, origin) {
-  license_ok <- fs::file_exists(agnostic_path(origin, series, "LICENSE.md"))
+repo_check_license <- function(series, local_path) {
+  license_ok <- fs::file_exists(agnostic_path(local_path, series, "LICENSE.md"))
   if (!license_ok) {
     cli::cli_alert_warning("LICENSE.md file not detected")
   } else {
@@ -109,8 +109,8 @@ repo_check_license <- function(series, origin) {
   license_ok
 }
 
-repo_check_readme <- function(series, origin) {
-  readme_ok <- fs::file_exists(agnostic_path(origin, series, "README.md"))
+repo_check_readme <- function(series, local_path) {
+  readme_ok <- fs::file_exists(agnostic_path(local_path, series, "README.md"))
   if (!readme_ok) {
     cli::cli_alert_warning("README.md file not detected")
   } else {
@@ -119,8 +119,8 @@ repo_check_readme <- function(series, origin) {
   readme_ok
 }
 
-repo_check_folders <- function(series, origin) {
-  repo_path <- agnostic_path(origin, series)
+repo_check_folders <- function(series, local_path) {
+  repo_path <- agnostic_path(local_path, series)
 
   folders <- fs::dir_ls(path = repo_path, type = "directory")
   folders <- fs::path_split(folders)
@@ -154,8 +154,8 @@ repo_check_folders <- function(series, origin) {
 
 # bucket checks -----------------------------------------------------------
 
-bucket_check_exists <- function(series, origin) {
-  existence_ok <- fs::dir_exists(agnostic_path(origin, series))
+bucket_check_exists <- function(series, local_path) {
+  existence_ok <- fs::dir_exists(agnostic_path(local_path, series))
   if (!existence_ok) {
     cli::cli_alert_warning("Series folder not detected")
   } else {
@@ -164,17 +164,17 @@ bucket_check_exists <- function(series, origin) {
   existence_ok
 }
 
-bucket_check_manifest <- function(series, origin) {
-  manifest_path <- agnostic_path(origin, series, "manifest.csv")
+bucket_check_manifest <- function(series, local_path) {
+  manifest_path <- agnostic_path(local_path, series, "manifest.csv")
   manifest_exists <- fs::file_exists(manifest_path)
   if (!manifest_exists) {
     cli::cli_alert_warning("Manifest file not detected")
     return(FALSE)
   }
   cli::cli_alert_success("Manifest file detected")
-  manifest_from_file <- manifest_read(series, origin)
+  manifest_from_file <- manifest_read(series, local_path)
   date <- manifest_from_file$series_date[1]
-  manifest_from_bucket <- manifest_build(series, date, origin)
+  manifest_from_bucket <- manifest_build(series, date, local_path)
   comparison <- waldo::compare(manifest_from_file, manifest_from_bucket)
   if (length(comparison) > 0) {
     cli::cli_alert_warning(
@@ -186,9 +186,9 @@ bucket_check_manifest <- function(series, origin) {
   TRUE
 }
 
-list_images <- function(series, origin) {
+list_images <- function(series, local_path) {
   files <- fs::dir_ls(
-    path = agnostic_path(origin, series),
+    path = fs::path(local_path, series),
     recurse = TRUE,
     type = "file"
   )
@@ -202,8 +202,8 @@ list_images <- function(series, origin) {
   files
 }
 
-bucket_check_file_extensions <- function(series, origin) {
-  files <- list_images(series, origin)
+bucket_check_file_extensions <- function(series, local_path) {
+  files <- list_images(series, local_path)
   files_ok <- all(is_image(files))
   if (!files_ok) {
     cli::cli_alert_warning("Bucket folder contains non-image files")
@@ -213,8 +213,8 @@ bucket_check_file_extensions <- function(series, origin) {
   files_ok
 }
 
-bucket_check_file_names <- function(series, origin) {
-  files <- list_images(series, origin)
+bucket_check_file_names <- function(series, local_path) {
+  files <- list_images(series, local_path)
   name_parts <- strsplit(gsub("\\.[^.]*$", "", files), "_")
   num_name_parts <- vapply(name_parts, length, 1L)
   if (any(num_name_parts < 3L | num_name_parts > 4L)) {

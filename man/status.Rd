@@ -6,14 +6,14 @@
 \alias{repo_status}
 \title{Status of a repository or bucket}
 \usage{
-bucket_status(series, origin = bucket_local_path())
+bucket_status(series, local_path = bucket_local_path())
 
-repo_status(series, origin = repo_local_path())
+repo_status(series, local_path = repo_local_path())
 }
 \arguments{
 \item{series}{Name of the series}
 
-\item{origin}{Location in which to find the bucket or repository folder}
+\item{local_path}{Location in which to find the bucket or repository folder}
 }
 \value{
 Invisibly returns TRUE if no problems are detected, FALSE otherwise

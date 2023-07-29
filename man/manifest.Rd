@@ -6,14 +6,9 @@
 \alias{manifest_build}
 \title{Read and write manifest files}
 \usage{
-manifest_read(series, origin = bucket_remote_path())
+manifest_read(series, origin = bucket_remote_url())
 
-manifest_write(
-  series,
-  date = Sys.Date(),
-  origin = bucket_local_path(),
-  destination = bucket_local_path()
-)
+manifest_write(series, date = Sys.Date(), origin = bucket_local_path())
 
 manifest_build(series, date, origin = bucket_local_path())
 }
@@ -23,8 +18,6 @@ manifest_build(series, date, origin = bucket_local_path())
 \item{origin}{Location in which to find the series}
 
 \item{date}{Publication date for the series (defaults to current date)}
-
-\item{destination}{Location into which a manifest is written}
 }
 \value{
 Tibble containing the manifest data, returned visibly to the user by
@@ -74,7 +67,7 @@ The manifest file is used to document the content of a published art
   This workflow is one in which manifests are constructed locally, published
   to a remote, and then read from the remote location. For that reason, the
   default behaviour is that \code{manifest_read()} sets the \code{origin} to
-  \code{bucket_remote_path()}, whereas \code{manifest_write()} sets the
+  \code{bucket_remote_url()}, whereas \code{manifest_write()} sets the
   \code{origin} and \code{destination} to \code{bucket_local_path()}.
 
   In some cases it may be convenient to construct the manifest tibble from

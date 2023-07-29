@@ -6,16 +6,16 @@
 \usage{
 bucket_download(
   series,
-  local = bucket_local_path(),
-  remote = bucket_remote_path()
+  local_path = bucket_local_path(),
+  remote_url = bucket_remote_url()
 )
 }
 \arguments{
 \item{series}{Name of the series}
 
-\item{local}{Local bucket folder to download to}
+\item{local_path}{Local bucket folder to download to}
 
-\item{remote}{Remote bucket folder to download from}
+\item{remote_url}{Remote bucket folder to download from}
 }
 \value{
 This function is called for its side effect, downloading series

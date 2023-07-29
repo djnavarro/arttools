@@ -6,7 +6,6 @@
 #'
 #' @param series Name of the series (e.g., "series-rosemary")
 #' @param origin Location in which to find the series
-#' @param destination Location into which a manifest is written
 #' @param date Publication date for the series (defaults to current date)
 #'
 #' @return Tibble containing the manifest data, returned visibly to the user by
@@ -51,7 +50,7 @@
 #'   This workflow is one in which manifests are constructed locally, published
 #'   to a remote, and then read from the remote location. For that reason, the
 #'   default behaviour is that \code{manifest_read()} sets the \code{origin} to
-#'   \code{bucket_remote_path()}, whereas \code{manifest_write()} sets the
+#'   \code{bucket_remote_url()}, whereas \code{manifest_write()} sets the
 #'   \code{origin} and \code{destination} to \code{bucket_local_path()}.
 #'
 #'   In some cases it may be convenient to construct the manifest tibble from
@@ -60,7 +59,7 @@
 #'
 #' @rdname manifest
 #' @export
-manifest_read <- function(series, origin = bucket_remote_path()) {
+manifest_read <- function(series, origin = bucket_remote_url()) {
   readr::read_csv(
     agnostic_path(origin, series, "manifest.csv"),
     col_types = readr::cols(
@@ -85,12 +84,11 @@ manifest_read <- function(series, origin = bucket_remote_path()) {
 #' @export
 manifest_write <- function(series,
                            date = Sys.Date(),
-                           origin = bucket_local_path(),
-                           destination = bucket_local_path()) {
+                           origin = bucket_local_path()) {
 
-  if (is_url(destination)) rlang::abort("cannot write manifest to remotes")
+  if (is_url(origin)) rlang::abort("cannot write manifest to remotes")
   manifest <- manifest_build(series, date, origin)
-  readr::write_csv(manifest, fs::path(destination, series, "manifest.csv"))
+  readr::write_csv(manifest, fs::path(origin, series, "manifest.csv"))
 }
 
 #' @rdname manifest
