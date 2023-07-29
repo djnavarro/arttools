@@ -2,24 +2,27 @@
 % Please edit documentation in R/download.R
 \name{bucket_download}
 \alias{bucket_download}
-\title{Download series from remote bucket}
+\title{Download series from remote bucket to local storage}
 \usage{
 bucket_download(
   series,
-  destination = bucket_local_path(),
-  origin = bucket_remote_path()
+  local = bucket_local_path(),
+  remote = bucket_remote_path()
 )
 }
 \arguments{
 \item{series}{Name of the series}
 
-\item{destination}{Local folder into which the series folder is downloaded}
+\item{local}{Local bucket folder to download to}
 
-\item{origin}{Location in which to find the series}
+\item{remote}{Remote bucket folder to download from}
 }
 \value{
-Tibble containing the download status data
+This function is called for its side effect, downloading series
+files from a remote bucket storage to local storage. Invisibly returns
+a tibble containing the download status information, as reported by
+\code{curl::multi_download()}.
 }
 \description{
-Download series from remote bucket
+Download series from remote bucket to local storage
 }
