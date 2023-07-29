@@ -64,8 +64,8 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">repo_create</span><span class="op">(</span></span>
 <span>  <span class="va">series</span>,</span>
 <span>  license <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  destination <span class="op">=</span> <span class="fu"><a href="paths.html">repo_local_path</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  remote <span class="op">=</span> <span class="fu"><a href="paths.html">repo_remote_path</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  local_path <span class="op">=</span> <span class="fu"><a href="paths.html">repo_local_path</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  remote_url <span class="op">=</span> <span class="fu"><a href="paths.html">repo_remote_url</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -79,12 +79,12 @@
 <dd><p>License type for the series ("ccby", "cc0", or "mit")</p></dd>
 
 
-<dt>destination</dt>
-<dd><p>Location in which the repository folder is created</p></dd>
+<dt>local_path</dt>
+<dd><p>Local folder in which to create the repository</p></dd>
 
 
-<dt>remote</dt>
-<dd><p>Location to check for a pre-existing remote repository</p></dd>
+<dt>remote_url</dt>
+<dd><p>Remote URL to check for a pre-existing repository, or NULL to skip check</p></dd>
 
 </dl></div>
     <div class="section level2">

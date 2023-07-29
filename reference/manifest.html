@@ -64,14 +64,9 @@ within the series.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">manifest_read</span><span class="op">(</span><span class="va">series</span>, origin <span class="op">=</span> <span class="fu"><a href="paths.html">bucket_remote_path</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">manifest_read</span><span class="op">(</span><span class="va">series</span>, origin <span class="op">=</span> <span class="fu"><a href="paths.html">bucket_remote_url</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">manifest_write</span><span class="op">(</span></span>
-<span>  <span class="va">series</span>,</span>
-<span>  date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  origin <span class="op">=</span> <span class="fu"><a href="paths.html">bucket_local_path</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  destination <span class="op">=</span> <span class="fu"><a href="paths.html">bucket_local_path</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
+<span><span class="fu">manifest_write</span><span class="op">(</span><span class="va">series</span>, date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>, origin <span class="op">=</span> <span class="fu"><a href="paths.html">bucket_local_path</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">manifest_build</span><span class="op">(</span><span class="va">series</span>, <span class="va">date</span>, origin <span class="op">=</span> <span class="fu"><a href="paths.html">bucket_local_path</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -88,10 +83,6 @@ within the series.</p>
 
 <dt>date</dt>
 <dd><p>Publication date for the series (defaults to current date)</p></dd>
-
-
-<dt>destination</dt>
-<dd><p>Location into which a manifest is written</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -141,7 +132,7 @@ within the series.</p>
 <p>This workflow is one in which manifests are constructed locally, published
   to a remote, and then read from the remote location. For that reason, the
   default behaviour is that <code>manifest_read()</code> sets the <code>origin</code> to
-  <code><a href="paths.html">bucket_remote_path()</a></code>, whereas <code>manifest_write()</code> sets the
+  <code><a href="paths.html">bucket_remote_url()</a></code>, whereas <code>manifest_write()</code> sets the
   <code>origin</code> and <code>destination</code> to <code><a href="paths.html">bucket_local_path()</a></code>.</p>
 <p>In some cases it may be convenient to construct the manifest tibble from
   the series image files without writing it to a csv file. To that end there

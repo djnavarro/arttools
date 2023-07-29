@@ -165,7 +165,7 @@ placed under version control, and it lives in a git repository (e.g., on
 GitHub). These git repositories have <em>remote</em> paths (where are
 they on GitHub) and <em>local</em> paths (where are they on this
 machine). To help manage these locations arttools has convenience
-functions <code><a href="../reference/paths.html">repo_remote_path()</a></code> and
+functions <code><a href="../reference/paths.html">repo_remote_url()</a></code> and
 <code><a href="../reference/paths.html">repo_local_path()</a></code>. To use these, we’d have something like
 this in the .Rprofile file:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -183,8 +183,8 @@ like this:</p>
 <span><span class="co">#&gt; /home/danielle/GitHub/series-boxes</span></span></code></pre></div>
 <p>Along the same lines, I can get their remote locations:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/paths.html">repo_remote_path</a></span><span class="op">(</span><span class="st">"series-cards"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/paths.html">repo_remote_path</a></span><span class="op">(</span><span class="st">"series-boxes"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/paths.html">repo_remote_url</a></span><span class="op">(</span><span class="st">"series-cards"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/paths.html">repo_remote_url</a></span><span class="op">(</span><span class="st">"series-boxes"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "https://github.com/djnavarro/series-cards"</span></span>
 <span><span class="co">#&gt; [1] "https://github.com/djnavarro/series-boxes"</span></span></code></pre></div>
 </div>
@@ -211,8 +211,8 @@ helper functions to manage paths:</p>
 <span><span class="co">#&gt; /home/danielle/Buckets/djnavarro-art/series-boxes</span></span></code></pre></div>
 <p>Remote paths look like this:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/paths.html">bucket_remote_path</a></span><span class="op">(</span><span class="st">"series-cards"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/paths.html">bucket_remote_path</a></span><span class="op">(</span><span class="st">"series-boxes"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/paths.html">bucket_remote_url</a></span><span class="op">(</span><span class="st">"series-cards"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/paths.html">bucket_remote_url</a></span><span class="op">(</span><span class="st">"series-boxes"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "https://storage.googleapis.com/djnavarro-art/series-cards"</span></span>
 <span><span class="co">#&gt; [1] "https://storage.googleapis.com/djnavarro-art/series-boxes"</span></span></code></pre></div>
 </div>
