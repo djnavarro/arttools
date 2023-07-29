@@ -3,31 +3,32 @@
 #'
 #' @param series Name of the series (e.g., "series-rosemary")
 #' @param license License type for the series ("ccby", "cc0", or "mit")
-#' @param destination Location in which the repository folder is created
-#' @param remote Location to check for a pre-existing remote repository
+#' @param local Local folder in which to create the repository
+#' @param remote Remote URL to check for a pre-existing repository, or NULL to skip check
 #'
 #' @return Invisibly returns TRUE on success, FALSE on failure (this may change)
 #' @export
 repo_create <- function(series,
                         license = NULL,
-                        destination = repo_local_path(),
+                        local = repo_local_path(),
                         remote = repo_remote_path()) {
 
-  series_path <- agnostic_path(destination, series)
-
-  # check for problems with the repo specification
-  if (is_url(destination)) {
-    cli::cli_alert_danger("new repo have a local destination, aborting")
+  if (is_url(local)) {
+    cli::cli_alert_danger("local path cannot be a url, aborting")
     return(invisible(FALSE))
   }
-  if (repo_exists_local(series, destination)) {
+
+  series_path <- fs::path(local, series)
+
+  if (repo_exists_local(series, local)) {
     cli::cli_alert_danger(
       paste(series_path, "folder exists and is not empty, aborting")
     )
     return(invisible(FALSE))
   }
-  if (repo_exists_remote(series, remote)) {
-    cli::cli_alert_danger(paste(series_path, "already exists, aborting"))
+
+  if (!is.null(remote) && repo_exists_remote(series, remote)) {
+    cli::cli_alert_danger(paste(url_path(remote, series), "exists, aborting"))
     return(invisible(FALSE))
   }
 
