@@ -25,3 +25,6 @@ Imports:
     waldo
 RoxygenNote: 7.2.3
 Config/Needs/website: rmarkdown
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
