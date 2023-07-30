@@ -2,7 +2,7 @@
 PKGNAME = arttools
 PKGVERS = 0.0.0.9000
 
-all: document build check install site clean
+all: build check install clean
 
 document:
 	Rscript -e 'roxygen2::roxygenise()'
