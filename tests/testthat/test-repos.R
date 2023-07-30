@@ -8,6 +8,10 @@ if (fs::dir_exists(fs::path(temp_repos, "series-test"))) {
   fs::dir_delete(fs::path(temp_repos, "series-test"))
 }
 
+if (fs::dir_exists(fs::path(temp_bucket, "series-test"))) {
+  fs::dir_delete(fs::path(temp_bucket, "series-test"))
+}
+
 
 # tests -------------------------------------------------------------------
 
@@ -67,7 +71,11 @@ test_that("repo_create aborts when repository exists", {
 
 # clean up ----------------------------------------------------------------
 
+
 if (fs::dir_exists(fs::path(temp_repos, "series-test"))) {
   fs::dir_delete(fs::path(temp_repos, "series-test"))
 }
 
+if (fs::dir_exists(fs::path(temp_bucket, "series-test"))) {
+  fs::dir_delete(fs::path(temp_bucket, "series-test"))
+}
