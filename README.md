@@ -3,6 +3,7 @@
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/djnavarro/arttools/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/djnavarro/arttools/actions/workflows/R-CMD-check.yaml)
+[![Codecov test coverage](https://codecov.io/gh/djnavarro/arttools/branch/main/graph/badge.svg)](https://app.codecov.io/gh/djnavarro/arttools?branch=main)
 <!-- badges: end -->
 
 This is a personal package used to help with my generative art workflows. It's not a package to help write the code for generative art systems: rather, it's a package I use to make it easier to maintain the source code for the generative art system, the output files created by running the code, and to organise images into a format suitable for publishing to the web. 
