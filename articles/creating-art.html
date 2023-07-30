@@ -97,7 +97,7 @@ I’ll walk you through the process of what that entails in practice. I’ll
 start by creating a “fake” art repository:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/repo_create.html">repo_create</a></span><span class="op">(</span>series <span class="op">=</span> <span class="st">"series-fake"</span>, license <span class="op">=</span> <span class="st">"ccby"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> repository folder created at /tmp/RtmpMebTYQ/temp_repos/series-fake</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> repository folder created at /tmp/RtmpjZ9S72/temp_repos/series-fake</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> writing README.md</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> writing LICENSE.md</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> writing .gitignore</span></span>
@@ -111,7 +111,7 @@ start by creating a “fake” art repository:</p>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> writing example file 'source/art-system_02.R'</span></span></code></pre></div>
 <p>When you create the repository, these are the files and folders that
 you start off with:</p>
-<pre><code><span><span class="co">#&gt; <span style="color: #0000BB; font-weight: bold;">/tmp/RtmpMebTYQ/temp_repos/series-fake</span></span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #0000BB; font-weight: bold;">/tmp/RtmpjZ9S72/temp_repos/series-fake</span></span></span>
 <span><span class="co">#&gt; ├── .gitignore</span></span>
 <span><span class="co">#&gt; ├── .here</span></span>
 <span><span class="co">#&gt; ├── LICENSE.md</span></span>
@@ -409,7 +409,7 @@ have available to you, in practice you’re more likely to call
 complete path to the output file:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">output_path</span><span class="op">(</span><span class="st">"art-system"</span>, <span class="fl">1</span>, <span class="fl">109</span>, <span class="st">"png"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; [1] "/tmp/RtmpMebTYQ/temp_repos/system-fake/output/01/art-system_01_0109.png"</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; [1] "/tmp/RtmpjZ9S72/temp_repos/system-fake/output/01/art-system_01_0109.png"</span></span></code></pre>
 <p>In most cases this is the function you want to call within your
 generative art system, because it provides a complete path to the
 location that the output file should be written. Writing files in this

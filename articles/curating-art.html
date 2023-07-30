@@ -94,7 +94,7 @@
 want to wrap it all up, create a nice “curated” version of the output,
 and prepare it for publication. At this point we might have something
 that looks like this:</p>
-<pre><code><span><span class="co">#&gt; <span style="color: #0000BB; font-weight: bold;">/tmp/RtmpxbRCeP/temp_repos/series-fake</span></span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #0000BB; font-weight: bold;">/tmp/RtmppiI5hT/temp_repos/series-fake</span></span></span>
 <span><span class="co">#&gt; ├── .gitignore</span></span>
 <span><span class="co">#&gt; ├── .here</span></span>
 <span><span class="co">#&gt; ├── LICENSE.md</span></span>
@@ -146,7 +146,7 @@ output into your bucket and publishing the whole thing!</p>
 images that you like and you’ve copied them across to the
 <code>series-fake</code> local bucket folder. So now you have something
 like this in your local bucket:</p>
-<pre><code><span><span class="co">#&gt; <span style="color: #0000BB; font-weight: bold;">/tmp/RtmpxbRCeP/temp_bucket/series-fake</span></span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #0000BB; font-weight: bold;">/tmp/RtmppiI5hT/temp_bucket/series-fake</span></span></span>
 <span><span class="co">#&gt; └── <span style="color: #0000BB; font-weight: bold;">image</span></span></span>
 <span><span class="co">#&gt;     ├── <span style="color: #BB00BB; font-weight: bold;">art-system_01_0002.png</span></span></span>
 <span><span class="co">#&gt;     ├── <span style="color: #BB00BB; font-weight: bold;">art-system_01_0003.png</span></span></span>
@@ -174,14 +174,14 @@ thumbnails for you, boringly entitled
 <span>  pixels_high <span class="op">=</span> <span class="fl">500</span>,</span>
 <span>  origin <span class="op">=</span> <span class="fu"><a href="../reference/paths.html">bucket_local_path</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> /tmp/RtmpxbRCeP/temp_bucket/series-fake/preview/art-system_01_0002.png created</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> /tmp/RtmpxbRCeP/temp_bucket/series-fake/preview/art-system_01_0003.png created</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> /tmp/RtmpxbRCeP/temp_bucket/series-fake/preview/art-system_02_0003.png created</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> /tmp/RtmpxbRCeP/temp_bucket/series-fake/preview/art-system_02_0005.png created</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> /tmp/RtmppiI5hT/temp_bucket/series-fake/preview/art-system_01_0002.png created</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> /tmp/RtmppiI5hT/temp_bucket/series-fake/preview/art-system_01_0003.png created</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> /tmp/RtmppiI5hT/temp_bucket/series-fake/preview/art-system_02_0003.png created</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> /tmp/RtmppiI5hT/temp_bucket/series-fake/preview/art-system_02_0005.png created</span></span></code></pre></div>
 <p>The bucket now contains the “full resolution” images in the
 <code>image</code> folder, and lower resolution versions of the same
 images in the <code>preview</code> folder:</p>
-<pre><code><span><span class="co">#&gt; <span style="color: #0000BB; font-weight: bold;">/tmp/RtmpxbRCeP/temp_bucket/series-fake</span></span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #0000BB; font-weight: bold;">/tmp/RtmppiI5hT/temp_bucket/series-fake</span></span></span>
 <span><span class="co">#&gt; ├── <span style="color: #0000BB; font-weight: bold;">image</span></span></span>
 <span><span class="co">#&gt; │   ├── <span style="color: #BB00BB; font-weight: bold;">art-system_01_0002.png</span></span></span>
 <span><span class="co">#&gt; │   ├── <span style="color: #BB00BB; font-weight: bold;">art-system_01_0003.png</span></span></span>
@@ -206,7 +206,7 @@ To that end, the arttools package has a function called
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/manifest.html">manifest_write</a></span><span class="op">(</span><span class="st">"series-fake"</span><span class="op">)</span></span></code></pre></div>
 <p>And now we have a <code>manifest.csv</code> file:</p>
-<pre><code><span><span class="co">#&gt; <span style="color: #0000BB; font-weight: bold;">/tmp/RtmpxbRCeP/temp_bucket/series-fake</span></span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #0000BB; font-weight: bold;">/tmp/RtmppiI5hT/temp_bucket/series-fake</span></span></span>
 <span><span class="co">#&gt; ├── <span style="color: #0000BB; font-weight: bold;">image</span></span></span>
 <span><span class="co">#&gt; │   ├── <span style="color: #BB00BB; font-weight: bold;">art-system_01_0002.png</span></span></span>
 <span><span class="co">#&gt; │   ├── <span style="color: #BB00BB; font-weight: bold;">art-system_01_0003.png</span></span></span>
@@ -224,14 +224,14 @@ To that end, the arttools package has a function called
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 8 × 12</span></span></span>
 <span><span class="co">#&gt;   series_name series_date path          folder file_name file_format system_name</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> series-fake 2023-07-29  image/art-sy… image  art-syst… png         art-system </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> series-fake 2023-07-29  preview/art-… previ… art-syst… png         art-system </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> series-fake 2023-07-29  image/art-sy… image  art-syst… png         art-system </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> series-fake 2023-07-29  preview/art-… previ… art-syst… png         art-system </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> series-fake 2023-07-29  image/art-sy… image  art-syst… png         art-system </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> series-fake 2023-07-29  preview/art-… previ… art-syst… png         art-system </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> series-fake 2023-07-29  image/art-sy… image  art-syst… png         art-system </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> series-fake 2023-07-29  preview/art-… previ… art-syst… png         art-system </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> series-fake 2023-07-30  image/art-sy… image  art-syst… png         art-system </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> series-fake 2023-07-30  preview/art-… previ… art-syst… png         art-system </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> series-fake 2023-07-30  image/art-sy… image  art-syst… png         art-system </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> series-fake 2023-07-30  preview/art-… previ… art-syst… png         art-system </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> series-fake 2023-07-30  image/art-sy… image  art-syst… png         art-system </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> series-fake 2023-07-30  preview/art-… previ… art-syst… png         art-system </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> series-fake 2023-07-30  image/art-sy… image  art-syst… png         art-system </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> series-fake 2023-07-30  preview/art-… previ… art-syst… png         art-system </span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 5 more variables: system_version &lt;chr&gt;, image_id &lt;chr&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   image_short_title &lt;chr&gt;, image_long_title &lt;chr&gt;, manifest_version &lt;int&gt;</span></span></span></code></pre></div>
 <p>At this point we have a nicely prepared folder full of curated
